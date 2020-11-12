@@ -1,0 +1,1 @@
+{"name":"GMW_TUBE_STATUS","refDomainVersions":[{"majorVersion":1,"minorVersion":0,"refCodes":[{"code":"gebruiksklaar","imbro":"J","imbroA":"J"},{"code":"nietGebruiksklaar","imbro":"J","imbroA":"J"},{"code":"onbekend","imbro":"N","imbroA":"J"},{"code":"onbruikbaar","imbro":"J","imbroA":"J"}]}],"uri":"urn:bro:gmw:TubeStatus"}

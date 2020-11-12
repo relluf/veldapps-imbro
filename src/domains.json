@@ -1,0 +1,1393 @@
+{
+    "refDomains": [{
+        "description": "TypeIngreep",
+        "name": "BHRGT_ActivityType",
+        "uri": "urn:bro:bhrgt:ActivityType"
+    },
+    {
+        "description": "Analyseprocedure",
+        "name": "BHRGT_AnalysisProcedure",
+        "uri": "urn:bro:bhrgt:AnalysisProcedure"
+    },
+    {
+        "description": "TypeAnalyse",
+        "name": "BHRGT_AnalysisType",
+        "uri": "urn:bro:bhrgt:AnalysisType"
+    },
+    {
+        "description": "Hoekigheid",
+        "name": "BHRGT_Angularity",
+        "uri": "urn:bro:bhrgt:Angularity"
+    },
+    {
+        "description": "Breedteklasse",
+        "name": "BHRGT_ApertureClass",
+        "uri": "urn:bro:bhrgt:ApertureClass"
+    },
+    {
+        "description": "Aanvulmateriaal",
+        "name": "BHRGT_BackfillMaterial",
+        "uri": "urn:bro:bhrgt:BackfillMaterial"
+    },
+    {
+        "description": "Gelaagdheid",
+        "name": "BHRGT_Bedding",
+        "uri": "urn:bro:bhrgt:Bedding"
+    },
+    {
+        "description": "Boorprocedure",
+        "name": "BHRGT_BoringProcedure",
+        "uri": "urn:bro:bhrgt:BoringProcedure"
+    },
+    {
+        "description": "Boortechniek",
+        "name": "BHRGT_BoringTechnique",
+        "uri": "urn:bro:bhrgt:BoringTechnique"
+    },
+    {
+        "description": "Grensbepaling",
+        "name": "BHRGT_BoundaryPositioningMethod",
+        "uri": "urn:bro:bhrgt:BoundaryPositioningMethod"
+    },
+    {
+        "description": "Kalkgehalteklasse",
+        "name": "BHRGT_CarbonateContentClass",
+        "uri": "urn:bro:bhrgt:CarbonateContentClass"
+    },
+    {
+        "description": "Buismateriaal",
+        "name": "BHRGT_CasingMaterial",
+        "uri": "urn:bro:bhrgt:CasingMaterial"
+    },
+    {
+        "description": "Cementsoort",
+        "name": "BHRGT_CementType",
+        "uri": "urn:bro:bhrgt:CementType"
+    },
+    {
+        "description": "Kleur",
+        "name": "BHRGT_Colour",
+        "uri": "urn:bro:bhrgt:Colour"
+    },
+    {
+        "description": "Omzetting",
+        "name": "BHRGT_Decomposition",
+        "uri": "urn:bro:bhrgt:Decomposition"
+    },
+    {
+        "description": "KaderAanlevering",
+        "name": "BHRGT_DeliveryContext",
+        "uri": "urn:bro:bhrgt:DeliveryContext"
+    },
+    {
+        "description": "OuderdomAfzetting",
+        "name": "BHRGT_DepositionalAge",
+        "uri": "urn:bro:bhrgt:DepositionalAge"
+    },
+    {
+        "description": "BeschrevenMateriaal",
+        "name": "BHRGT_DescribedMaterial",
+        "uri": "urn:bro:bhrgt:DescribedMaterial"
+    },
+    {
+        "description": "Beschrijflocatie",
+        "name": "BHRGT_DescriptionLocation",
+        "uri": "urn:bro:bhrgt:DescriptionLocation"
+    },
+    {
+        "description": "Beschrijfprocedure",
+        "name": "BHRGT_DescriptionProcedure",
+        "uri": "urn:bro:bhrgt:DescriptionProcedure"
+    },
+    {
+        "description": "Beschrijfkwaliteit",
+        "name": "BHRGT_DescriptionQuality",
+        "uri": "urn:bro:bhrgt:DescriptionQuality"
+    },
+    {
+        "description": "Bepalingsdiameter",
+        "name": "BHRGT_DeterminationDiameter",
+        "uri": "urn:bro:bhrgt:DeterminationDiameter"
+    },
+    {
+        "description": "Bepalingsmethode",
+        "name": "BHRGT_DeterminationMethod",
+        "uri": "urn:bro:bhrgt:DeterminationMethod"
+    },
+    {
+        "description": "Bepalingsprocedure",
+        "name": "BHRGT_DeterminationProcedure",
+        "uri": "urn:bro:bhrgt:DeterminationProcedure"
+    },
+    {
+        "description": "Vakgebied",
+        "name": "BHRGT_Discipline",
+        "uri": "urn:bro:bhrgt:Discipline"
+    },
+    {
+        "description": "Verkleuring",
+        "name": "BHRGT_Discolouration",
+        "uri": "urn:bro:bhrgt:Discolouration"
+    },
+    {
+        "description": "TypeDiscontinuïteit",
+        "name": "BHRGT_DiscontinuityType",
+        "uri": "urn:bro:bhrgt:DiscontinuityType"
+    },
+    {
+        "description": "Desintegratie",
+        "name": "BHRGT_Disintegration",
+        "uri": "urn:bro:bhrgt:Disintegration"
+    },
+    {
+        "description": "DisperseInhomogeniteit",
+        "name": "BHRGT_DispersedInhomogeneity",
+        "uri": "urn:bro:bhrgt:DispersedInhomogeneity"
+    },
+    {
+        "description": "Dispersiemethode",
+        "name": "BHRGT_DispersionMethod",
+        "uri": "urn:bro:bhrgt:DispersionMethod"
+    },
+    {
+        "description": "Droogtijd",
+        "name": "BHRGT_DryingPeriod",
+        "uri": "urn:bro:bhrgt:DryingPeriod"
+    },
+    {
+        "description": "Droogtemperatuur",
+        "name": "BHRGT_DryingTemperature",
+        "uri": "urn:bro:bhrgt:DryingTemperature"
+    },
+    {
+        "description": "BepalingsmethodeEquivalenteMassa",
+        "name": "BHRGT_EquivalentMassDeterminationMethod",
+        "uri": "urn:bro:bhrgt:EquivalentMassDeterminationMethod"
+    },
+    {
+        "description": "NaamGebeurtenis",
+        "name": "BHRGT_EventName",
+        "uri": "urn:bro:bhrgt:EventName"
+    },
+    {
+        "description": "WeggegravenMateriaal",
+        "name": "BHRGT_ExcavatedMaterial",
+        "uri": "urn:bro:bhrgt:ExcavatedMaterial"
+    },
+    {
+        "description": "FijnGrindGehalteklasse",
+        "name": "BHRGT_FineGravelContentClass",
+        "uri": "urn:bro:bhrgt:FineGravelContentClass"
+    },
+    {
+        "description": "ConsistentieFijneGrond",
+        "name": "BHRGT_FineSoilConsistency",
+        "uri": "urn:bro:bhrgt:FineSoilConsistency"
+    },
+    {
+        "description": "MethodePositiebepalingSliblaag",
+        "name": "BHRGT_FluidMudLayerPositioningMethod",
+        "uri": "urn:bro:bhrgt:FluidMudLayerPositioningMethod"
+    },
+    {
+        "description": "Spoelingtoeslag",
+        "name": "BHRGT_FlushingAdditive",
+        "uri": "urn:bro:bhrgt:FlushingAdditive"
+    },
+    {
+        "description": "Fractieverdeling",
+        "name": "BHRGT_FractionDistribution",
+        "uri": "urn:bro:bhrgt:FractionDistribution"
+    },
+    {
+        "description": "GeotechnischeAfzettingskarakteristiek",
+        "name": "BHRGT_GeotechnicalDepositionalCharacteristic",
+        "uri": "urn:bro:bhrgt:GeotechnicalDepositionalCharacteristic"
+    },
+    {
+        "description": "GeotechnischeGrondsoort",
+        "name": "BHRGT_GeotechnicalSoilName",
+        "uri": "urn:bro:bhrgt:GeotechnicalSoilName"
+    },
+    {
+        "description": "GrindgehalteklasseNEN5104",
+        "name": "BHRGT_GravelContentClassNEN5104",
+        "uri": "urn:bro:bhrgt:GravelContentClassNEN5104"
+    },
+    {
+        "description": "Grindmediaanklasse",
+        "name": "BHRGT_GravelMedianClass",
+        "uri": "urn:bro:bhrgt:GravelMedianClass"
+    },
+    {
+        "description": "MethodeLocatiebepaling",
+        "name": "BHRGT_HorizontalPositioningMethod",
+        "uri": "urn:bro:bhrgt:HorizontalPositioningMethod"
+    },
+    {
+        "description": "Opvulmateriaal",
+        "name": "BHRGT_InfillMaterial",
+        "uri": "urn:bro:bhrgt:InfillMaterial"
+    },
+    {
+        "description": "GelaagdeInhomogeniteit",
+        "name": "BHRGT_Interbedding",
+        "uri": "urn:bro:bhrgt:Interbedding"
+    },
+    {
+        "description": "LokaalVerticaalReferentiepunt",
+        "name": "BHRGT_LocalVerticalReferencePoint",
+        "uri": "urn:bro:bhrgt:LocalVerticalReferencePoint"
+    },
+    {
+        "description": "BijzonderheidMateriaal",
+        "name": "BHRGT_MaterialIrregularity",
+        "uri": "urn:bro:bhrgt:MaterialIrregularity"
+    },
+    {
+        "description": "MatigGrofGrindGehalteklasse",
+        "name": "BHRGT_MediumCoarseGravelContentClass",
+        "uri": "urn:bro:bhrgt:MediumCoarseGravelContentClass"
+    },
+    {
+        "description": "TypeVermenging",
+        "name": "BHRGT_MixingType",
+        "uri": "urn:bro:bhrgt:MixingType"
+    },
+    {
+        "description": "RedenNietBeschreven",
+        "name": "BHRGT_NoDescriptionReason",
+        "uri": "urn:bro:bhrgt:NoDescriptionReason"
+    },
+    {
+        "description": "Organischestofgehalteklasse",
+        "name": "BHRGT_OrganicMatterContentClass",
+        "uri": "urn:bro:bhrgt:OrganicMatterContentClass"
+    },
+    {
+        "description": "OrganischestofgehalteklasseNEN5104",
+        "name": "BHRGT_OrganicMatterContentClassNEN5104",
+        "uri": "urn:bro:bhrgt:OrganicMatterContentClassNEN5104"
+    },
+    {
+        "description": "ConsistentieOrganischeGrond",
+        "name": "BHRGT_OrganicSoilConsistency",
+        "uri": "urn:bro:bhrgt:OrganicSoilConsistency"
+    },
+    {
+        "description": "TextuurOrganischeGrond",
+        "name": "BHRGT_OrganicSoilTexture",
+        "uri": "urn:bro:bhrgt:OrganicSoilTexture"
+    },
+    {
+        "description": "TreksterkteVeen",
+        "name": "BHRGT_PeatTensileStrength",
+        "uri": "urn:bro:bhrgt:PeatTensileStrength"
+    },
+    {
+        "description": "Veensoort",
+        "name": "BHRGT_PeatType",
+        "uri": "urn:bro:bhrgt:PeatType"
+    },
+    {
+        "description": "BijzonderheidUitvoering",
+        "name": "BHRGT_PerformanceIrregularity",
+        "uri": "urn:bro:bhrgt:PerformanceIrregularity"
+    },
+    {
+        "description": "LiggingOpGrondlichaam",
+        "name": "BHRGT_PositionOnGroundBody",
+        "uri": "urn:bro:bhrgt:PositionOnGroundBody"
+    },
+    {
+        "description": "Voorbehandeling",
+        "name": "BHRGT_PreTreatment",
+        "uri": "urn:bro:bhrgt:PreTreatment"
+    },
+    {
+        "description": "Voorbereiding",
+        "name": "BHRGT_Preparation",
+        "uri": "urn:bro:bhrgt:Preparation"
+    },
+    {
+        "description": "VerwijderdMateriaal",
+        "name": "BHRGT_RemovedMaterial",
+        "uri": "urn:bro:bhrgt:RemovedMaterial"
+    },
+    {
+        "description": "BijzonderheidResultaat",
+        "name": "BHRGT_ResultIrregularity",
+        "uri": "urn:bro:bhrgt:ResultIrregularity"
+    },
+    {
+        "description": "Ringdiameter",
+        "name": "BHRGT_RingDiameter",
+        "uri": "urn:bro:bhrgt:RingDiameter"
+    },
+    {
+        "description": "Gesteentesoort",
+        "name": "BHRGT_RockType",
+        "uri": "urn:bro:bhrgt:RockType"
+    },
+    {
+        "description": "Ruwheid",
+        "name": "BHRGT_Roughness",
+        "uri": "urn:bro:bhrgt:Roughness"
+    },
+    {
+        "description": "Zoutcorrectiemethode",
+        "name": "BHRGT_SaltCorrectionMethod",
+        "uri": "urn:bro:bhrgt:SaltCorrectionMethod"
+    },
+    {
+        "description": "InhoudMonsterhouder",
+        "name": "BHRGT_SampleContainerVolume",
+        "uri": "urn:bro:bhrgt:SampleContainerVolume"
+    },
+    {
+        "description": "Monstervochtigheid",
+        "name": "BHRGT_SampleMoistness",
+        "uri": "urn:bro:bhrgt:SampleMoistness"
+    },
+    {
+        "description": "Monsterkwaliteit",
+        "name": "BHRGT_SampleQuality",
+        "uri": "urn:bro:bhrgt:SampleQuality"
+    },
+    {
+        "description": "Apparaattype",
+        "name": "BHRGT_SamplerType",
+        "uri": "urn:bro:bhrgt:SamplerType"
+    },
+    {
+        "description": "Bemonsteringsmethode",
+        "name": "BHRGT_SamplingMethod",
+        "uri": "urn:bro:bhrgt:SamplingMethod"
+    },
+    {
+        "description": "Bemonsteringsprocedure",
+        "name": "BHRGT_SamplingProcedure",
+        "uri": "urn:bro:bhrgt:SamplingProcedure"
+    },
+    {
+        "description": "Bemonsteringskwaliteit",
+        "name": "BHRGT_SamplingQuality",
+        "uri": "urn:bro:bhrgt:SamplingQuality"
+    },
+    {
+        "description": "Zandmediaanklasse",
+        "name": "BHRGT_SandMedianClass",
+        "uri": "urn:bro:bhrgt:SandMedianClass"
+    },
+    {
+        "description": "ZandspreidingNEN5104",
+        "name": "BHRGT_SandSortingNEN5104",
+        "uri": "urn:bro:bhrgt:SandSortingNEN5104"
+    },
+    {
+        "description": "Groottefractie",
+        "name": "BHRGT_SizeFraction",
+        "uri": "urn:bro:bhrgt:SizeFraction"
+    },
+    {
+        "description": "GrondsoortNEN5104",
+        "name": "BHRGT_SoilNameNEN5104",
+        "uri": "urn:bro:bhrgt:SoilNameNEN5104"
+    },
+    {
+        "description": "Bodemgebruik",
+        "name": "BHRGT_SoilUse",
+        "uri": "urn:bro:bhrgt:SoilUse"
+    },
+    {
+        "description": "BijzonderMateriaal",
+        "name": "BHRGT_SpecialMaterial",
+        "uri": "urn:bro:bhrgt:SpecialMaterial"
+    },
+    {
+        "description": "Sfericiteit",
+        "name": "BHRGT_Sphericity",
+        "uri": "urn:bro:bhrgt:Sphericity"
+    },
+    {
+        "description": "Stabiliteit",
+        "name": "BHRGT_Stability",
+        "uri": "urn:bro:bhrgt:Stability"
+    },
+    {
+        "description": "Stopcriterium",
+        "name": "BHRGT_StopCriterion",
+        "uri": "urn:bro:bhrgt:StopCriterion"
+    },
+    {
+        "description": "Sterkteklasse",
+        "name": "BHRGT_StrengthClass",
+        "uri": "urn:bro:bhrgt:StrengthClass"
+    },
+    {
+        "description": "KaderstellendeProcedure",
+        "name": "BHRGT_SurveyProcedure",
+        "uri": "urn:bro:bhrgt:SurveyProcedure"
+    },
+    {
+        "description": "KaderInwinning",
+        "name": "BHRGT_SurveyPurpose",
+        "uri": "urn:bro:bhrgt:SurveyPurpose"
+    },
+    {
+        "description": "TijdelijkeVerandering",
+        "name": "BHRGT_TemporaryChange",
+        "uri": "urn:bro:bhrgt:TemporaryChange"
+    },
+    {
+        "description": "BijzonderBestanddeel",
+        "name": "BHRGT_TertiaryConstituent",
+        "uri": "urn:bro:bhrgt:TertiaryConstituent"
+    },
+    {
+        "description": "BijzonderGesteentebestanddeel",
+        "name": "BHRGT_TertiaryRockConstituent",
+        "uri": "urn:bro:bhrgt:TertiaryRockConstituent"
+    },
+    {
+        "description": "GebruiktMedium",
+        "name": "BHRGT_UsedMedium",
+        "uri": "urn:bro:bhrgt:UsedMedium"
+    },
+    {
+        "description": "ToegepastOptischModel",
+        "name": "BHRGT_UsedOpticalModel",
+        "uri": "urn:bro:bhrgt:UsedOpticalModel"
+    },
+    {
+        "description": "VerticaalReferentievlak",
+        "name": "BHRGT_VerticalDatum",
+        "uri": "urn:bro:bhrgt:VerticalDatum"
+    },
+    {
+        "description": "MethodeVerticalePositiebepaling",
+        "name": "BHRGT_VerticalPositioningMethod",
+        "uri": "urn:bro:bhrgt:VerticalPositioningMethod"
+    },
+    {
+        "description": "ZeerGrofGrindGehalteklasse",
+        "name": "BHRGT_VeryCoarseGravelContentClass",
+        "uri": "urn:bro:bhrgt:VeryCoarseGravelContentClass"
+    },
+    {
+        "description": "Holteverdeling",
+        "name": "BHRGT_VoidDistribution",
+        "uri": "urn:bro:bhrgt:VoidDistribution"
+    },
+    {
+        "description": "Wandwrijvingcorrectiemethode",
+        "name": "BHRGT_WallFrictionCorrectionMethod",
+        "uri": "urn:bro:bhrgt:WallFrictionCorrectionMethod"
+    },
+    {
+        "name": "BHR_ANOMALOUS_GW_REGIME",
+        "uri": "urn:bro:bhr:AnomalousGroundwaterRegime"
+    },
+    {
+        "name": "BHR_BORING_STANDARD",
+        "uri": "urn:bro:bhr:BoringStandard"
+    },
+    {
+        "name": "BHR_BORING_TOOL_TYPE",
+        "uri": "urn:bro:bhr:BoringToolType"
+    },
+    {
+        "name": "BHR_CARBONATE_CLASS",
+        "uri": "urn:bro:bhr:CarbonateClass"
+    },
+    {
+        "name": "BHR_CARBONATE_PROFILE",
+        "uri": "urn:bro:bhr:CarbonateProfile"
+    },
+    {
+        "name": "BHR_CODE_GRP",
+        "uri": "urn:bro:bhr:CodeGroup"
+    },
+    {
+        "name": "BHR_COORD_TRANSFORMATION",
+        "uri": "urn:bro:bhr:CoordTransformation"
+    },
+    {
+        "description": "Correctiereden",
+        "name": "BHR_CORRECTION_REASON",
+        "uri": "urn:bro:bhr:CorrectionReason"
+    },
+    {
+        "name": "BHR_DELIVERY_CONTEXT",
+        "uri": "urn:bro:bhr:DeliveryContext"
+    },
+    {
+        "name": "BHR_DEP_CHARACTERISTIC",
+        "uri": "urn:bro:bhr:DepositionalCharacteristic"
+    },
+    {
+        "name": "BHR_DESC_LOCATION",
+        "uri": "urn:bro:bhr:DescriptionLocation"
+    },
+    {
+        "name": "BHR_DESC_METHOD",
+        "uri": "urn:bro:bhr:DescriptionMethod"
+    },
+    {
+        "name": "BHR_DISCIPLINE",
+        "uri": "urn:bro:bhr:Discipline"
+    },
+    {
+        "name": "BHR_FEATURE",
+        "uri": "urn:bro:bhr:Feature"
+    },
+    {
+        "name": "BHR_FEATURE_SITE",
+        "uri": "urn:bro:bhr:FeatureSite"
+    },
+    {
+        "name": "BHR_FEATURE_TOP",
+        "uri": "urn:bro:bhr:FeatureTop"
+    },
+    {
+        "name": "BHR_FLUSHING_MEDIUM",
+        "uri": "urn:bro:bhr:FlushingMedium"
+    },
+    {
+        "name": "BHR_GRAVEL_CONT_CLASS",
+        "uri": "urn:bro:bhr:GravelContentClass"
+    },
+    {
+        "name": "BHR_GWTABLE_CLASS",
+        "uri": "urn:bro:bhr:GroundwaterTableClass"
+    },
+    {
+        "name": "BHR_HORIZONTAL_CRS",
+        "uri": "urn:bro:bhr:HorizontalCrs"
+    },
+    {
+        "name": "BHR_HORIZON_CODE",
+        "uri": "urn:bro:bhr:HorizonCode"
+    },
+    {
+        "name": "BHR_HOR_POS_METHOD",
+        "uri": "urn:bro:bhr:HorizontalPositioningMethod"
+    },
+    {
+        "name": "BHR_LAND_USE",
+        "uri": "urn:bro:bhr:LandUse"
+    },
+    {
+        "name": "BHR_LB_SAND_FRACTION",
+        "uri": "urn:bro:bhr:LowerBoundarySandFraction"
+    },
+    {
+        "name": "BHR_LITTER_TYPE",
+        "uri": "urn:bro:bhr:LitterType"
+    },
+    {
+        "name": "BHR_LOC_VERT_REF_POINT",
+        "uri": "urn:bro:bhr:LocalVerticalReferencePoint"
+    },
+    {
+        "name": "BHR_ORGANIC_MTR_CLASS",
+        "uri": "urn:bro:bhr:OrganicMatterClass"
+    },
+    {
+        "name": "BHR_PEAT_CLASS",
+        "uri": "urn:bro:bhr:PeatClass"
+    },
+    {
+        "name": "BHR_PEAT_TYPE",
+        "uri": "urn:bro:bhr:PeatType"
+    },
+    {
+        "name": "BHR_PEDO_SOIL_NM",
+        "uri": "urn:bro:bhr:PedologicalSoilName"
+    },
+    {
+        "name": "BHR_REGISTRATION_STATUS",
+        "uri": "urn:bro:bhr:RegistrationStatus"
+    },
+    {
+        "name": "BHR_REMOVED_MATERIAL",
+        "uri": "urn:bro:bhr:RemovedMaterial"
+    },
+    {
+        "name": "BHR_REWORKING_CLASS",
+        "uri": "urn:bro:bhr:ReworkingClass"
+    },
+    {
+        "name": "BHR_RIPING_CLASS",
+        "uri": "urn:bro:bhr:RipingClass"
+    },
+    {
+        "name": "BHR_ROCK_TYPE",
+        "uri": "urn:bro:bhr:RockType"
+    },
+    {
+        "name": "BHR_SAMPLE_QUALITY",
+        "uri": "urn:bro:bhr:SampleQuality"
+    },
+    {
+        "name": "BHR_SHELL_MTR_CONT_CLS",
+        "uri": "urn:bro:bhr:ShellMatterContentClass"
+    },
+    {
+        "name": "BHR_SOIL_CLASS",
+        "uri": "urn:bro:bhr:SoilClass"
+    },
+    {
+        "name": "BHR_SS_DUIN_VAGUE_SOIL",
+        "uri": "urn:bro:bhr:SubsoilDuinVagueSoil"
+    },
+    {
+        "name": "BHR_STANDARD_SOIL_NM",
+        "uri": "urn:bro:bhr:StandardSoilNm"
+    },
+    {
+        "name": "BHR_STOP_CRITERION",
+        "uri": "urn:bro:bhr:StopCriterion"
+    },
+    {
+        "name": "BHR_SUBSOIL_PEAT",
+        "uri": "urn:bro:bhr:SubsoilPeat"
+    },
+    {
+        "name": "BHR_SURVEY_PURPOSE",
+        "uri": "urn:bro:bhr:SurveyPurpose"
+    },
+    {
+        "name": "BHR_TEXTURE_CLASS",
+        "uri": "urn:bro:bhr:TextureClass"
+    },
+    {
+        "name": "BHR_TEXTURE_PROFILE",
+        "uri": "urn:bro:bhr:TextureProfile"
+    },
+    {
+        "name": "BHR_VERTICAL_DATUM",
+        "uri": "urn:bro:bhr:VerticalDatum"
+    },
+    {
+        "name": "BHR_VERTICAL_POS_METHOD",
+        "uri": "urn:bro:bhr:VerticalPositioningMethod"
+    },
+    {
+        "name": "BRO_DATE",
+        "uri": "urn:bro:DateFormat"
+    },
+    {
+        "name": "BRO_ETRS89_TRANSFORMATION",
+        "uri": "urn:bro:Etrs89Transformation"
+    },
+    {
+        "name": "BRO_HORIZONTAL_CRS",
+        "uri": "urn:bro:HorizontalCrs"
+    },
+    {
+        "name": "BRO_INDICATION_YES_NO",
+        "uri": "urn:bro:IndicationYesNo"
+    },
+    {
+        "name": "BRO_QUALITY_REGIME",
+        "uri": "urn:bro:QualityRegime"
+    },
+    {
+        "name": "CPT_COORD_TRANSFORMATION",
+        "uri": "urn:bro:cpt:CoordTransformation"
+    },
+    {
+        "description": "Correctiereden",
+        "name": "CPT_CORRECTION_REASON",
+        "uri": "urn:bro:cpt:CorrectionReason"
+    },
+    {
+        "name": "CPT_DELIVERY_CONTEXT",
+        "uri": "urn:bro:cpt:DeliveryContext"
+    },
+    {
+        "name": "CPT_HORIZONTAL_CRS",
+        "uri": "urn:bro:cpt:HorizontalCrs"
+    },
+    {
+        "name": "CPT_HORIZONTAL_POS_METHOD",
+        "uri": "urn:bro:cpt:HorizontalPositioningMethod"
+    },
+    {
+        "name": "CPT_LOCAL_VERT_REF_POINT",
+        "uri": "urn:bro:cpt:LocalVerticalReferencePoint"
+    },
+    {
+        "name": "CPT_METHOD",
+        "uri": "urn:bro:cpt:CPTMethod"
+    },
+    {
+        "name": "CPT_QUALITY_CLASS",
+        "uri": "urn:bro:cpt:QualityClass"
+    },
+    {
+        "name": "CPT_REGISTRATION_STATUS",
+        "uri": "urn:bro:cpt:RegistrationStatus"
+    },
+    {
+        "name": "CPT_STANDARD",
+        "uri": "urn:bro:cpt:CPTStandard"
+    },
+    {
+        "name": "CPT_STOP_CRITERION",
+        "uri": "urn:bro:cpt:StopCriterion"
+    },
+    {
+        "name": "CPT_SURVEY_PURPOSE",
+        "uri": "urn:bro:cpt:SurveyPurpose"
+    },
+    {
+        "name": "CPT_VERTICAL_DATUM",
+        "uri": "urn:bro:cpt:VerticalDatum"
+    },
+    {
+        "name": "CPT_VERTICAL_POS_METHOD",
+        "uri": "urn:bro:cpt:VerticalPositioningMethod"
+    },
+    {
+        "name": "EPL_APPLICATION_TYPE",
+        "uri": "urn:bro:epl:ApplicationType"
+    },
+    {
+        "name": "EPL_COORD_TRANSFORMATION",
+        "uri": "urn:bro:epl:CoordTransformation"
+    },
+    {
+        "name": "EPL_CURRENT_STATUS",
+        "uri": "urn:bro:epl:CurrentStatus"
+    },
+    {
+        "name": "EPL_DELIVERY_CONTEXT",
+        "uri": "urn:bro:epl:DeliveryContext"
+    },
+    {
+        "name": "EPL_EVENT_NAME",
+        "uri": "urn:bro:epl:EventName"
+    },
+    {
+        "name": "EPL_GEOLOGICAL_SURFACE",
+        "uri": "urn:bro:epl:GeologicalSurface"
+    },
+    {
+        "name": "EPL_HORIZONTAL_CRS",
+        "uri": "urn:bro:epl:HorizontalCrs"
+    },
+    {
+        "name": "EPL_MINERAL",
+        "uri": "urn:bro:epl:Mineral"
+    },
+    {
+        "name": "EPL_MINING_ACTIVITY",
+        "uri": "urn:bro:epl:MiningActivity"
+    },
+    {
+        "name": "EPL_REGISTRATION_STATUS",
+        "uri": "urn:bro:epl:RegistrationStatus"
+    },
+    {
+        "name": "EPL_RENOUNCEMENT_REASON",
+        "uri": "urn:bro:epl:RenouncementReason"
+    },
+    {
+        "name": "EPL_STATE_PARTICIPATION",
+        "uri": "urn:bro:epl:StateParticipation"
+    },
+    {
+        "name": "EPL_STORAGE",
+        "uri": "urn:bro:epl:Storage"
+    },
+    {
+        "name": "EPL_STORAGE_RESERVOIR",
+        "uri": "urn:bro:epl:StorageReservoir"
+    },
+    {
+        "name": "EPL_STRADDLING_RESERVOIR",
+        "uri": "urn:bro:epl:StraddlingReservoir"
+    },
+    {
+        "name": "EPL_SUBSTANCE",
+        "uri": "urn:bro:epl:Substance"
+    },
+    {
+        "name": "EPL_SUB_DECISION_REASON",
+        "uri": "urn:bro:epl:SubsequentDecisionReason"
+    },
+    {
+        "name": "EPL_TERMINATION_REASON",
+        "uri": "urn:bro:epl:TerminationReason"
+    },
+    {
+        "description": "Waardebepalingstechniek",
+        "name": "GAR_AnalyticalTechnique",
+        "uri": "urn:bro:gar:AnalyticalTechnique"
+    },
+    {
+        "description": "Kleur",
+        "name": "GAR_Colour",
+        "uri": "urn:bro:gar:Colour"
+    },
+    {
+        "description": "Kleursterkte",
+        "name": "GAR_ColourStrength",
+        "uri": "urn:bro:gar:ColourStrength"
+    },
+    {
+        "description": "LimietSymbool",
+        "name": "GAR_LimitSymbol",
+        "uri": "urn:bro:gar:LimitSymbol"
+    },
+    {
+        "description": "De lijst met stoffen en andere eigenschappen die in een grondwatersamenstellingsonderzoek bepaald worden",
+        "name": "GAR_ParameterList",
+        "uri": "urn:bro:gar:ParameterList"
+    },
+    {
+        "description": "Pomptype",
+        "name": "GAR_PumpType",
+        "uri": "urn:bro:gar:PumpType"
+    },
+    {
+        "description": "Beoordelingsprocedure",
+        "name": "GAR_QualityControlMethod",
+        "uri": "urn:bro:gar:QualityControlMethod"
+    },
+    {
+        "description": "StatusKwaliteitscontrole",
+        "name": "GAR_QualityControlStatus",
+        "uri": "urn:bro:gar:QualityControlStatus"
+    },
+    {
+        "description": "Bemonsteringsprocedure",
+        "name": "GAR_SamplingStandard",
+        "uri": "urn:bro:gar:SamplingStandard"
+    },
+    {
+        "description": "Waardebepalingsprocedure",
+        "name": "GAR_ValuationMethod",
+        "uri": "urn:bro:gar:ValuationMethod"
+    },
+    {
+        "description": "De lijst van mogelijke methoden waarmee druksensormetingen voor luchtdruk gecompenseerd zijn, inclusief de oorsprong van de daarbij gebruikte luchtdrukreeks in geval van rekenkundige compensatie.",
+        "name": "GLD_AirPressureCompensationType",
+        "uri": "urn:bro:gld:AirPressureCompensationType"
+    },
+    {
+        "description": "De lijst van mogelijke redenen voor het censureren van de meetwaarde.",
+        "name": "GLD_CensoredReason",
+        "uri": "urn:bro:gld:CensoredReason"
+    },
+    {
+        "description": "De lijst van protocollen en werkwijzen die worden toegepast bij de beoordeling van de kwaliteit van de meetwaarden.",
+        "name": "GLD_EvaluationProcedure",
+        "uri": "urn:bro:gld:EvaluationProcedure"
+    },
+    {
+        "description": "De lijst van mogelijke typen van interpolatie die de waarde op het betreffende tijdstip weergeeft.",
+        "name": "GLD_InterpolationType",
+        "uri": "urn:bro:gld:InterpolationType"
+    },
+    {
+        "description": "De lijst van mogelijke meetinstrumenten waarmee de waterstand in de monitoringbuis is bepaald.",
+        "name": "GLD_MeasurementInstrumentType",
+        "uri": "urn:bro:gld:MeasurementInstrumentType"
+    },
+    {
+        "description": "De lijst van mogelijke typen observaties.",
+        "name": "GLD_ObservationType",
+        "uri": "urn:bro:gld:ObservationType"
+    },
+    {
+        "description": "De lijst van mogelijke normen en voorschriften die beschrijven hoe de observatie is uitgevoerd.",
+        "name": "GLD_ProcessReference",
+        "uri": "urn:bro:gld:ProcessReference"
+    },
+    {
+        "description": "De lijst van mogelijke processen die gebruikt zijn om de observatie te doen, de waterstand te bepalen. Dit is het laatste proces dat bij deze observatie heeft plaatsgevonden.",
+        "name": "GLD_ProcessType",
+        "uri": "urn:bro:gld:ProcessType"
+    },
+    {
+        "description": "De lijst van de mogelijke mate waarin een tijd-meetwaardereeks de desbetreffende beoordelingsprocedure heeft ondergaan.",
+        "name": "GLD_StatusCode",
+        "uri": "urn:bro:gld:StatusCode"
+    },
+    {
+        "description": "De lijst van de mogelijke uitkomsten van het eindoordeel van de bronhouder over de kwaliteit van individuele metingen.",
+        "name": "GLD_StatusQualityControl",
+        "uri": "urn:bro:gld:StatusQualityControl"
+    },
+    {
+        "description": "Kader aanlevering",
+        "name": "GMN_DeliveryContext",
+        "uri": "urn:bro:gmn:DeliveryContext"
+    },
+    {
+        "description": "Naam gebeurtenis",
+        "name": "GMN_EventName",
+        "uri": "urn:bro:gmn:EventName"
+    },
+    {
+        "description": "Grondwateraspect",
+        "name": "GMN_GroundwaterAspect",
+        "uri": "urn:bro:gmn:GroundwaterAspect"
+    },
+    {
+        "description": "Monitoringdoel",
+        "name": "GMN_MonitoringPurpose",
+        "uri": "urn:bro:gmn:MonitoringPurpose"
+    },
+    {
+        "name": "GMW_CONSTRUCTION_STANDARD",
+        "uri": "urn:bro:gmw:ConstructionStandard"
+    },
+    {
+        "name": "GMW_COORD_TRANSFORMATION",
+        "uri": "urn:bro:gmw:CoordTransformation"
+    },
+    {
+        "description": "Correctiereden",
+        "name": "GMW_CORRECTION_REASON",
+        "uri": "urn:bro:gmw:CorrectionReason"
+    },
+    {
+        "name": "GMW_DELIVERY_CONTEXT",
+        "uri": "urn:bro:gmw:DeliveryContext"
+    },
+    {
+        "name": "GMW_ELECTRODE_STATUS",
+        "uri": "urn:bro:gmw:ElectrodeStatus"
+    },
+    {
+        "name": "GMW_ELEC_PACK_MATERIAL",
+        "uri": "urn:bro:gmw:ElectrodePackingMaterial"
+    },
+    {
+        "name": "GMW_EVENT_NM",
+        "uri": "urn:bro:gmw:EventNm"
+    },
+    {
+        "name": "GMW_GLUE",
+        "uri": "urn:bro:gmw:Glue"
+    },
+    {
+        "name": "GMW_GROUNDLEVEL_POS_METHOD",
+        "uri": "urn:bro:gmw:GroundLevelPositioningMethod"
+    },
+    {
+        "name": "GMW_HORIZONTAL_CRS",
+        "uri": "urn:bro:gmw:HorizontalCrs"
+    },
+    {
+        "name": "GMW_HORIZONTAL_POS_METHOD",
+        "uri": "urn:bro:gmw:HorizontalPositioningMethod"
+    },
+    {
+        "name": "GMW_INITIAL_FUNCTION",
+        "uri": "urn:bro:gmw:InitialFunction"
+    },
+    {
+        "name": "GMW_LOCAL_VERT_REF_POINT",
+        "uri": "urn:bro:gmw:LocalVerticalReferencePoint"
+    },
+    {
+        "name": "GMW_REGISTRATION_STATUS",
+        "uri": "urn:bro:gmw:RegistrationStatus"
+    },
+    {
+        "name": "GMW_SOCK_MATERIAL",
+        "uri": "urn:bro:gmw:SockMaterial"
+    },
+    {
+        "name": "GMW_TUBE_MATERIAL",
+        "uri": "urn:bro:gmw:TubeMaterial"
+    },
+    {
+        "name": "GMW_TUBE_PACKING_MATERIAL",
+        "uri": "urn:bro:gmw:TubePackingMaterial"
+    },
+    {
+        "name": "GMW_TUBE_STATUS",
+        "uri": "urn:bro:gmw:TubeStatus"
+    },
+    {
+        "name": "GMW_TUBE_TOP_POS_METHOD",
+        "uri": "urn:bro:gmw:TubeTopPositioningMethod"
+    },
+    {
+        "name": "GMW_TUBE_TYPE",
+        "uri": "urn:bro:gmw:TubeType"
+    },
+    {
+        "name": "GMW_VERTICAL_DATUM",
+        "uri": "urn:bro:gmw:VerticalDatum"
+    },
+    {
+        "name": "GMW_WELLHEAD_PROTECTOR",
+        "uri": "urn:bro:gmw:WellHeadProtector"
+    },
+    {
+        "name": "GMW_WELL_STABILITY",
+        "uri": "urn:bro:gmw:WellStability"
+    },
+    {
+        "description": "Aggregaatlengteklasse",
+        "name": "SFR_AggregateLengthClass",
+        "uri": "urn:bro:sfr:AggregateLengthClass"
+    },
+    {
+        "description": "Aggregaatvorm",
+        "name": "SFR_AggregateShape",
+        "uri": "urn:bro:sfr:AggregateShape"
+    },
+    {
+        "description": "Hoekigheid",
+        "name": "SFR_Angularity",
+        "uri": "urn:bro:sfr:Angularity"
+    },
+    {
+        "description": "AfwijkendGrondwaterRegime",
+        "name": "SFR_AnomalousGroundwaterRegime",
+        "uri": "urn:bro:sfr:AnomalousGroundwaterRegime"
+    },
+    {
+        "description": "KunstmatigeDrainage",
+        "name": "SFR_ArtificialDrainage",
+        "uri": "urn:bro:sfr:ArtificialDrainage"
+    },
+    {
+        "description": "Grensbepaling",
+        "name": "SFR_BoundaryPositioningMethod",
+        "uri": "urn:bro:sfr:BoundaryPositioningMethod"
+    },
+    {
+        "description": "VormGrens",
+        "name": "SFR_BoundaryShape",
+        "uri": "urn:bro:sfr:BoundaryShape"
+    },
+    {
+        "description": "Kalkgehalteklasse",
+        "name": "SFR_CarbonateContentClass",
+        "uri": "urn:bro:sfr:CarbonateContentClass"
+    },
+    {
+        "description": "Kalkverloopklasse",
+        "name": "SFR_CarbonateProfile",
+        "uri": "urn:bro:sfr:CarbonateProfile"
+    },
+    {
+        "description": "Brokje",
+        "name": "SFR_Chunk",
+        "uri": "urn:bro:sfr:Chunk"
+    },
+    {
+        "description": "Codegroep",
+        "name": "SFR_CodeGroup",
+        "uri": "urn:bro:sfr:CodeGroup"
+    },
+    {
+        "description": "Kleur",
+        "name": "SFR_Colour",
+        "uri": "urn:bro:sfr:Colour"
+    },
+    {
+        "description": "ActueelProces",
+        "name": "SFR_CurrentProces",
+        "uri": "urn:bro:sfr:CurrentProces"
+    },
+    {
+        "description": "KaderAanlevering",
+        "name": "SFR_DeliveryContext",
+        "uri": "urn:bro:sfr:DeliveryContext"
+    },
+    {
+        "description": "Beschrijfprocedure",
+        "name": "SFR_DescriptionProcedure",
+        "uri": "urn:bro:sfr:DescriptionProcedure"
+    },
+    {
+        "description": "Beschrijfkwaliteit",
+        "name": "SFR_DescriptionQuality",
+        "uri": "urn:bro:sfr:DescriptionQuality"
+    },
+    {
+        "description": "Vakgebied",
+        "name": "SFR_Discipline",
+        "uri": "urn:bro:sfr:Discipline"
+    },
+    {
+        "description": "Verstoring",
+        "name": "SFR_Disruption",
+        "uri": "urn:bro:sfr:Disruption"
+    },
+    {
+        "description": "NaamGebeurtenis",
+        "name": "SFR_EventName",
+        "uri": "urn:bro:sfr:EventName"
+    },
+    {
+        "description": "Grindgehalteklasse",
+        "name": "SFR_GravelContentClass",
+        "uri": "urn:bro:sfr:GravelContentClass"
+    },
+    {
+        "description": "Grondwatertrap",
+        "name": "SFR_GroundwaterTableClass",
+        "uri": "urn:bro:sfr:GroundwaterTableClass"
+    },
+    {
+        "description": "Horizontcode",
+        "name": "SFR_HorizonCode",
+        "uri": "urn:bro:sfr:HorizonCode"
+    },
+    {
+        "description": "MethodeLocatiebepaling",
+        "name": "SFR_HorizontalPositioningMethod",
+        "uri": "urn:bro:sfr:HorizontalPositioningMethod"
+    },
+    {
+        "description": "HydrologischeOmstandigheid",
+        "name": "SFR_HydrologicalSetting",
+        "uri": "urn:bro:sfr:HydrologicalSetting"
+    },
+    {
+        "description": "GelaagdeInhomogeniteit",
+        "name": "SFR_Interbedding",
+        "uri": "urn:bro:sfr:Interbedding"
+    },
+    {
+        "description": "Landschapselement",
+        "name": "SFR_LandscapeElement",
+        "uri": "urn:bro:sfr:LandscapeElement"
+    },
+    {
+        "description": "Strooiselsoort",
+        "name": "SFR_LitterType",
+        "uri": "urn:bro:sfr:LitterType"
+    },
+    {
+        "description": "PlaatselijkFenomeen  ",
+        "name": "SFR_LocalPhenomenon",
+        "uri": "urn:bro:sfr:LocalPhenomenon"
+    },
+    {
+        "description": "LokaalVerticaalReferentiepunt",
+        "name": "SFR_LocalVerticalReferencePoint",
+        "uri": "urn:bro:sfr:LocalVerticalReferencePoint"
+    },
+    {
+        "description": "OndergrensZandfractie",
+        "name": "SFR_LowerBoundarySandFraction",
+        "uri": "urn:bro:sfr:LowerBoundarySandFraction"
+    },
+    {
+        "description": "Vochtigheidstoestand",
+        "name": "SFR_Moistness",
+        "uri": "urn:bro:sfr:Moistness"
+    },
+    {
+        "description": "Bedekkingsgraad",
+        "name": "SFR_MottlingDensity",
+        "uri": "urn:bro:sfr:MottlingDensity"
+    },
+    {
+        "description": "MunsellZuiverheid",
+        "name": "SFR_MunsellChroma",
+        "uri": "urn:bro:sfr:MunsellChroma"
+    },
+    {
+        "description": "MunsellHoofdkleur",
+        "name": "SFR_MunsellHue",
+        "uri": "urn:bro:sfr:MunsellHue"
+    },
+    {
+        "description": "MunsellWitheid",
+        "name": "SFR_MunsellValue",
+        "uri": "urn:bro:sfr:MunsellValue"
+    },
+    {
+        "description": "OrganischestofGehalteKlasse",
+        "name": "SFR_OrganicMatterContentClass",
+        "uri": "urn:bro:sfr:OrganicMatterContentClass"
+    },
+    {
+        "description": "TypeOntsluiting",
+        "name": "SFR_OutcropType",
+        "uri": "urn:bro:sfr:OutcropType"
+    },
+    {
+        "description": "Veenklasse",
+        "name": "SFR_PeatClass",
+        "uri": "urn:bro:sfr:PeatClass"
+    },
+    {
+        "description": "Veensoort",
+        "name": "SFR_PeatType",
+        "uri": "urn:bro:sfr:PeatType"
+    },
+    {
+        "description": "BodemkundigeAfzettingskarakteristiek",
+        "name": "SFR_PedologicalDepositionalCharacteristic",
+        "uri": "urn:bro:sfr:PedologicalDepositionalCharacteristic"
+    },
+    {
+        "description": "BodemkundigeGrondsoort",
+        "name": "SFR_PedologicalSoilName",
+        "uri": "urn:bro:sfr:PedologicalSoilName"
+    },
+    {
+        "description": "HoeveelheidsklassePorien",
+        "name": "SFR_PoreAbundanceClass",
+        "uri": "urn:bro:sfr:PoreAbundanceClass"
+    },
+    {
+        "description": "LiggingOpGrondlichaam",
+        "name": "SFR_PositionOnGroundBody",
+        "uri": "urn:bro:sfr:PositionOnGroundBody"
+    },
+    {
+        "description": "Vergravingsklasse",
+        "name": "SFR_ReworkingClass",
+        "uri": "urn:bro:sfr:ReworkingClass"
+    },
+    {
+        "description": "Rijpingsklasse",
+        "name": "SFR_RipeningClass",
+        "uri": "urn:bro:sfr:RipeningClass"
+    },
+    {
+        "description": "Gesteentesoort",
+        "name": "SFR_RockType",
+        "uri": "urn:bro:sfr:RockType"
+    },
+    {
+        "description": "HoeveelheidsklasseWortels",
+        "name": "SFR_RootAbundanceClass",
+        "uri": "urn:bro:sfr:RootAbundanceClass"
+    },
+    {
+        "description": "Ruwheid",
+        "name": "SFR_Roughness",
+        "uri": "urn:bro:sfr:Roughness"
+    },
+    {
+        "description": "Zandverkitting",
+        "name": "SFR_SandCementation",
+        "uri": "urn:bro:sfr:SandCementation"
+    },
+    {
+        "description": "Schelpmateriaalgehalteklasse",
+        "name": "SFR_ShellMatterContentClass",
+        "uri": "urn:bro:sfr:ShellMatterContentClass"
+    },
+    {
+        "description": "Bodemklasse",
+        "name": "SFR_SoilClass",
+        "uri": "urn:bro:sfr:SoilClass"
+    },
+    {
+        "description": "Bodemleven",
+        "name": "SFR_SoilLife",
+        "uri": "urn:bro:sfr:SoilLife"
+    },
+    {
+        "description": "GrondsoortNEN5104",
+        "name": "SFR_SoilNameNEN5104",
+        "uri": "urn:bro:sfr:SoilNameNEN5104"
+    },
+    {
+        "description": "Bodemgebruik",
+        "name": "SFR_SoilUse",
+        "uri": "urn:bro:sfr:SoilUse"
+    },
+    {
+        "description": "Bijzonderheid",
+        "name": "SFR_SpecialFeature",
+        "uri": "urn:bro:sfr:SpecialFeature"
+    },
+    {
+        "description": "BijzonderheidLocatie",
+        "name": "SFR_SpecialFeatureSite",
+        "uri": "urn:bro:sfr:SpecialFeatureSite"
+    },
+    {
+        "description": "BijzonderheidBovenin",
+        "name": "SFR_SpecialFeatureTop",
+        "uri": "urn:bro:sfr:SpecialFeatureTop"
+    },
+    {
+        "description": "BijzonderMateriaal",
+        "name": "SFR_SpecialMaterial",
+        "uri": "urn:bro:sfr:SpecialMaterial"
+    },
+    {
+        "description": "Vlekkleur",
+        "name": "SFR_StainColour",
+        "uri": "urn:bro:sfr:StainColour"
+    },
+    {
+        "description": "Stopcriterium",
+        "name": "SFR_StopCriterion",
+        "uri": "urn:bro:sfr:StopCriterion"
+    },
+    {
+        "description": "Structuurtype",
+        "name": "SFR_StructureType",
+        "uri": "urn:bro:sfr:StructureType"
+    },
+    {
+        "description": "OndergrondDuinvaaggrond",
+        "name": "SFR_SubsoilDuinVagueSoil",
+        "uri": "urn:bro:sfr:SubsoilDuinVagueSoil"
+    },
+    {
+        "description": "OndergrondVeen",
+        "name": "SFR_SubsoilPeat",
+        "uri": "urn:bro:sfr:SubsoilPeat"
+    },
+    {
+        "description": "MaaiveldVerlegd",
+        "name": "SFR_SurfaceLevelShifted ",
+        "uri": "urn:bro:sfr:SurfaceLevelShifted"
+    },
+    {
+        "description": "KaderInwinning",
+        "name": "SFR_SurveyPurpose",
+        "uri": "urn:bro:sfr:SurveyPurpose"
+    },
+    {
+        "description": "BijzonderBestanddeel",
+        "name": "SFR_TertiaryConstituent",
+        "uri": "urn:bro:sfr:TertiaryConstituent"
+    },
+    {
+        "description": "Textuurklasse",
+        "name": "SFR_TextureClass",
+        "uri": "urn:bro:sfr:TextureClass"
+    },
+    {
+        "description": "Profielverloop",
+        "name": "SFR_TextureProfile",
+        "uri": "urn:bro:sfr:TextureProfile"
+    },
+    {
+        "description": "Vegetatietype",
+        "name": "SFR_VegetationType",
+        "uri": "urn:bro:sfr:VegetationType"
+    },
+    {
+        "description": "VerticaalReferentievlak",
+        "name": "SFR_VerticalDatum",
+        "uri": "urn:bro:sfr:VerticalDatum"
+    },
+    {
+        "description": "MethodeVerticalePositiebepaling",
+        "name": "SFR_VerticalPositioningMethod",
+        "uri": "urn:bro:sfr:VerticalPositioningMethod"
+    }]
+}

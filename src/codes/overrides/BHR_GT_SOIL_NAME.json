@@ -1,0 +1,484 @@
+{
+    "name": "BHR_GT_SOIL_NAME",
+    "refDomainVersions": [{
+        "description": "version 1.0",
+        "majorVersion": 1,
+        "minorVersion": 0,
+        "refCodes": [{
+            "codeValue": "bruinkool",
+            "description": "Organische grond, die compact is en een hoge treksterkte heeft.",
+            "imbro": "J",
+            "imbroA": "J",
+            "nen14688": ["Li"]
+        },
+        {
+            "codeValue": "detritus",
+            "description": "Organische grond die uit detritus bestaat, een organisch materiaal met nauwelijks enige treksterkte, dat uit gebroken vezels bestaat en weinig samenhang vertoont.",
+            "imbro": "J",
+            "imbroA": "J",
+            "nen14688": ["De"]
+        },
+        {
+            "codeValue": "grind",
+            "description": "Grove minerale grond die voor meer dan 95% uit grind bestaat.",
+            "imbro": "J",
+            "imbroA": "J",
+            "nen14688": ["Gr"]
+        },
+        {
+            "codeValue": "grindMetKeien",
+            "description": "Grove minerale grond die voor 50 tot 95% uit grind en voor de rest vooral uit keien bestaat.",
+            "imbro": "J",
+            "imbroA": "J",
+            "nen14688": ["Gr", "bo"]
+        },
+        {
+            "codeValue": "grindMetKeitjes",
+            "description": "Grove minerale grond die voor 50 tot 95% uit grind en voor de rest vooral uit keitjes bestaat.",
+            "imbro": "J",
+            "imbroA": "J",
+            "nen14688": ["Gr", "co"]
+        },
+        {
+            "codeValue": "gyttja",
+            "description": "Organische grond, die amorf is, stroef aanvoelt en een pasta-achtige consistentie heeft.",
+            "imbro": "J",
+            "imbroA": "J",
+            "nen14688": ["Gy"]
+        },
+        {
+            "codeValue": "humus",
+            "description": "Organische grond die uit humus bestaat, een gehomogeniseerd mengsel zonder treksterkte dat hoofdzakelijk bestaat uit de niet-makkelijk afbreekbare resten van de bovengrondse delen van planten.",
+            "imbro": "J",
+            "imbroA": "J",
+            "nen14688": ["Hu"]
+        },
+        {
+            "codeValue": "keien",
+            "description": "Zeer Grove minerale grond die voor meer dan 95% uit keien bestaat.",
+            "imbro": "J",
+            "imbroA": "J",
+            "nen14688": ["Bo"]
+        },
+        {
+            "codeValue": "keienMetGrind",
+            "description": "Zeer Grove minerale grond die voor 50 tot 95% uit keien en voor de rest vooral uit grind bestaat.",
+            "imbro": "J",
+            "imbroA": "J",
+            "nen14688": ["Bo", "gr"]
+        },
+        {
+            "codeValue": "keienMetKlei",
+            "description": "Zeer Grove minerale grond die bestaat uit keien die elkaar raken met daartussen fijn materiaal dat zich gedraagt als klei.",
+            "imbro": "J",
+            "imbroA": "J",
+            "nen14688": ["Bo", "cl"]
+        },
+        {
+            "codeValue": "keienMetSilt",
+            "description": "Zeer Grove minerale grond die bestaat uit keien die elkaar raken met daartussen fijn materiaal dat zich gedraagt als silt.",
+            "imbro": "J",
+            "imbroA": "J",
+            "nen14688": ["Bo", "si"]
+        },
+        {
+            "codeValue": "keienMetZand",
+            "description": "Zeer Grove minerale grond die voor 50 tot 95% uit keien en voor de rest vooral uit zand bestaat.",
+            "imbro": "J",
+            "imbroA": "J",
+            "nen14688": ["Bo", "sa"]
+        },
+        {
+            "codeValue": "keitjes",
+            "description": "Zeer Grove minerale grond die voor meer dan 95% uit keitjes bestaat.",
+            "imbro": "J",
+            "imbroA": "J",
+            "nen14688": ["Co"]
+        },
+        {
+            "codeValue": "keitjesMetGrind",
+            "description": "Zeer Grove minerale grond die voor 50 tot 95% uit keitjes en voor de rest vooral uit grind bestaat.",
+            "imbro": "J",
+            "imbroA": "J",
+            "nen14688": ["Co", "gr"]
+        },
+        {
+            "codeValue": "keitjesMetKlei",
+            "description": "Zeer Grove minerale grond die bestaat uit keitjes die elkaar raken met daartussen fijn materiaal dat zich gedraagt als klei.",
+            "imbro": "J",
+            "imbroA": "J",
+            "nen14688": ["Co", "cl"]
+        },
+        {
+            "codeValue": "keitjesMetSilt",
+            "description": "Zeer Grove minerale grond die bestaat uit keitjes die elkaar raken met daartussen fijn materiaal dat zich gedraagt als silt.",
+            "imbro": "J",
+            "imbroA": "J",
+            "nen14688": ["Co", "si"]
+        },
+        {
+            "codeValue": "keitjesMetZand",
+            "description": "Zeer Grove minerale grond die voor 50 tot 95% uit keitjes en voor de rest vooral uit zand bestaat.",
+            "imbro": "J",
+            "imbroA": "J",
+            "nen14688": ["Co", "sa"]
+        },
+        {
+            "codeValue": "klei",
+            "description": "Fijne minerale grond die zich gedraagt als klei, geen grind of zeer grof materiaal en geen zichtbaar of voelbaar zand bevat. ",
+            "imbro": "J",
+            "imbroA": "J",
+            "nen14688": ["Cl"]
+        },
+        {
+            "codeValue": "kleiMetKeien",
+            "description": "Fijne minerale grond die zich gedraagt als klei, keien bevat tot een maximum van 30% en voor een niet nader bepaald deel uit ander zeer grof en grof materiaal bestaat.",
+            "imbro": "J",
+            "imbroA": "J",
+            "nen14688": ["Cl", "bo"]
+        },
+        {
+            "codeValue": "kleiMetKeitjes",
+            "description": "Fijne minerale grond die zich gedraagt als klei, keitjes bevat tot een maximum van 30% en voor een niet nader bepaald deel uit grof materiaal bestaat.",
+            "imbro": "J",
+            "imbroA": "J",
+            "nen14688": ["Cl", "co"]
+        },
+        {
+            "codeValue": "kleiigGrind",
+            "description": "Grove minerale grond die uit grind bestaat waarvan de korrels elkaar raken met daartussen fijn materiaal dat zich gedraagt als klei.",
+            "imbro": "J",
+            "imbroA": "J",
+            "nen14688": ["Gr", "cl"]
+        },
+        {
+            "codeValue": "kleiigVeen",
+            "description": "Organische grond die uit veen bestaat en waarneembaar klei bevat.",
+            "imbro": "J",
+            "imbroA": "J",
+            "nen14688": ["Pe", "cl"]
+        },
+        {
+            "codeValue": "kleiigZand",
+            "description": "Grove minerale grond die voor meer dan 90% uit zand bestaat en verder uit fijn materiaal dat zich gedraagt als klei.",
+            "imbro": "J",
+            "imbroA": "J",
+            "nen14688": ["Sa", "cl"]
+        },
+        {
+            "codeValue": "kleiigZandMetGrind",
+            "description": "Grove minerale grond die voor meer dan 90% uit zand bestaat en verder vooral uit fijn materiaal dat zich gedraagt als klei, en grind bevat.",
+            "imbro": "J",
+            "imbroA": "J",
+            "nen14688": ["Sa", "cl", "gr"]
+        },
+        {
+            "codeValue": "kleiigeDetritus",
+            "description": "Organische grond die uit detritus bestaat en waarneembaar klei bevat.",
+            "imbro": "J",
+            "imbroA": "J",
+            "nen14688": ["De", "cl"]
+        },
+        {
+            "codeValue": "kleiigeHumus",
+            "description": "Organische grond die uit humus bestaat en waarneembaar klei bevat.",
+            "imbro": "J",
+            "imbroA": "J",
+            "nen14688": ["Hu", "cl"]
+        },
+        {
+            "codeValue": "silt",
+            "description": "Fijne minerale grond die zich gedraagt als silt, geen grind of zeer grof materiaal en geen zichtbaar of voelbaar zand (bij uitsmeren over de hand) bevat. ",
+            "imbro": "J",
+            "imbroA": "J",
+            "nen14688": ["Si"]
+        },
+        {
+            "codeValue": "siltMetKeien",
+            "description": "Fijne minerale grond die zich gedraagt als silt en keien en ander zeer grof en grof materiaal bevat.",
+            "imbro": "J",
+            "imbroA": "J",
+            "nen14688": ["Si", "bo"]
+        },
+        {
+            "codeValue": "siltMetKeitjes",
+            "description": "Fijne minerale grond die zich gedraagt als silt en keitjes en grof materiaal bevat.",
+            "imbro": "J",
+            "imbroA": "J",
+            "nen14688": ["Si", "co"]
+        },
+        {
+            "codeValue": "siltigGrind",
+            "description": "Grove minerale grond die bestaat uit grind waarvan de korrels elkaar raken met daartussen fijn materiaal dat zich gedraagt als silt.",
+            "imbro": "J",
+            "imbroA": "J",
+            "nen14688": ["Gr", "si"]
+        },
+        {
+            "codeValue": "siltigVeen",
+            "description": "Organische grond die uit veen bestaat en waarneembaar silt bevat. ",
+            "imbro": "J",
+            "imbroA": "J",
+            "nen14688": ["Pe", "si"]
+        },
+        {
+            "codeValue": "siltigZand",
+            "description": "Grove minerale grond die voor meer dan 50% uit zand bestaat en verder uit fijn materiaal dat zich gedraagt als silt.",
+            "imbro": "J",
+            "imbroA": "J",
+            "nen14688": ["Sa", "si"]
+        },
+        {
+            "codeValue": "siltigZandMetGrind",
+            "description": "Grove minerale grond die voor meer dan 50% uit zand bestaat, en verder vooral uit fijn materiaal dat zich gedraagt als silt, en grind bevat.",
+            "imbro": "J",
+            "imbroA": "J",
+            "nen14688": ["Sa", "si", "gr"]
+        },
+        {
+            "codeValue": "siltigeDetritus",
+            "description": "Organische grond die uit detritus bestaat en waarneembaar silt bevat. ",
+            "imbro": "J",
+            "imbroA": "J",
+            "nen14688": ["De", "si"]
+        },
+        {
+            "codeValue": "siltigeHumus",
+            "description": "Organische grond die uit humus bestaat en waarneembaar silt bevat. ",
+            "imbro": "J",
+            "imbroA": "J",
+            "nen14688": ["Hu", "si"]
+        },
+        {
+            "codeValue": "sterkGrindigSilt",
+            "description": "Fijne minerale grond die zich gedraagt als silt, geen zeer grof materiaal en veel grindkorrels bevat.",
+            "imbro": "J",
+            "imbroA": "J",
+            "nen14688": ["Si", "gr3"]
+        },
+        {
+            "codeValue": "sterkGrindigSiltMetZand",
+            "imbro": "J",
+            "imbroA": "J",
+            "nen14688": ["Si", "sa", "gr3"]
+        },
+        {
+            "codeValue": "sterkGrindigZand",
+            "description": "Grove minerale grond die voor meer dan 50% uit zand en voor meer dan 20% uit grind bestaat.",
+            "imbro": "J",
+            "imbroA": "J",
+            "nen14688": ["Sa", "gr3"]
+        },
+        {
+            "codeValue": "sterkGrindigZandMetKlei",
+            "imbro": "J",
+            "imbroA": "J",
+            "nen14688": ["Sa", "gr3", "cl"]
+        },
+        {
+            "codeValue": "sterkGrindigZandMetSilt",
+            "imbro": "J",
+            "imbroA": "J",
+            "nen14688": ["Sa", "gr3", "si"]
+        },
+        {
+            "codeValue": "sterkGrindigeKlei",
+            "description": "Fijne minerale grond die zich gedraagt als klei, veel grindkorrels en geen zichtbaar of voelbaar zand bevat.",
+            "imbro": "J",
+            "imbroA": "J",
+            "nen14688": ["Cl", "gr3"]
+        },
+        {
+            "codeValue": "sterkGrindigeKleiMetZand",
+            "imbro": "J",
+            "imbroA": "J",
+            "nen14688": ["Cl", "gr3", "sa"]
+        },
+        {
+            "codeValue": "sterkZandigGrind",
+            "description": "Grove minerale grond die voor meer dan 50% uit grind en voor meer dan 20% uit zand bestaat.",
+            "imbro": "J",
+            "imbroA": "J",
+            "nen14688": ["Gr", "sa3"]
+        },
+        {
+            "codeValue": "sterkZandigSilt",
+            "description": "Fijne minerale grond die zich gedraagt als silt, goed zichtbaar en duidelijk voelbaar zand en geen grind of zeer grof materiaal bevat.",
+            "imbro": "J",
+            "imbroA": "J",
+            "nen14688": ["Si", "sa3"]
+        },
+        {
+            "codeValue": "sterkZandigSiltMetGrind",
+            "description": "Fijne minerale grond die zich gedraagt als silt, goed zichtbaar en duidelijk voelbaar zand en enkele grindkorrels bevat.",
+            "imbro": "J",
+            "imbroA": "J",
+            "nen14688": ["Si", "sa3", "gr"]
+        },
+        {
+            "codeValue": "sterkZandigVeen",
+            "description": "Organische grond die uit veen bestaat en zichtbaar zandkorrels bevat.",
+            "imbro": "J",
+            "imbroA": "J",
+            "nen14688": ["Pe", "sa3"]
+        },
+        {
+            "codeValue": "sterkZandigeDetritus",
+            "description": "Organische grond die uit detritus bestaat en zichtbaar zandkorrels bevat.",
+            "imbro": "J",
+            "imbroA": "J",
+            "nen14688": ["De", "sa3"]
+        },
+        {
+            "codeValue": "sterkZandigeHumus",
+            "description": "Organische grond die uit humus bestaat en zichtbaar zandkorrels bevat.",
+            "imbro": "J",
+            "imbroA": "J",
+            "nen14688": ["Hu", "sa3"]
+        },
+        {
+            "codeValue": "sterkZandigeKlei",
+            "description": "Fijne minerale grond die zich gedraagt als klei, goed zichtbaar en duidelijk voelbaar zand en geen grind of grover materiaal bevat.",
+            "imbro": "J",
+            "imbroA": "J",
+            "nen14688": ["Cl", "sa3"]
+        },
+        {
+            "codeValue": "sterkZandigeKleiMetGrind",
+            "description": "Fijne minerale grond die zich gedraagt als klei, goed zichtbaar en duidelijk voelbaar zand en enkele grindkorrels bevat.",
+            "imbro": "J",
+            "imbroA": "J",
+            "nen14688": ["Cl", "sa3", "gr"]
+        },
+        {
+            "codeValue": "veen",
+            "description": "Organische grond die uit veen bestaat, een vezelig en samenhangend organisch materiaal met enige treksterkte dat bestaat uit de nog gedeeltelijk als zodanig herkenbare delen van planten.",
+            "imbro": "J",
+            "imbroA": "J",
+            "nen14688": ["Pe"]
+        },
+        {
+            "codeValue": "zand",
+            "description": "Grove minerale grond die voor meer dan 95% uit zand bestaat.",
+            "imbro": "J",
+            "imbroA": "J",
+            "nen14688": ["Sa"]
+        },
+        {
+            "codeValue": "zandMetKeien",
+            "description": "Grove minerale grond die voor 50 tot 95% uit zand en voor de rest vooral uit keien bestaat.",
+            "imbro": "J",
+            "imbroA": "J",
+            "nen14688": ["Sa", "bo"]
+        },
+        {
+            "codeValue": "zandMetKeitjes",
+            "description": "Grove minerale grond die voor 50 tot 95% uit zand en voor de rest vooral uit keitjes bestaat.",
+            "imbro": "J",
+            "imbroA": "J",
+            "nen14688": ["Sa", "co"]
+        },
+        {
+            "codeValue": "zwakGrindigSilt",
+            "description": "Fijne minerale grond die zich gedraagt als silt, geen zeer grof materiaal en enkele grindkorrels bevat.",
+            "imbro": "J",
+            "imbroA": "J",
+            "nen14688": ["Si", "gr1"]
+        },
+        {
+            "codeValue": "zwakGrindigSiltMetZand",
+            "imbro": "J",
+            "imbroA": "J",
+            "nen14688": ["Si", "gr1", "sa"]
+        },
+        {
+            "codeValue": "zwakGrindigZand",
+            "description": "Grove minerale grond die voor meer dan 50% uit zand en voor 5 tot 20% uit grind bestaat.",
+            "imbro": "J",
+            "imbroA": "J",
+            "nen14688": ["Sa", "gr1"]
+        },
+        {
+            "codeValue": "zwakGrindigZandMetKlei",
+            "imbro": "J",
+            "imbroA": "J",
+            "nen14688": ["Sa", "gr1", "cl"]
+        },
+        {
+            "codeValue": "zwakGrindigZandMetSilt",
+            "imbro": "J",
+            "imbroA": "J",
+            "nen14688": ["Sa", "gr1", "si"]
+        },
+        {
+            "codeValue": "zwakGrindigeKlei",
+            "description": "Fijne minerale grond die zich gedraagt als klei, enkele grindkorrels en geen zichtbaar of voelbaar zand bevat.",
+            "imbro": "J",
+            "imbroA": "J",
+            "nen14688": ["Cl", "gr1"]
+        },
+        {
+            "codeValue": "zwakGrindigeKleiMetZand",
+            "imbro": "J",
+            "imbroA": "J",
+            "nen14688": ["Cl", "gr1", "sa"]
+        },
+        {
+            "codeValue": "zwakZandigGrind",
+            "description": "Grove minerale grond die voor meer dan 50% uit grind en voor 5 tot 20% uit zand bestaat.",
+            "imbro": "J",
+            "imbroA": "J",
+            "nen14688": ["Gr", "sa1"]
+        },
+        {
+            "codeValue": "zwakZandigSilt",
+            "description": "Fijne minerale grond die zich gedraagt als silt, zichtbaar en nauwelijks voelbaar zand en geen grind of zeer grof materiaal bevat.",
+            "imbro": "J",
+            "imbroA": "J",
+            "nen14688": ["Si", "sa1"]
+        },
+        {
+            "codeValue": "zwakZandigSiltMetGrind",
+            "description": "Fijne minerale grond die zich gedraagt als silt, zichtbaar en nauwelijks voelbaar zand en enkele grindkorrels bevat.",
+            "imbro": "J",
+            "imbroA": "J",
+            "nen14688": ["Si", "sa1", "gr"]
+        },
+        {
+            "codeValue": "zwakZandigVeen",
+            "description": "v",
+            "imbro": "J",
+            "imbroA": "J",
+            "nen14688": ["Pe", "sa1"]
+        },
+        {
+            "codeValue": "zwakZandigeDetritus",
+            "description": "Organische grond die uit detritus bestaat en voelbaar zandkorrels bevat.",
+            "imbro": "J",
+            "imbroA": "J",
+            "nen14688": ["De", "sa1"]
+        },
+        {
+            "codeValue": "zwakZandigeHumus",
+            "description": "Organische grond die uit humus bestaat en voelbaar zandkorrels bevat.",
+            "imbro": "J",
+            "imbroA": "J",
+            "nen14688": ["Hu", "sa1"]
+        },
+        {
+            "codeValue": "zwakZandigeKlei",
+            "description": "Fijne minerale grond die zich gedraagt als klei, zichtbaar en nauwelijks voelbaar zand en geen grind of grover materiaal bevat.",
+            "imbro": "J",
+            "imbroA": "J",
+            "nen14688": ["Cl", "sa1"]
+        },
+        {
+            "codeValue": "zwakZandigeKleiMetGrind",
+            "description": "Fijne minerale grond die zich gedraagt als klei, zichtbaar en nauwelijks voelbaar zand en enkele grindkorrels bevat.",
+            "imbro": "J",
+            "imbroA": "J",
+            "nen14688": ["Cl", "sa1", "gr"]
+        }]
+    }],
+    "uri": "urn:bro:bhrgt:GeotechnicalSoilName"
+}

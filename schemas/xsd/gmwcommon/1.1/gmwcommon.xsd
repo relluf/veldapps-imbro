@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--gebaseerd op Fase 2 Versie 1.0 baseline -->
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:brocom="http://www.broservices.nl/xsd/brocommon/3.0" xmlns:gmwcom="http://www.broservices.nl/xsd/gmwcommon/1.1"
+    targetNamespace="http://www.broservices.nl/xsd/gmwcommon/1.1" elementFormDefault="qualified" version="1.1.0">
+
+    <annotation>
+        <documentation>
+            This XSD describes the common elements and complex types for the intake and dispatch of a GroundwaterMonitoringWell in the BRO.
+            Version:1.0.0
+            Changes compared to Version:0.8.5:
+            - based on brocommon:3.0
+            - based on preproduction release of FDO
+
+            Version:0.8.5
+            Changes compared to Version:0.8.4:
+            - Stricter separation between intake and dispatch
+        </documentation>
+    </annotation>
+
+    <import namespace="http://www.opengis.net/gml/3.2" schemaLocation="https://schema.broservices.nl/profile/gml/1.0/gml-profile.xsd" />
+    <import namespace="http://www.broservices.nl/xsd/brocommon/3.0" schemaLocation="https://schema.broservices.nl/xsd/brocommon/3.0/brocommon.xsd" />
+
+
+    <complexType name="DeliveredLocationType">
+        <sequence>
+            <element name="location" type="gml:PointType" minOccurs="1" maxOccurs="1" />
+            <element name="horizontalPositioningMethod" type="gmwcom:HorizontalPositioningMethodType" minOccurs="1" maxOccurs="1" />
+        </sequence>
+    </complexType>
+
+    <complexType name="DeliveredVerticalPositionType">
+        <sequence>
+            <element name="localVerticalReferencePoint" type="gmwcom:LocalVerticalReferencePointType" minOccurs="1" maxOccurs="1" />
+            <element name="offset" type="gmwcom:OffsetType" minOccurs="1" maxOccurs="1" />
+            <element name="verticalDatum" type="gmwcom:VerticalDatumType" minOccurs="1" maxOccurs="1" />
+            <element name="groundLevelPosition" type="gmwcom:VerticalPositionType" minOccurs="1" maxOccurs="1" nillable="true" />
+            <element name="groundLevelPositioningMethod" type="gmwcom:GroundLevelPositioningMethodType" minOccurs="1" maxOccurs="1" />
+        </sequence>
+    </complexType>
+
+    <complexType name="ElectrodeType">
+        <sequence>
+            <element name="electrodeNumber" type="integer" minOccurs="1" maxOccurs="1" />
+            <element name="electrodePackingMaterial" type="gmwcom:ElectrodePackingMaterialType" minOccurs="1" maxOccurs="1" />
+            <element name="electrodeStatus" type="gmwcom:ElectrodeStatusType" minOccurs="1" maxOccurs="1" />
+            <element name="electrodePosition" type="gmwcom:VerticalPositionType" minOccurs="1" maxOccurs="1" />
+        </sequence>
+    </complexType>
+
+    <complexType name="MaterialUsedType">
+        <sequence>
+            <element name="tubePackingMaterial" type="gmwcom:TubePackingMaterialType" minOccurs="1" maxOccurs="1" />
+            <element name="tubeMaterial" type="gmwcom:TubeMaterialType" minOccurs="1" maxOccurs="1" />
+            <element name="glue" type="gmwcom:GlueType" minOccurs="1" maxOccurs="1" />
+        </sequence>
+    </complexType>
+
+    <complexType name="InsertedPartType">
+        <sequence>
+            <element name="insertedPartLength" type="gmwcom:TubePartLengthType" minOccurs="1" maxOccurs="1" />
+            <element name="insertedPartDiameter" type="gmwcom:DiameterType" minOccurs="1" maxOccurs="1" />
+            <element name="insertedPartMaterial" type="gmwcom:TubeMaterialType" minOccurs="1" maxOccurs="1" />
+        </sequence>
+    </complexType>
+
+    <complexType name="SedimentSumpType">
+        <sequence>
+            <element name="sedimentSumpLength" type="gmwcom:TubePartLengthType" minOccurs="1" maxOccurs="1" />
+        </sequence>
+    </complexType>
+
+    <complexType name="PlainTubePartType">
+        <sequence>
+            <element name="plainTubePartLength" type="gmwcom:TubePartLengthType" minOccurs="1" maxOccurs="1" />
+        </sequence>
+    </complexType>
+
+    <complexType name="TubePartLengthType">
+        <simpleContent>
+            <restriction base="gml:MeasureType">
+                <attribute name="uom" type="gml:UomIdentifier" use="required" fixed="m" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+    <complexType name="OffsetType">
+        <simpleContent>
+            <restriction base="gml:MeasureType">
+                <attribute name="uom" type="gml:UomIdentifier" use="required" fixed="m" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+
+    <complexType name="VerticalPositionType">
+        <simpleContent>
+            <restriction base="gml:MeasureType">
+                <attribute name="uom" type="gml:UomIdentifier" use="required" fixed="m" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+    <complexType name="DiameterType">
+        <simpleContent>
+            <restriction base="gml:MeasureType">
+                <attribute name="uom" type="gml:UomIdentifier" use="required" fixed="mm" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+    <complexType name="TubePackingMaterialType">
+        <simpleContent>
+            <restriction base="gml:CodeWithAuthorityType">
+                <attribute name="codeSpace" type="anyURI" use="required" fixed="urn:bro:gmw:TubePackingMaterial" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+    <complexType name="GlueType">
+        <simpleContent>
+            <restriction base="gml:CodeWithAuthorityType">
+                <attribute name="codeSpace" type="anyURI" use="required" fixed="urn:bro:gmw:Glue" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+    <complexType name="TubeMaterialType">
+        <simpleContent>
+            <restriction base="gml:CodeWithAuthorityType">
+                <attribute name="codeSpace" type="anyURI" use="required" fixed="urn:bro:gmw:TubeMaterial" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+    <complexType name="SockMaterialType">
+        <simpleContent>
+            <restriction base="gml:CodeWithAuthorityType">
+                <attribute name="codeSpace" type="anyURI" use="required" fixed="urn:bro:gmw:SockMaterial" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+    <complexType name="ElectrodePackingMaterialType">
+        <simpleContent>
+            <restriction base="gml:CodeWithAuthorityType">
+                <attribute name="codeSpace" type="anyURI" use="required" fixed="urn:bro:gmw:ElectrodePackingMaterial" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+    <complexType name="HorizontalPositioningMethodType">
+        <simpleContent>
+            <restriction base="gml:CodeWithAuthorityType">
+                <attribute name="codeSpace" type="anyURI" use="required" fixed="urn:bro:gmw:HorizontalPositioningMethod" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+    <complexType name="GroundLevelPositioningMethodType">
+        <simpleContent>
+            <restriction base="gml:CodeWithAuthorityType">
+                <attribute name="codeSpace" type="anyURI" use="required" fixed="urn:bro:gmw:GroundLevelPositioningMethod" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+    <complexType name="TubeTopPositioningMethodType">
+        <simpleContent>
+            <restriction base="gml:CodeWithAuthorityType">
+                <attribute name="codeSpace" type="anyURI" use="required" fixed="urn:bro:gmw:TubeTopPositioningMethod" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+    <complexType name="ElectrodePositioningMethodType">
+        <simpleContent>
+            <restriction base="gml:CodeWithAuthorityType">
+                <attribute name="codeSpace" type="anyURI" use="required" fixed="urn:bro:gmw:ElectrodePositioningMethod" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+    <complexType name="TubeTypeType">
+        <simpleContent>
+            <restriction base="gml:CodeWithAuthorityType">
+                <attribute name="codeSpace" type="anyURI" use="required" fixed="urn:bro:gmw:TubeType" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+    <complexType name="InitialFunctionType">
+        <simpleContent>
+            <restriction base="gml:CodeWithAuthorityType">
+                <attribute name="codeSpace" type="anyURI" use="required" fixed="urn:bro:gmw:InitialFunction" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+    <complexType name="ConstructionStandardType">
+        <simpleContent>
+            <restriction base="gml:CodeWithAuthorityType">
+                <attribute name="codeSpace" type="anyURI" use="required" fixed="urn:bro:gmw:ConstructionStandard" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+    <complexType name="TubeStatusType">
+        <simpleContent>
+            <restriction base="gml:CodeWithAuthorityType">
+                <attribute name="codeSpace" type="anyURI" use="required" fixed="urn:bro:gmw:TubeStatus" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+    <complexType name="ElectrodeStatusType">
+        <simpleContent>
+            <restriction base="gml:CodeWithAuthorityType">
+                <attribute name="codeSpace" type="anyURI" use="required" fixed="urn:bro:gmw:ElectrodeStatus" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+    <complexType name="WellStabilityType">
+        <simpleContent>
+            <restriction base="gml:CodeWithAuthorityType">
+                <attribute name="codeSpace" type="anyURI" use="required" fixed="urn:bro:gmw:WellStability" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+    <complexType name="LocalVerticalReferencePointType">
+        <simpleContent>
+            <restriction base="gml:CodeWithAuthorityType">
+                <attribute name="codeSpace" type="anyURI" use="required" fixed="urn:bro:gmw:LocalVerticalReferencePoint" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+    <complexType name="DeliveryContextType">
+        <simpleContent>
+            <restriction base="gml:CodeWithAuthorityType">
+                <attribute name="codeSpace" type="anyURI" use="required" fixed="urn:bro:gmw:DeliveryContext" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+    <complexType name="VerticalDatumType">
+        <simpleContent>
+            <restriction base="gml:CodeWithAuthorityType">
+                <attribute name="codeSpace" type="anyURI" use="required" fixed="urn:bro:gmw:VerticalDatum" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+    <complexType name="WellHeadProtectorType">
+        <simpleContent>
+            <restriction base="gml:CodeWithAuthorityType">
+                <attribute name="codeSpace" type="anyURI" use="required" fixed="urn:bro:gmw:WellHeadProtector" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+</schema>

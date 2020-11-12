@@ -1,0 +1,1 @@
+{"name":"GMW_ELECTRODE_STATUS","refDomainVersions":[{"majorVersion":1,"minorVersion":0,"refCodes":[{"code":"gebruiksklaar","imbro":"J","imbroA":"J"},{"code":"nietGebruiksklaar","imbro":"J","imbroA":"J"},{"code":"onbekend","imbro":"N","imbroA":"J"}]}],"uri":"urn:bro:gmw:ElectrodeStatus"}

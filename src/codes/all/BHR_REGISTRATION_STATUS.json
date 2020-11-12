@@ -1,0 +1,1 @@
+{"name":"BHR_REGISTRATION_STATUS","refDomainVersions":[{"majorVersion":1,"minorVersion":0,"refCodes":[{"code":"aangevuld","imbro":"J","imbroA":"J"},{"code":"geregistreerd","imbro":"J","imbroA":"J"},{"code":"voltooid","imbro":"J","imbroA":"J"}]}],"uri":"urn:bro:bhr:RegistrationStatus"}

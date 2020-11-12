@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" 
+    xmlns:msg="http://www.broservices.nl/xsd/isbhr/1.1" 
+    xmlns:bhrcom="http://www.broservices.nl/xsd/bhrcommon/1.1" 
+    xmlns:brocom="http://www.broservices.nl/xsd/brocommon/3.0"
+    xmlns:gml="http://www.opengis.net/gml/3.2" 
+    targetNamespace="http://www.broservices.nl/xsd/isbhr/1.1" elementFormDefault="qualified" version="1.1.0">
+
+    <!-- importeer datatypes -->
+    <import namespace="http://www.broservices.nl/xsd/brocommon/3.0" schemaLocation="https://schema.broservices.nl/xsd/brocommon/3.0/brocommon.xsd" />
+    <import namespace="http://www.broservices.nl/xsd/bhrcommon/1.1" schemaLocation="https://schema.broservices.nl/xsd/bhrcommon/1.1/bhrcommon.xsd" />
+    <import namespace="http://www.opengis.net/gml/3.2" schemaLocation="https://schema.broservices.nl/profile/gml/1.0/gml-profile.xsd" />
+
+    <!-- registratieverzoek, bericht van verwerking of bericht van een afwijzing -->
+    <element name="registrationRequest" type="msg:RegistrationRequestType" />
+    <element name="correctionRequest" type="msg:CorrectionRequestType" />
+    <element name="intakeResponse" type="brocom:IntakeResponseType" />
+
+    <!-- gemeenschappelijke fout berichten -->
+    <element name="parseFault" type="brocom:ParseFaultType" />
+
+    <!-- brondocumenten -->
+    <element name="BHR_P" type="msg:BoreholeResearchType" />
+    <element name="BHR_P_BSD" type="msg:BoreholeResearchType" />
+
+    <!-- registration types -->
+    <complexType name="RegistrationRequestType">
+        <complexContent>
+            <extension base="brocom:RegistrationRequestType">
+                <sequence>
+                    <element name="sourceDocument" type="msg:SourceDocumentType" minOccurs="1" maxOccurs="1"/>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+
+    <complexType name="CorrectionRequestType">
+        <complexContent>
+            <extension base="brocom:CorrectionRequestType">
+                <sequence>
+                    <element name="correctionReason" type="msg:CorrectionReasonType" minOccurs="1" maxOccurs="1" />
+                    <element name="sourceDocument" type="msg:SourceDocumentType" minOccurs="1" maxOccurs="1"/>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+
+    <complexType name="SourceDocumentType">
+        <choice minOccurs="1" maxOccurs="1">
+            <element ref="msg:BHR_P" />
+            <element ref="msg:BHR_P_BSD" />
+        </choice>
+    </complexType>
+
+    <complexType name="BoreholeResearchType">
+        <complexContent>
+            <extension base="gml:AbstractFeatureType">
+                <sequence>
+                    <element name="objectIdAccountableParty" type="string" minOccurs="1" maxOccurs="1" />
+                    <element name="deliveryContext" type="bhrcom:DeliveryContextType" minOccurs="1" maxOccurs="1" />
+                    <element name="surveyPurpose" type="bhrcom:SurveyPurposeType" minOccurs="1" maxOccurs="1" />
+                    <element name="discipline" type="bhrcom:DisciplineType" minOccurs="1" maxOccurs="1" />
+                    <element name="researchReportDate" type="brocom:PartialDateType" minOccurs="1" maxOccurs="1" />
+                    <element name="researchOperator" type="brocom:ChamberOfCommerceNumberType" minOccurs="0" maxOccurs="1" />
+                    <element name="siteCharacteristicDetermined" type="brocom:IndicationYesNoUnknownEnumeration" minOccurs="1" maxOccurs="1" />
+                    <element name="litterLayerDescribed" type="brocom:IndicationYesNoEnumeration" minOccurs="1" maxOccurs="1" />
+                    <element name="boreholeGeophysicallyLogged" type="brocom:IndicationYesNoEnumeration" minOccurs="1" maxOccurs="1" />
+                    <element name="boreholeSamplesDescribed" type="brocom:IndicationYesNoEnumeration" minOccurs="1" maxOccurs="1" />
+                    <element name="boreholeSamplesAnalyzed" type="brocom:IndicationYesNoEnumeration" minOccurs="1" maxOccurs="1" />
+                    <element name="boreholeSamplesPhotographed" type="brocom:IndicationYesNoEnumeration" minOccurs="1" maxOccurs="1" />
+                    <element name="deliveredLocation" type="bhrcom:DeliveredLocationType" minOccurs="1" maxOccurs="1" />
+                    <element name="deliveredVerticalPosition" type="bhrcom:DeliveredVerticalPositionType" minOccurs="1" maxOccurs="1" />
+                    <element name="boring" type="bhrcom:BoringType" minOccurs="1" maxOccurs="1" />
+                    <element name="siteCharacteristic" type="bhrcom:SiteCharacteristicType" minOccurs="0" maxOccurs="1" />
+                    <element name="boreholeSampleDescription" type="bhrcom:BoreholeSampleDescriptionType" minOccurs="0" maxOccurs="1" />
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+
+    <complexType name="CorrectionReasonType">
+        <simpleContent>
+            <restriction base="gml:CodeWithAuthorityType">
+                <attribute name="codeSpace" type="anyURI" use="required" fixed="urn:bro:bhr:CorrectionReason" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+
+</schema>

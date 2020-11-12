@@ -1,0 +1,24 @@
+"use js";
+
+["Container", [
+	["veldapps/ListOf<Onderzoek>", "onderzoeken", { visible: false }],
+	
+	["Tabs.bottom", [
+		["Tab<vcl-comps:devtools/Editor>", { 
+			text: "bhrgt.csv", selected: true,
+			vars: {
+				resource: { uri: "Workspaces/veldapps.com/V7/src/v7/bro/codes/bhrgt/BHR_GT_Codelijsten.csv" }
+			} 
+		}],
+		["Tab<vcl-comps:devtools/Editor>", { 
+			text: "domains.json", 
+			vars: {
+				resource: { uri: "Workspaces/veldapps.com/V7/src/v7/bro/domains.json" }
+			} 
+		}],
+		["Tab", { text: "Inline - veldapps/ListOf<Onderzoek>", control: "onderzoeken" }],
+		["Tab<veldapps/ListOf>", "Meetpunt", { 
+			text: "Lazy - veldapps/ListOf<Meetpunt>" 
+		}]
+	]]	
+]];

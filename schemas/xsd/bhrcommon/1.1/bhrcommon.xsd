@@ -1,0 +1,684 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema 
+    xmlns:bhrcom="http://www.broservices.nl/xsd/bhrcommon/1.1" 
+    xmlns:brocom="http://www.broservices.nl/xsd/brocommon/3.0" 
+    xmlns:gml="http://www.opengis.net/gml/3.2" 
+    xmlns:om="http://www.opengis.net/om/2.0"
+    xmlns="http://www.w3.org/2001/XMLSchema" 
+    targetNamespace="http://www.broservices.nl/xsd/bhrcommon/1.1" 
+    elementFormDefault="qualified" 
+    version="1.1.0">
+
+    <import namespace="http://www.broservices.nl/xsd/brocommon/3.0" schemaLocation="https://schema.broservices.nl/xsd/brocommon/3.0/brocommon.xsd" />
+    <import namespace="http://www.opengis.net/gml/3.2" schemaLocation="https://schema.broservices.nl/profile/gml/1.0/gml-profile.xsd" />
+    <import namespace="http://www.opengis.net/om/2.0" schemaLocation="https://schema.broservices.nl/profile/om/1.0/om-profile.xsd" />
+
+
+    <complexType name="DeliveredLocationType">
+        <sequence>
+            <element name="location" type="gml:PointType" minOccurs="1" maxOccurs="1" />
+            <element name="horizontalPositioningDate" type="brocom:PartialDateType" minOccurs="1" maxOccurs="1" />
+            <element name="horizontalPositioningMethod" type="bhrcom:HorizontalPositioningMethodType" minOccurs="1" maxOccurs="1" />
+            <element name="horizontalPositioningOperator" type="brocom:ChamberOfCommerceNumberType" minOccurs="0" maxOccurs="1" />
+        </sequence>
+    </complexType>
+
+    <complexType name="DeliveredVerticalPositionType">
+        <sequence>
+            <element name="localVerticalReferencePoint" type="bhrcom:LocalVerticalReferencePointType" minOccurs="1" maxOccurs="1" />
+            <element name="offset" type="bhrcom:OffsetType" minOccurs="1" maxOccurs="1" nillable="true" />
+            <element name="waterDepth" type="bhrcom:OffsetType" minOccurs="0" maxOccurs="1" nillable="true" />
+            <element name="verticalDatum" type="bhrcom:VerticalDatumType" minOccurs="1" maxOccurs="1" />
+            <element name="verticalPositioningDate" type="brocom:PartialDateType" minOccurs="1" maxOccurs="1" nillable="true" />
+            <element name="verticalPositioningMethod" type="bhrcom:VerticalPositioningMethodType" minOccurs="1" maxOccurs="1" />
+            <element name="verticalPositioningOperator" type="brocom:ChamberOfCommerceNumberType" minOccurs="0" maxOccurs="1" />
+
+        </sequence>
+    </complexType>
+
+    <complexType name="SiteCharacteristicType">
+        <sequence>
+            <element name="landUse" type="bhrcom:LandUseType" minOccurs="1" maxOccurs="1" />
+            <element name="drained" type="brocom:IndicationYesNoUnknownEnumeration" minOccurs="1" maxOccurs="1" />
+            <element name="meanHighestGroundwaterTable" type="bhrcom:BoringDepthType" minOccurs="0" maxOccurs="1" />
+            <element name="meanLowestGroundwaterTable" type="bhrcom:BoringDepthType" minOccurs="0" maxOccurs="1" />
+        </sequence>
+    </complexType>
+
+    <complexType name="BoringType">
+        <sequence>
+            <element name="boringStartDate" type="brocom:PartialDateType" minOccurs="1" maxOccurs="1" />
+            <element name="boringEndDate" type="brocom:PartialDateType" minOccurs="1" maxOccurs="1" />
+            <element name="boringOperator" type="brocom:ChamberOfCommerceNumberType" minOccurs="0" maxOccurs="1" />
+            <element name="casingUsed" type="brocom:IndicationYesNoUnknownEnumeration" minOccurs="1" maxOccurs="1" />
+            <element name="flushingMedium" type="bhrcom:FlushingMediumType" minOccurs="1" maxOccurs="1" />
+            <element name="stopCriterion" type="bhrcom:StopCriterionType" minOccurs="1" maxOccurs="1" />
+            <element name="trajectoryRemoved" type="brocom:IndicationYesNoEnumeration" minOccurs="1" maxOccurs="1" />
+            <element name="boringProcedure" type="bhrcom:BoringProcedureType" minOccurs="1" maxOccurs="1" />
+            <element name="removedTrajectory" type="bhrcom:RemovedTrajectoryType" minOccurs="0" maxOccurs="1" />
+            <element name="boredTrajectory" type="bhrcom:BoredTrajectoryType" minOccurs="1" maxOccurs="1" />
+            <element name="boringTool" type="bhrcom:BoringToolType" minOccurs="1" maxOccurs="unbounded" />
+        </sequence>
+    </complexType>
+
+    <complexType name="BoringProcedureType">
+        <sequence>
+            <element name="boringStandard" type="bhrcom:BoringStandardType" minOccurs="1" maxOccurs="1" />
+        </sequence>
+    </complexType>
+
+    <complexType name="BoringToolType">
+        <sequence>
+            <element name="boringToolType" type="bhrcom:BoringToolTypeType" minOccurs="1" maxOccurs="1" />
+            <element name="boringToolDiameter" type="bhrcom:ToolDiameterType" minOccurs="1" maxOccurs="1" nillable="true" />
+            <element name="boredInterval" type="bhrcom:BoredIntervalType" minOccurs="1" maxOccurs="1" />
+        </sequence>
+    </complexType>
+
+    <complexType name="BoredIntervalType">
+        <sequence>
+            <element name="beginDepth" type="bhrcom:BoringDepthType" minOccurs="1" maxOccurs="1" />
+            <element name="endDepth" type="bhrcom:BoringDepthType" minOccurs="1" maxOccurs="1" />
+        </sequence>
+    </complexType>
+
+    <complexType name="BoredTrajectoryType">
+        <sequence>
+            <element name="beginDepth" type="bhrcom:BoringDepthType" minOccurs="1" maxOccurs="1" />
+            <element name="endDepth" type="bhrcom:BoringDepthType" minOccurs="1" maxOccurs="1" />
+        </sequence>
+    </complexType>
+
+    <complexType name="RemovedTrajectoryType">
+        <sequence>
+            <element name="beginDepth" type="bhrcom:BoringDepthType" minOccurs="1" maxOccurs="1" />
+            <element name="endDepth" type="bhrcom:BoringDepthType" minOccurs="1" maxOccurs="1" />
+            <element name="removedLayer" type="bhrcom:RemovedLayerType" minOccurs="1" maxOccurs="unbounded" />
+        </sequence>
+    </complexType>
+
+    <complexType name="RemovedLayerType">
+        <sequence>
+            <element name="upperBoundary" type="bhrcom:BoringDepthType" minOccurs="1" maxOccurs="1" />
+            <element name="lowerBoundary" type="bhrcom:BoringDepthType" minOccurs="1" maxOccurs="1" />
+            <element name="removedMaterial" type="bhrcom:RemovedMaterialType" minOccurs="1" maxOccurs="1" />
+        </sequence>
+    </complexType>
+
+    <element name="result" type="bhrcom:DescriptiveBoreholeLogType" substitutionGroup="om:result"/>
+    
+    <complexType name="BhrObservationType">
+        <complexContent>
+            <restriction base="om:OM_ObservationType">
+                <sequence>
+                    <group ref="om:OM_CommonProperties"/>
+                    <element ref="bhrcom:result"/>
+                </sequence>
+            </restriction>
+        </complexContent>
+    </complexType>
+
+    <complexType name="BoreholeSampleDescriptionType">
+        <complexContent>
+            <extension base="bhrcom:BhrObservationType">
+                <sequence>
+                    <element name="descriptionMethod" type="bhrcom:DescriptionMethodType" minOccurs="1" maxOccurs="1" />
+                    <element name="descriptionLocation" type="bhrcom:DescriptionLocationType" minOccurs="1" maxOccurs="1" />
+                    <element name="descriptionOperator" type="brocom:ChamberOfCommerceNumberType" minOccurs="0" maxOccurs="1" />
+                    <element name="fractionDistributionDetermined" type="brocom:IndicationYesNoEnumeration" minOccurs="1" maxOccurs="1" />
+                    <element name="lowerBoundarySandFraction" type="bhrcom:LowerBoundarySandFractionType" minOccurs="1" maxOccurs="1" />
+                    <element name="soilClassification" type="bhrcom:SoilClassificationType" minOccurs="1" maxOccurs="1" />
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+
+    <complexType name="DescriptiveBoreholeLogType">
+        <sequence>
+            <element name="sampleQuality" type="bhrcom:SampleQualityType" minOccurs="1" maxOccurs="1" />
+            <element name="rootPenetrableDepthReached" type="brocom:IndicationYesNoUnknownEnumeration" minOccurs="1" maxOccurs="1" />
+            <element name="rootPenetrableDepth" type="bhrcom:BoringDepthType" minOccurs="0" maxOccurs="1" />
+            <element name="meanHighestGroundwaterLevelReached" type="brocom:IndicationYesNoEnumeration" minOccurs="0" maxOccurs="1" />
+            <element name="meanHighestGroundwaterLevel" type="bhrcom:BoringDepthType" minOccurs="0" maxOccurs="1" />
+            <element name="meanLowestGroundwaterLevel" type="bhrcom:BoringDepthType" minOccurs="0" maxOccurs="1" />
+            <element name="litterLayer" type="bhrcom:LitterLayerType" minOccurs="0" maxOccurs="unbounded" />
+            <element name="soilLayer" type="bhrcom:SoilLayerType" minOccurs="1" maxOccurs="unbounded" />
+            <element name="consolidatedRockLayer" type="bhrcom:ConsolidatedRockLayerType" minOccurs="0" maxOccurs="1" />
+        </sequence>
+    </complexType>
+
+    <complexType name="ConsolidatedRockLayerType">
+        <sequence>
+            <element name="upperBoundary" type="bhrcom:BoringDepthType" minOccurs="1" maxOccurs="1" />
+            <element name="lowerBoundary" type="bhrcom:BoringDepthType" minOccurs="1" maxOccurs="1" />
+            <element name="horizonCode" type="bhrcom:HorizonCodeType" minOccurs="1" maxOccurs="1" />
+            <element name="rockType" type="bhrcom:RockTypeType" minOccurs="1" maxOccurs="1" />
+        </sequence>
+    </complexType>
+
+    <complexType name="SoilLayerType">
+        <sequence>
+            <element name="upperBoundary" type="bhrcom:BoringDepthType" minOccurs="1" maxOccurs="1" />
+            <element name="lowerBoundary" type="bhrcom:BoringDepthType" minOccurs="1" maxOccurs="1" />
+            <element name="anthropogenic" type="brocom:IndicationYesNoUnknownEnumeration" minOccurs="1" maxOccurs="1" />
+            <element name="numberOfLayerComponents" type="integer" minOccurs="1" maxOccurs="1" />
+            <element name="layerComponent" type="bhrcom:LayerComponentType" minOccurs="1" maxOccurs="unbounded" />
+        </sequence>
+    </complexType>
+
+    <complexType name="LayerComponentType">
+        <sequence>
+            <element name="volumePercentage" type="bhrcom:VolumePercentageType" minOccurs="0" maxOccurs="1" nillable="true"/>
+            <element name="depositionalCharacteristic" type="bhrcom:DepositionalCharacteristicType" minOccurs="0" maxOccurs="1" />
+            <element name="horizonCode" type="bhrcom:HorizonCodeType" minOccurs="1" maxOccurs="1" />
+            <element name="saturatedPermeability" type="bhrcom:PermeabilityType" minOccurs="0" maxOccurs="1" />
+            <element name="soilType" type="bhrcom:SoilTypeType" minOccurs="1" maxOccurs="1" />
+        </sequence>
+    </complexType>
+
+    <complexType name="SoilTypeType">
+        <sequence>
+            <element name="standardSoilName" type="bhrcom:StandardSoilNameType" minOccurs="1" maxOccurs="1" />
+            <element name="soilTypeLoamBased" type="brocom:IndicationYesNoEnumeration" minOccurs="1" maxOccurs="1" />
+            <element name="pedologicalSoilName" type="bhrcom:PedologicalSoilNameType" minOccurs="1" maxOccurs="1" />
+            <element name="organicMatterClass" type="bhrcom:OrganicMatterClassType" minOccurs="0" maxOccurs="1" />
+            <element name="sandMedian" type="bhrcom:SandMedianType" minOccurs="0" maxOccurs="1" />
+            <element name="peatType" type="bhrcom:PeatTypeType" minOccurs="0" maxOccurs="1" />
+            <element name="carbonateClass" type="bhrcom:CarbonateClassType" minOccurs="1" maxOccurs="1" />
+            <element name="ripingClass" type="bhrcom:RipingClassType" minOccurs="0" maxOccurs="1" />
+            <element name="containsGravel" type="brocom:IndicationYesNoEnumeration" minOccurs="0" maxOccurs="1" />
+            <element name="gravelContentClass" type="bhrcom:GravelContentClassType" minOccurs="0" maxOccurs="1" />
+            <element name="containsShellMatter" type="brocom:IndicationYesNoEnumeration" minOccurs="0" maxOccurs="1" />
+            <element name="shellMatterContentClass" type="bhrcom:ShellMatterContentClassType" minOccurs="0" maxOccurs="1" />
+            <element name="fractionDistribution" type="bhrcom:FractionDistributionType" minOccurs="0" maxOccurs="1" />
+            <element name="incompleteFractionSpecification" type="bhrcom:IncompleteFractionSpecificationType" minOccurs="0" maxOccurs="1" />
+        </sequence>
+    </complexType>
+
+    <complexType name="FractionDistributionType">
+        <sequence>
+            <element name="gravelContent" type="bhrcom:PercentageType" minOccurs="1" maxOccurs="1" />
+            <element name="shellMatterContent" type="bhrcom:PercentageType" minOccurs="1" maxOccurs="1" />
+            <element name="organicMatterContent" type="bhrcom:PercentageType" minOccurs="1" maxOccurs="1" />
+            <element name="fineFractionContent" type="bhrcom:PercentageType" minOccurs="1" maxOccurs="1" />
+            <element name="fineFractionDistribution" type="bhrcom:FineFractionDistributionType" minOccurs="0" maxOccurs="1" />
+        </sequence>
+    </complexType>
+
+    <complexType name="IncompleteFractionSpecificationType">
+        <sequence>
+            <element name="organicMatterContent" type="bhrcom:PercentageType" minOccurs="0" maxOccurs="1" />
+            <element name="clayContent" type="bhrcom:PercentageType" minOccurs="0" maxOccurs="1" />
+            <element name="siltContent" type="bhrcom:PercentageType" minOccurs="0" maxOccurs="1" />
+            <element name="sandContent" type="bhrcom:PercentageType" minOccurs="0" maxOccurs="1" />
+        </sequence>
+    </complexType>
+
+    <complexType name="FineFractionDistributionType">
+        <sequence>
+            <element name="clayContent" type="bhrcom:PercentageType" minOccurs="1" maxOccurs="1" />
+            <element name="siltContent" type="bhrcom:PercentageType" minOccurs="1" maxOccurs="1" />
+            <element name="sandContent" type="bhrcom:PercentageType" minOccurs="1" maxOccurs="1" />
+        </sequence>
+    </complexType>
+
+    <complexType name="LitterLayerType">
+        <sequence>
+            <element name="upperBoundary" type="bhrcom:BoringDepthType" minOccurs="1" maxOccurs="1" />
+            <element name="lowerBoundary" type="bhrcom:BoringDepthType" minOccurs="1" maxOccurs="1" />
+            <element name="horizonCode" type="bhrcom:HorizonCodeType" minOccurs="1" maxOccurs="1" />
+            <element name="litterType" type="bhrcom:LitterTypeType" minOccurs="1" maxOccurs="1" />
+            <element name="organicMatterContent" type="bhrcom:PercentageType" nillable="true" minOccurs="1" maxOccurs="1" />
+        </sequence>
+    </complexType>
+
+    <complexType name="SoilClassificationType">
+        <sequence>
+            <element name="codeGroup" type="bhrcom:CodeGroupType" minOccurs="1" maxOccurs="1" />
+            <element name="classificationCode" type="string" minOccurs="1" maxOccurs="1" />
+            <element name="featureTop" type="bhrcom:FeatureTopType" minOccurs="1" maxOccurs="1" />
+            <element name="soilClass" type="bhrcom:SoilClassType" minOccurs="1" maxOccurs="1" />
+            <element name="textureClass" type="bhrcom:TextureClassType" minOccurs="0" maxOccurs="1" />
+            <element name="peatClass" type="bhrcom:PeatClassType" minOccurs="0" maxOccurs="1" />
+            <element name="subsoilPeat" type="bhrcom:SubsoilPeatType" minOccurs="0" maxOccurs="1" />
+            <element name="lowerBoundaryPeat" type="bhrcom:BoringDepthType" minOccurs="0" maxOccurs="1" />
+            <element name="subsoilDuinVagueSoil" type="bhrcom:SubsoilDuinVagueSoilType" minOccurs="0" maxOccurs="1" />
+            <element name="textureProfile" type="bhrcom:TextureProfileType" minOccurs="0" maxOccurs="1" />
+            <element name="carbonateProfile" type="bhrcom:CarbonateProfileType" minOccurs="0" maxOccurs="1" />
+            <element name="reworkingClass" type="bhrcom:ReworkingClassType" minOccurs="1" maxOccurs="1" />
+            <element name="groundwaterTableClass" type="bhrcom:GroundwaterTableClassType" minOccurs="1" maxOccurs="1" />
+            <element name="anomalousGroundwaterRegime" type="bhrcom:AnomalousGroundwaterRegimeType" minOccurs="0" maxOccurs="1" />
+            <element name="featureSite" type="bhrcom:FeatureSiteType" minOccurs="1" maxOccurs="1" />
+            <element name="featureBottom" type="bhrcom:FeatureBottomType" minOccurs="1" maxOccurs="unbounded" />
+        </sequence>
+    </complexType>
+
+    <complexType name="FeatureBottomType">
+        <sequence>
+            <element name="feature" type="bhrcom:FeatureType" minOccurs="1" maxOccurs="1" />
+            <element name="beginDepth" type="bhrcom:FeatureDepthType" minOccurs="0" maxOccurs="1" />
+        </sequence>
+    </complexType>
+
+    <complexType name="ToolDiameterType">
+        <simpleContent>
+            <restriction base="gml:MeasureType">
+                <attribute name="uom" type="gml:UomIdentifier" use="required" fixed="mm" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+    <complexType name="LowerBoundarySandFractionType">
+        <simpleContent>
+            <restriction base="gml:CodeWithAuthorityType">
+                <attribute name="codeSpace" type="anyURI" use="required" fixed="urn:bro:bhr:LowerBoundarySandFraction" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+    <complexType name="RemovedMaterialType">
+        <simpleContent>
+            <restriction base="gml:CodeWithAuthorityType">
+                <attribute name="codeSpace" type="anyURI" use="required" fixed="urn:bro:bhr:RemovedMaterial" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+    <complexType name="BoringStandardType">
+        <simpleContent>
+            <restriction base="gml:CodeWithAuthorityType">
+                <attribute name="codeSpace" type="anyURI" use="required" fixed="urn:bro:bhr:BoringStandard" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+    <complexType name="LocalVerticalReferencePointType">
+        <simpleContent>
+            <restriction base="gml:CodeWithAuthorityType">
+                <attribute name="codeSpace" type="anyURI" use="required" fixed="urn:bro:bhr:LocalVerticalReferencePoint" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+    <complexType name="HorizontalPositioningMethodType">
+        <simpleContent>
+            <restriction base="gml:CodeWithAuthorityType">
+                <attribute name="codeSpace" type="anyURI" use="required" fixed="urn:bro:bhr:HorizontalPositioningMethod" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+    <complexType name="VerticalPositioningMethodType">
+        <simpleContent>
+            <restriction base="gml:CodeWithAuthorityType">
+                <attribute name="codeSpace" type="anyURI" use="required" fixed="urn:bro:bhr:VerticalPositioningMethod" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+    <complexType name="SampleQualityType">
+        <simpleContent>
+            <restriction base="gml:CodeWithAuthorityType">
+                <attribute name="codeSpace" type="anyURI" use="required" fixed="urn:bro:bhr:SampleQuality" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+    <complexType name="OffsetType">
+        <simpleContent>
+            <restriction base="gml:MeasureType">
+                <attribute name="uom" type="gml:UomIdentifier" use="required" fixed="m" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+
+    <complexType name="BoringDepthType">
+        <simpleContent>
+            <restriction base="gml:MeasureType">
+                <attribute name="uom" type="gml:UomIdentifier" use="required" fixed="m" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+    <complexType name="PercentageType">
+        <simpleContent>
+            <restriction base="gml:MeasureType">
+                <attribute name="uom" type="gml:UomIdentifier" use="required" fixed="%" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+
+    <complexType name="ShellMatterContentClassType">
+        <simpleContent>
+            <restriction base="gml:CodeWithAuthorityType">
+                <attribute name="codeSpace" type="anyURI" use="required" fixed="urn:bro:bhr:ShellMatterContentClass" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+    <complexType name="GravelContentClassType">
+        <simpleContent>
+            <restriction base="gml:CodeWithAuthorityType">
+                <attribute name="codeSpace" type="anyURI" use="required" fixed="urn:bro:bhr:GravelContentClass" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+    <complexType name="SandMedianType">
+        <simpleContent>
+            <restriction base="gml:MeasureType">
+                <attribute name="uom" type="gml:UomIdentifier" use="required" fixed="um" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+    <complexType name="OrganicMatterClassType">
+        <simpleContent>
+            <restriction base="gml:CodeWithAuthorityType">
+                <attribute name="codeSpace" type="anyURI" use="required" fixed="urn:bro:bhr:OrganicMatterClass" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+    <complexType name="PedologicalSoilNameType">
+        <simpleContent>
+            <restriction base="gml:CodeWithAuthorityType">
+                <attribute name="codeSpace" type="anyURI" use="required" fixed="urn:bro:bhr:PedologicalSoilName" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+    <complexType name="StandardSoilNameType">
+        <simpleContent>
+            <restriction base="gml:CodeWithAuthorityType">
+                <attribute name="codeSpace" type="anyURI" use="required" fixed="urn:bro:bhr:StandardSoilName" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+    <complexType name="SurveyPurposeType">
+        <simpleContent>
+            <restriction base="gml:CodeWithAuthorityType">
+                <attribute name="codeSpace" type="anyURI" use="required" fixed="urn:bro:bhr:SurveyPurpose" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+    <complexType name="DisciplineType">
+        <simpleContent>
+            <restriction base="gml:CodeWithAuthorityType">
+                <attribute name="codeSpace" type="anyURI" use="required" fixed="urn:bro:bhr:Discipline" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+    <complexType name="DepositionalCharacteristicType">
+        <simpleContent>
+            <restriction base="gml:CodeWithAuthorityType">
+                <attribute name="codeSpace" type="anyURI" use="required" fixed="urn:bro:bhr:DepositionalCharacteristic" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+    <complexType name="HorizonCodeType">
+        <simpleContent>
+            <restriction base="gml:CodeWithAuthorityType">
+                <attribute name="codeSpace" type="anyURI" use="required" fixed="urn:bro:bhr:HorizonCode" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+    <complexType name="FeatureDepthType">
+        <simpleContent>
+            <restriction base="gml:MeasureType">
+                <attribute name="uom" type="gml:UomIdentifier" use="required" fixed="m" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+    <complexType name="VolumePercentageType">
+        <simpleContent>
+            <restriction base="gml:MeasureType">
+                <attribute name="uom" type="gml:UomIdentifier" use="required" fixed="%" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+    <complexType name="FlushingMediumType">
+        <simpleContent>
+            <restriction base="gml:CodeWithAuthorityType">
+                <attribute name="codeSpace" type="anyURI" use="required" fixed="urn:bro:bhr:FlushingMedium" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+    <complexType name="StopCriterionType">
+        <simpleContent>
+            <restriction base="gml:CodeWithAuthorityType">
+                <attribute name="codeSpace" type="anyURI" use="required" fixed="urn:bro:bhr:StopCriterion" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+    <complexType name="BoringToolTypeType">
+        <simpleContent>
+            <restriction base="gml:CodeWithAuthorityType">
+                <attribute name="codeSpace" type="anyURI" use="required" fixed="urn:bro:bhr:BoringToolType" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+    <complexType name="LandUseType">
+        <simpleContent>
+            <restriction base="gml:CodeWithAuthorityType">
+                <attribute name="codeSpace" type="anyURI" use="required" fixed="urn:bro:bhr:LandUse" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+    <complexType name="LitterTypeType">
+        <simpleContent>
+            <restriction base="gml:CodeWithAuthorityType">
+                <attribute name="codeSpace" type="anyURI" use="required" fixed="urn:bro:bhr:LitterType" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+    <complexType name="RockTypeType">
+        <simpleContent>
+            <restriction base="gml:CodeWithAuthorityType">
+                <attribute name="codeSpace" type="anyURI" use="required" fixed="urn:bro:bhr:RockType" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+
+    <complexType name="CodeGroupType">
+        <simpleContent>
+            <restriction base="gml:CodeWithAuthorityType">
+                <attribute name="codeSpace" type="anyURI" use="required" fixed="urn:bro:bhr:CodeGroup" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+    <complexType name="FeatureTopType">
+        <simpleContent>
+            <restriction base="gml:CodeWithAuthorityType">
+                <attribute name="codeSpace" type="anyURI" use="required" fixed="urn:bro:bhr:FeatureTop" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+    <complexType name="SoilClassType">
+        <simpleContent>
+            <restriction base="gml:CodeWithAuthorityType">
+                <attribute name="codeSpace" type="anyURI" use="required" fixed="urn:bro:bhr:SoilClass" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+    <complexType name="TextureClassType">
+        <simpleContent>
+            <restriction base="gml:CodeWithAuthorityType">
+                <attribute name="codeSpace" type="anyURI" use="required" fixed="urn:bro:bhr:TextureClass" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+    <complexType name="PeatClassType">
+        <simpleContent>
+            <restriction base="gml:CodeWithAuthorityType">
+                <attribute name="codeSpace" type="anyURI" use="required" fixed="urn:bro:bhr:PeatClass" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+    <complexType name="SubsoilPeatType">
+        <simpleContent>
+            <restriction base="gml:CodeWithAuthorityType">
+                <attribute name="codeSpace" type="anyURI" use="required" fixed="urn:bro:bhr:SubsoilPeat" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+    <complexType name="SubsoilDuinVagueSoilType">
+        <simpleContent>
+            <restriction base="gml:CodeWithAuthorityType">
+                <attribute name="codeSpace" type="anyURI" use="required" fixed="urn:bro:bhr:SubsoilDuinVagueSoil" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+    <complexType name="TextureProfileType">
+        <simpleContent>
+            <restriction base="gml:CodeWithAuthorityType">
+                <attribute name="codeSpace" type="anyURI" use="required" fixed="urn:bro:bhr:TextureProfile" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+    <complexType name="CarbonateProfileType">
+        <simpleContent>
+            <restriction base="gml:CodeWithAuthorityType">
+                <attribute name="codeSpace" type="anyURI" use="required" fixed="urn:bro:bhr:CarbonateProfile" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+    <complexType name="ReworkingClassType">
+        <simpleContent>
+            <restriction base="gml:CodeWithAuthorityType">
+                <attribute name="codeSpace" type="anyURI" use="required" fixed="urn:bro:bhr:ReworkingClass" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+    <complexType name="GroundwaterTableClassType">
+        <simpleContent>
+            <restriction base="gml:CodeWithAuthorityType">
+                <attribute name="codeSpace" type="anyURI" use="required" fixed="urn:bro:bhr:GroundwaterTableClass" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+    <complexType name="FeatureSiteType">
+        <simpleContent>
+            <restriction base="gml:CodeWithAuthorityType">
+                <attribute name="codeSpace" type="anyURI" use="required" fixed="urn:bro:bhr:FeatureSite" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+    <complexType name="AnomalousGroundwaterRegimeType">
+        <simpleContent>
+            <restriction base="gml:CodeWithAuthorityType">
+                <attribute name="codeSpace" type="anyURI" use="required" fixed="urn:bro:bhr:AnomalousGroundwaterRegime" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+    <complexType name="FeatureType">
+        <simpleContent>
+            <restriction base="gml:CodeWithAuthorityType">
+                <attribute name="codeSpace" type="anyURI" use="required" fixed="urn:bro:bhr:Feature" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+    <complexType name="DescriptionLocationType">
+        <simpleContent>
+            <restriction base="gml:CodeWithAuthorityType">
+                <attribute name="codeSpace" type="anyURI" use="required" fixed="urn:bro:bhr:DescriptionLocation" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+    <complexType name="DescriptionMethodType">
+        <simpleContent>
+            <restriction base="gml:CodeWithAuthorityType">
+                <attribute name="codeSpace" type="anyURI" use="required" fixed="urn:bro:bhr:DescriptionMethod" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+    <complexType name="CarbonateClassType">
+        <simpleContent>
+            <restriction base="gml:CodeWithAuthorityType">
+                <attribute name="codeSpace" type="anyURI" use="required" fixed="urn:bro:bhr:CarbonateClass" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+    <complexType name="RipingClassType">
+        <simpleContent>
+            <restriction base="gml:CodeWithAuthorityType">
+                <attribute name="codeSpace" type="anyURI" use="required" fixed="urn:bro:bhr:RipingClass" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+    <complexType name="PeatTypeType">
+        <simpleContent>
+            <restriction base="gml:CodeWithAuthorityType">
+                <attribute name="codeSpace" type="anyURI" use="required" fixed="urn:bro:bhr:PeatType" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+    <complexType name="PermeabilityType">
+        <simpleContent>
+            <restriction base="gml:MeasureType">
+                <attribute name="uom" type="gml:UomIdentifier" use="required" fixed="m/24h" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+
+    <complexType name="DeliveryContextType">
+        <simpleContent>
+            <restriction base="gml:CodeWithAuthorityType">
+                <attribute name="codeSpace" type="anyURI" use="required" fixed="urn:bro:bhr:DeliveryContext" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+    <complexType name="RegistrationStatusType">
+        <simpleContent>
+            <restriction base="gml:CodeWithAuthorityType">
+                <attribute name="codeSpace" type="anyURI" use="required" fixed="urn:bro:bhr:RegistrationStatus" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+    <complexType name="VerticalDatumType">
+        <simpleContent>
+            <restriction base="gml:CodeWithAuthorityType">
+                <attribute name="codeSpace" type="anyURI" use="required" fixed="urn:bro:bhr:VerticalDatum" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+
+</schema>

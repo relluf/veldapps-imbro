@@ -1,0 +1,1 @@
+{"name":"GMW_WELL_STABILITY","refDomainVersions":[{"majorVersion":1,"minorVersion":0,"refCodes":[{"code":"instabiel","imbro":"J","imbroA":"J"},{"code":"onbekend","imbro":"N","imbroA":"J"},{"code":"stabielNAP","imbro":"J","imbroA":"J"}]}],"uri":"urn:bro:gmw:WellStability"}
