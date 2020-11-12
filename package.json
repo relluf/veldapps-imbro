@@ -1,0 +1,19 @@
+{
+  "name": "veldapps-imbro",
+  "version": "1.0.0",
+  "description": "This package contains resources which can assist applications of the various registration objects defined by  [BRO (Basisregistratie Ondergrond)](https://basisregistratieondergrond.nl). ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/relluf/veldapps-imbro.git"
+  },
+  "author": "ralph",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/relluf/veldapps-imbro/issues"
+  },
+  "homepage": "https://github.com/relluf/veldapps-imbro#readme"
+}
