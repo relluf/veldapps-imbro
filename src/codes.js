@@ -12,6 +12,9 @@ define(function(require) {
         load: function(name, req, onLoad, config) {
         	if(typeof window !== "undefined") {
         		var domain = domains.find(_ => _.uri === ("urn:bro:" + name));
+        		if(!domain) {
+        			throw new Error("Unknown domain urn:bro:" + name);
+        		}
 	        	require(["json!./codes/all/" + domain.name], function(module) {
 	        		var codes = codeValues(js.get("refDomainVersions.0.refCodes", module));
 		        	if(name.endsWith("GeotechnicalSoilName")) {
