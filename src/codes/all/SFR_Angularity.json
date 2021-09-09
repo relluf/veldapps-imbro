@@ -1,0 +1,1 @@
+{"name":"SFR_Hoekigheid","refDomainVersions":[{"majorVersion":1,"minorVersion":0,"refCodes":[{"code":"afgerond","description":"De aggregaten hebben geen scherpe hoeken.","imbro":"J","imbroA":"J"},{"code":"scherp","description":"De aggregaten hebben scherpe hoeken.","imbro":"J","imbroA":"J"}]}],"uri":"urn:bro:sfr:Angularity"}
