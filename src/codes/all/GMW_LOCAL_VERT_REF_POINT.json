@@ -1,1 +1,1 @@
-{"name":"GMW_LOCAL_VERT_REF_POINT","refDomainVersions":[{"majorVersion":1,"minorVersion":0,"refCodes":[{"code":"NAP","imbro":"J","imbroA":"J"}]}],"uri":"urn:bro:gmw:LocalVerticalReferencePoint"}
+{"name":"GMW_LOCAL_VERT_REF_POINT","refDomainVersions":[{"majorVersion":1,"minorVersion":0,"refCodes":[{"code":"NAP","description":"Normaal Amsterdams Peil","imbro":"J","imbroA":"J"}]}],"uri":"urn:bro:gmw:LocalVerticalReferencePoint"}
