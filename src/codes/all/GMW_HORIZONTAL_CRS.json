@@ -1,1 +1,0 @@
-{"name":"GMW_HORIZONTAL_CRS","refDomainVersions":[{"majorVersion":1,"minorVersion":0,"refCodes":[{"code":"ETRS89","description":"European Terrestrial Reference System 1989 (EPSG 4258).","imbro":"J","imbroA":"J"},{"code":"RD","description":"Rijks Driehoeksmeting – Amersfoort RD New (EPSG 28992).","imbro":"J","imbroA":"J"}]}],"uri":"urn:bro:gmw:HorizontalCrs"}

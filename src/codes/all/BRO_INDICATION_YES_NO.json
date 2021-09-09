@@ -1,1 +1,0 @@
-{"name":"BRO_INDICATION_YES_NO","refDomainVersions":[{"majorVersion":1,"minorVersion":0,"refCodes":[{"code":"ja","description":"Ja.","imbro":"J","imbroA":"J"},{"code":"nee","description":"Nee.","imbro":"J","imbroA":"J"},{"code":"onbekend","description":"Onbekend.","imbro":"N","imbroA":"J"}]}],"uri":"urn:bro:IndicationYesNo"}
