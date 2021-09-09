@@ -1,0 +1,1 @@
+{"name":"BHR_NaamGebeurtenis","refDomainVersions":[{"majorVersion":2,"minorVersion":0,"refCodes":[{"code":"vervolgGerapporteerd","description":"Er is na de rapportage van het eerste deelonderzoek een volgend deelonderzoek gerapporteerd, maar dat is nog niet het rapport waarmee het onderzoek wordt gecompleteerd.","imbro":"J","imbroA":"J"}]}],"uri":"urn:bro:bhr:EventName"}

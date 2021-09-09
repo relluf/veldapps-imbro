@@ -1,0 +1,1 @@
+{"name":"BHR_Boorspoeling","refDomainVersions":[{"majorVersion":1,"minorVersion":0,"refCodes":[{"code":"geen","description":"Geen vloeistof gebruikt tijdens het boren.","imbro":"J","imbroA":"J"}]},{"majorVersion":2,"minorVersion":0,"refCodes":[{"code":"geen","description":"Geen vloeistof gebruikt tijdens het boren.","imbro":"J","imbroA":"J"}]}],"uri":"urn:bro:bhr:FlushingMedium"}

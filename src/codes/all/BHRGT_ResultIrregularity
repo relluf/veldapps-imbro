@@ -1,0 +1,1 @@
+{"name":"BHRGT_ResultIrregularity","refDomainVersions":[{"majorVersion":1,"minorVersion":0,"refCodes":[{"code":"nietVerwachtVerloop","description":"Het verloop van het resultaat is anders dan verwacht.","imbro":"J","imbroA":"J"}]}],"uri":"urn:bro:bhrgt:ResultIrregularity"}
