@@ -8,64 +8,82 @@ define(function(require) {
 		return arr;
 	}
 	
+	var decorators = {
+		"BHRGT_GeotechnicalSoilName"(codes) {
+			var fracties = {
+				Gr: "grind",
+				Bo: "keien",
+				Co: "keitjes",
+				Sa: "zand"
+			};
+    		codes.forEach(_ => {
+    			var cv = _.code, l = cv.length, a = [];
+    			
+        		if((s = cv.replace(/MetKeitjes/, "")).length !== l) { cv = s; a.push("co"); } else
+        		if((s = cv.replace(/MetKeien/, "")).length !== l) { cv = s; a.push("bo"); } else
+        		if((s = cv.replace(/MetKlei/, "")).length !== l) { cv = s; a.push("cl"); } else
+        		if((s = cv.replace(/MetGrind/, "")).length !== l) { cv = s; a.push("gr"); } else
+        		if((s = cv.replace(/MetZand/, "")).length !== l) { cv = s; a.push("sa"); } else
+        		if((s = cv.replace(/MetSilt/, "")).length !== l) { cv = s; a.push("si"); }
+
+    			if(cv.match(/Keitjes$/)) a.unshift("Co");
+    			if(cv.match(/Keien$/)) a.unshift("Bo");
+    			if(cv.match(/Grind$/)) a.unshift("Gr");
+    			if(cv.match(/Zand$/)) a.unshift("Sa");
+    			if(cv.match(/Klei$/)) a.unshift("Cl");
+    			if(cv.match(/Silt$/)) a.unshift("Si");
+    			
+    			if(cv.match(/Veen$/)) a.unshift("Pe");
+    			if(cv.match(/Humus/)) a.unshift("Hu");
+    			if(cv.match(/Detritus/)) a.unshift("De");
+    			
+    			if(cv.match(/^keitjes/)) a.unshift("Co");
+    			if(cv.match(/^keien/)) a.unshift("Bo");
+    			if(cv.match(/^grind/)) a.unshift("Gr");
+    			if(cv.match(/^zand/)) a.unshift("Sa");
+    			if(cv.indexOf("kleiig") !== 0 && (cv.match(/^klei/))) a.unshift("Cl");
+    			if(cv.indexOf("siltig") !== 0 && (cv.match(/^silt/))) a.unshift("Si");
+    			
+    			if(cv.match(/^veen/)) a.unshift("Pe");
+    			if(cv.match(/^bruinkool/)) a.unshift("Li");
+    			if(cv.match(/^gyttja/)) a.unshift("Gy");
+    			if(cv.match(/^humus/)) a.unshift("Hu");
+    			if(cv.match(/^detritus/)) a.unshift("De");
+    			
+    			if(cv.match(/sterkGrindig/)) a.splice(1, 0, "gr3");
+    			if(cv.match(/sterkZandig/)) a.splice(1, 0, "sa3");
+    			if(cv.match(/zwakGrindig/)) a.splice(1, 0, "gr1");
+    			if(cv.match(/zwakZandig/)) a.splice(1, 0, "sa1");
+    			if(cv.match(/^kleiig/)) a.splice(1, 0, "cl");
+    			if(cv.match(/^siltig/)) a.splice(1, 0, "si");
+
+    			_.nen14688 = a;
+    			
+    			if((a = fracties[a[0]])) {
+    				_.korrelgroottefractie = a;
+    			}
+    		});
+		}
+	};
+	
 	return {
         load: function(name, req, onLoad, config) {
+        	// a name consists of domain:Table (eg. domain = gmw:, bhr:, bhrp:, bhrgt:, gmn: and Table = TubeStatus, SoilUse, ...)
+        	// gmw:TubeStatus, bhrgt:GeotechnicalSoilName
         	if(typeof window !== "undefined") {
         		var domain = domains.find(_ => _.uri === ("urn:bro:" + name));
-        		if(!domain) {
-        			throw new Error("Unknown domain urn:bro:" + name);
-        		}
 	        	require(["json!./codes/all/" + domain.name], function(module) {
-	        		var codes = codeValues(js.get("refDomainVersions.0.refCodes", module));
-		        	if(name.endsWith("GeotechnicalSoilName")) {
-		        		codes.forEach(_ => {
-		        			var cv = _.code, l = cv.length, a = [];
-		        			
-			        		if((s = cv.replace(/MetKeitjes/, "")).length !== l) { cv = s; a.push("co"); } else
-			        		if((s = cv.replace(/MetKeien/, "")).length !== l) { cv = s; a.push("bo"); } else
-			        		if((s = cv.replace(/MetKlei/, "")).length !== l) { cv = s; a.push("cl"); } else
-			        		if((s = cv.replace(/MetGrind/, "")).length !== l) { cv = s; a.push("gr"); } else
-			        		if((s = cv.replace(/MetZand/, "")).length !== l) { cv = s; a.push("sa"); } else
-			        		if((s = cv.replace(/MetSilt/, "")).length !== l) { cv = s; a.push("si"); }
-		
-		        			if(cv.match(/Keitjes$/)) a.unshift("Co");
-		        			if(cv.match(/Keien$/)) a.unshift("Bo");
-		        			if(cv.match(/Grind$/)) a.unshift("Gr");
-		        			if(cv.match(/Zand$/)) a.unshift("Sa");
-		        			if(cv.match(/Klei$/)) a.unshift("Cl");
-		        			if(cv.match(/Silt$/)) a.unshift("Si");
-		        			
-		        			if(cv.match(/Veen$/)) a.unshift("Pe");
-		        			if(cv.match(/Humus/)) a.unshift("Hu");
-		        			if(cv.match(/Detritus/)) a.unshift("De");
-		        			
-		        			if(cv.match(/^keitjes/)) a.unshift("Co");
-		        			if(cv.match(/^keien/)) a.unshift("Bo");
-		        			if(cv.match(/^grind/)) a.unshift("Gr");
-		        			if(cv.match(/^zand/)) a.unshift("Sa");
-		        			if(cv.indexOf("kleiig") !== 0 && (cv.match(/^klei/))) a.unshift("Cl");
-		        			if(cv.indexOf("siltig") !== 0 && (cv.match(/^silt/))) a.unshift("Si");
-		        			
-		        			if(cv.match(/^veen/)) a.unshift("Pe");
-		        			if(cv.match(/^bruinkool/)) a.unshift("Li");
-		        			if(cv.match(/^gyttja/)) a.unshift("Gy");
-		        			if(cv.match(/^humus/)) a.unshift("Hu");
-		        			if(cv.match(/^detritus/)) a.unshift("De");
-		        			
-		        			if(cv.match(/sterkGrindig/)) a.splice(1, 0, "gr3");
-		        			if(cv.match(/sterkZandig/)) a.splice(1, 0, "sa3");
-		        			if(cv.match(/zwakGrindig/)) a.splice(1, 0, "gr1");
-		        			if(cv.match(/zwakZandig/)) a.splice(1, 0, "sa1");
-		        			if(cv.match(/^kleiig/)) a.splice(1, 0, "cl");
-		        			if(cv.match(/^siltig/)) a.splice(1, 0, "si");
-		
-		        			_.nen14688 = a;
-		        		});
-		        	}
+	        		var n = module.refDomainVersions.length - 1;
+	        		var codes = codeValues(js.get("refDomainVersions." + n + ".refCodes", module));
+	        		var decorator = decorators[domain.name];
+	        		
+	        		decorator && decorator(codes);
+
 	        		onLoad(codes);
 	        	});
         	} else {
-        		console.log(js.sf("bro/codes/%s", name));
+        		// commannd line ./make -> r.js
+        		console.log(js.sf("v7/bro/codes/%s", name));
         		onLoad(name);
         	}
         }		
