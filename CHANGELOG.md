@@ -14,11 +14,16 @@
 
 ## Log
 
-### `2021/09/08` @1.0.2*
+### `2021/09/22` @1.0.7*
+
+* BRO: BHR-GT updaten naar 2.1
+
+### `2021/09/08` @1.0.2
 
 * Updating [src/domains.json](:), bumping up from 299 to 456 domains
 * Updating all domains
 * Adjust V7 to use this package
+* Get SoilNames back online
 
 ### `2021/05/10` @1.0.1
 * Promoting this package to be the canonical one, ie. to be used by:
