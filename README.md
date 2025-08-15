@@ -12,3 +12,8 @@ This package contains resources which can assist applications of the various reg
 
 * `window.require.config({paths:{ "bro": "../lib/node_modules/veldapps-imbro/src"}})`
 * `req("bro/codes!Quality")`
+
+
+## HOWTO Update to lastest version
+
+### `2024/09/29` SAD not present

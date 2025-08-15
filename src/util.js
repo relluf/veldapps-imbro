@@ -1,6 +1,3 @@
-define(function(require) {
-	
-	require("./codes");
-	require("./js/nameOf/methods");
-	
-});
+console.warn("deprecated - require veldapps-imbro/index instead");
+
+define(["./index"], (index) => index);
