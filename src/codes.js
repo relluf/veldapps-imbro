@@ -1,7 +1,7 @@
 define(function(require) {
 	
 	var js = require("js");
-	var domains = require("json!./domains").refDomains;
+	var D = require("json!./domains");//.refDomains;
 	
 	function codeValues(arr) {
 		arr.forEach(_ => _.codeValue = _.code);
@@ -63,6 +63,10 @@ define(function(require) {
     				_.korrelgroottefractie = a;
     			}
     		});
+		},
+		"BHRGT_BijzonderBestanddeel"(codes) {
+			codes[29].imbro = "N";
+			codes[32].imbro = "N";
 		}
 	};
 	
@@ -71,8 +75,10 @@ define(function(require) {
         	// a name consists of domain:Table (eg. domain = gmw:, bhr:, bhrp:, bhrgt:, gmn: and Table = TubeStatus, SoilUse, ...)
         	// gmw:TubeStatus, bhrgt:GeotechnicalSoilName
         	if(typeof window !== "undefined") {
+				var domains = D.refDomains;
         		var domain = domains.find(_ => _.uri === ("urn:bro:" + name));
-	        	require(["json!./codes/all/" + domain.name], function(module) {
+        		if(domain) {
+	        		require(["json!./codes/all/" + domain.name], function(module) {
 	        		var n = module.refDomainVersions.length - 1;
 	        		var codes = codeValues(js.get("refDomainVersions." + n + ".refCodes", module));
 	        		var decorator = decorators[domain.name];
@@ -81,15 +87,18 @@ define(function(require) {
 
 	        		onLoad(codes);
 	        	});
+        		} else {
+        			throw new Error("Unknown domain: " + name);
+        		}
         	} else {
         		// commannd line ./make -> r.js
-        		console.log(js.sf("v7/bro/codes/%s", name));
+        		console.log(js.sf("veldapps-imbro/codes/%s", name));
         		onLoad(name);
         	}
         }		
         // load: function(name, req, onLoad, config) {
         // 	// var domain = domains.find(_ => _.uri === ("urn:bro:" + name));
-        // 	// require(["json!v7/bro/codes/bhrgt-0.1/" + domain.name], function(module) {
+        // 	// require(["json!veldapps-imbro/codes/bhrgt-0.1/" + domain.name], function(module) {
         // 	// 	onLoad(js.get("refDomainVersions.0.refCodes", module));
         // 	// });
         // 	var domain = name = name.split(":");
@@ -97,14 +106,14 @@ define(function(require) {
 
         // 	if(typeof window !== "undefined") {
         // 		if(domain.length) {
-	       // 		require([js.sf("v7/bro/codes/%s!%s", domain.join("/"), name)], onLoad);
+	       // 		require([js.sf("veldapps-imbro/codes/%s!%s", domain.join("/"), name)], onLoad);
         // 		} else {
-        // 			require(["json!v7/bro/codes/BRO_QUALITY_REGIME"], function(module) {
+        // 			require(["json!veldapps-imbro/codes/BRO_QUALITY_REGIME"], function(module) {
         // 				onLoad(js.get("refDomainVersions.0.refCodes", module));
         // 			});
         // 		}
         // 	} else {
-        // 		console.log(js.sf("v7/bro/codes/%s!%s", domain.join("/"), name));
+        // 		console.log(js.sf("veldapps-imbro/codes/%s!%s", domain.join("/"), name));
         // 		onLoad(name);
         // 	}
         	
