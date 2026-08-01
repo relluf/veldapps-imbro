@@ -1,5 +1,14 @@
 # veldapps-imbro
 
+## BRO-validatieresultaten
+
+`veldapps-imbro/BroValidationResult` herkent JSON-responses van de
+BRO-validatieservice aan de `validatie-*.json`-naam en de combinatie van
+`status` en `errors`. De classifier normaliseert het resultaat naar
+`bro/validatieresultaat/1.0` en activeert het package-owned
+`veldapps-imbro/Tabs<Document.bro>`-facet. De generieke JSON-component kent
+hierdoor geen BRO-payloadvorm of naamconventie meer.
+
 ## BRO GLD full CSV
 
 `GldFullCsv` herkent en parseert `GLD…_full.csv`. Ook zonder passende

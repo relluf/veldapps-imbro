@@ -15,7 +15,9 @@ const textOf = Xml.textOf;
 
 const locale = window.locale.prefixed("Document");
 const TARGET_PROJECTION = "EPSG:28992";
-const BRO_FACETS = ["bro-gld"];
+const BRO_FACETS = {
+	"bro-gld": "bro.gld"
+};
 const BRO_XML_NAMESPACES = Object.assign({}, Parser.XML_NAMESPACES, {
 	"isbhr": ["http://www.broservices.nl/xsd/isbhr/1.1"],
 	"isbhrgt": (Parser.XML_NAMESPACES.isbhrgt || []).concat([
@@ -49,7 +51,7 @@ const BRO_XML_NAMESPACES = Object.assign({}, Parser.XML_NAMESPACES, {
 });
 function broFacetUri(facet, root) {
 	const registered = root && root.vars && root.vars(["document.facetUris." + facet]);
-	return registered || (BRO_FACETS.indexOf(facet) !== -1 ? "Tabs<Document." + facet + ">" : null);
+	return registered || (BRO_FACETS[facet] ? "Tabs<Document." + BRO_FACETS[facet] + ">" : null);
 }
 function getSpecificBroFacetUri(result, opts) {
 	const type = result && result.type || "";

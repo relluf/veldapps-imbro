@@ -1,6 +1,11 @@
 
 # `2026/07/31` BRO document facets and GLD full CSV uitleesrondes
 
+## BRO-validatieresultaten
+
+* Moves JSON recognition and normalization of `validatie-*.json` BRO service responses from the generic Veldoffice JSON facet into `veldapps-imbro/BroValidationResult`.
+* Registers the classifier instance-scoped through the application document context and keeps `Tabs<Document.json>` domain-neutral.
+
 ## GLD full CSV
 
 * Adds `GldFullCsv.js` for detecting and parsing BRO `GLD…_full.csv` exports by filename or their identifying header structure.
@@ -19,7 +24,10 @@
 
 ## BRO document facets
 
-* Adds package-owned `Tabs<Document.bro>`, `Tabs<Document.bro-gld>` and `Tabs<Document.brosad>` specializations.
+* Moves the BRO-specific document facets out of `veldoffice-vcl-comps` and makes this package the canonical owner of `Tabs<Document.bro>`, `Tabs<Document.bro.gld>` and `Tabs<Document.bro.sad>`.
+* Renames the former VCL specializations `Tabs<Document.bro-gld>` and `Tabs<Document.brosad>` to `Tabs<Document.bro.gld>` and `Tabs<Document.bro.sad>`, expressing GLD and SAD as refinements of the shared BRO facet.
+* Keeps the external parser and format identifiers `bro-gld` and `bro-sad` unchanged; the host facet registry maps those identifiers to the dotted package-qualified VCL component URIs.
+* Lets the GLD and SAD facets inherit their package-local BRO base through `./Tabs<Document.bro>`; SAD additionally composes the package-qualified SIKB facet for its embedded SIKB document.
 * Adds BRO domain views for dispatch responses, GMW, BHR-GT, GLD time series and SAD envelopes with embedded SIKB documents.
 * Adds BRO and SAD validation actions, package-specific facet activation and OpenLayers geometry handling for locations, projects and boreholes.
 

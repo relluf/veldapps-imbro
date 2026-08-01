@@ -192,7 +192,7 @@ function applyGldView(root, result) {
 	const alphaview = root.qs("#alphaview");
 	const reflect = alphaview && alphaview.qs("#reflect");
 
-	root.vars("document.bro-gld.model", model);
+	root.vars("document.bro.gld.model", model);
 	root.vars("parser-document-root", model.view);
 	result.view = model.view;
 	root.vars("parser-document-result", result);
@@ -232,15 +232,15 @@ function renderGldPreview(component) {
 	const preview = root.qs("#preview");
 	const host = root.qs("#bro-gld-preview-chart") || preview;
 	const node = host && host.getNode && host.getNode();
-	const model = root.vars("document.bro-gld.model") ||
+	const model = root.vars("document.bro.gld.model") ||
 		gldModel(root.vars("parser-document-result"));
 	const rows = chartRows(model);
 	const unit = model.header.Eenheid || "";
-	const current = preview && preview.vars("document.bro-gld.chart");
+	const current = preview && preview.vars("document.bro.gld.chart");
 
 	if(current && current.clear instanceof Function) {
 		current.clear();
-		preview.vars("document.bro-gld.chart", null);
+		preview.vars("document.bro.gld.chart", null);
 	}
 	if(!node) {
 		return rows;
@@ -256,7 +256,7 @@ function renderGldPreview(component) {
 		return rows;
 	}
 
-	preview.vars("document.bro-gld.chart", AmCharts.makeChart(chartNode, {
+	preview.vars("document.bro.gld.chart", AmCharts.makeChart(chartNode, {
 		type: "serial",
 		categoryField: "date",
 		dataProvider: rows,
@@ -333,24 +333,26 @@ function renderGldPreview(component) {
 function activateGldFacet(action) {
 	const root = rootFor(action);
 	const result = root.vars("parser-document-result");
-	root.vars("document.facet", "bro-gld");
+	root.vars("document.facet", "bro.gld");
 	root.vars("document.getSpecificFacet", null);
 	root.vars("document.applySpecificFacet", null);
-	root.vars("document.bro-gld.renderPreview", renderGldPreview);
+	root.vars("document.bro.gld.renderPreview", renderGldPreview);
 	applyGldView(root, result);
 	root.qs("#tab-preview").show();
 	scheduleGldPreviewRender(action, 100);
 }
 
-[["veldapps-imbro/Tabs<Document.bro>"], {
+[["./Tabs<Document.bro>"], {
 	vars: {
 		document: {
 			"activate-facet": activateGldFacet,
-			facet: "bro-gld",
+			facet: "bro.gld",
 			getSpecificFacet: null,
 			applySpecificFacet: null,
-			"bro-gld": {
-				renderPreview: renderGldPreview
+			bro: {
+				gld: {
+					renderPreview: renderGldPreview
+				}
 			}
 		}
 	}

@@ -164,7 +164,7 @@ function embeddedSikbViewOf(sikb, sikbWrapper) {
 			return view;
 		}
 	} catch(e) {
-		console.warn("[Document.brosad] Xml.gml failed", e);
+		console.warn("[Document.bro.sad] Xml.gml failed", e);
 	}
 	return sikb || {};
 }
@@ -191,7 +191,7 @@ function normalizeBroSadResult(action) {
 		embeddedSikbRootOf(envelope);
 
 	if(!envelope || !sikb) {
-		console.warn("[Document.brosad] embedded SIKB FeatureCollectionIMSIKB0101 not found", result);
+		console.warn("[Document.bro.sad] embedded SIKB FeatureCollectionIMSIKB0101 not found", result);
 		return result;
 	}
 
@@ -267,7 +267,7 @@ function activateBroSadFacet(action) {
 			validateSikbVisible: false
 		});
 	}
-	root.vars("document.facet", "brosad");
+	root.vars("document.facet", "bro.sad");
 	root.vars("document.getSpecificFacet", null);
 	root.vars("document.applySpecificFacet", null);
 
@@ -284,7 +284,7 @@ function activateBroSadFacet(action) {
 	setSikbBroSadActionsVisible(root);
 	updateBroSadDocumentUi(root);
 	if(typeof console !== "undefined" && console.info) {
-		console.info("[Document.brosad] activated", {
+		console.info("[Document.bro.sad] activated", {
 			hasSikbFacet: hasSikbFacet,
 			hasPreviewTab: !!root.down("#tab-preview"),
 			hasSikbValidate: !!validateSikb,
@@ -347,11 +347,11 @@ function validateBroSadXml(action, evt) {
 	);
 }
 
-[["veldapps-imsikb/Tabs<Document.sikb>", "veldapps-imbro/Tabs<Document.bro>"],{
+[["veldapps-imsikb/Tabs<Document.sikb>", "./Tabs<Document.bro>"],{
 	vars: {
 		document: {
 			"activate-facet": activateBroSadFacet,
-			facet: "brosad"
+			facet: "bro.sad"
 		}
 	}
 }, [

@@ -4,7 +4,7 @@
   "description": "This package contains resources which can assist applications of the various registration objects defined by  [BRO (Basisregistratie Ondergrond)](https://basisregistratieondergrond.nl). ",
   "main": "index.js",
   "scripts": {
-    "test": "node test/UitleesrondeGldFull.test.js"
+    "test": "node test/UitleesrondeGldFull.test.js && node test/BroValidationResult.test.js"
   },
   "repository": {
     "type": "git",
