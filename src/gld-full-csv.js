@@ -1,12 +1,9 @@
 define([
 	"./GldFullCsv",
-	"./profiles/gld-full-csv",
-	"bxv/formats/csv"
-], function(GldFullCsv, GldFullCsvProfile, CsvFormat) {
+	"./bxv"
+], function(GldFullCsv, Bxv) {
 
-	if(!CsvFormat.profiles.some(profile => profile.id === GldFullCsvProfile.id)) {
-		CsvFormat.profiles.splice(Math.max(0, CsvFormat.profiles.length - 1), 0, GldFullCsvProfile);
-	}
+	Bxv.install();
 
 	return GldFullCsv;
 });

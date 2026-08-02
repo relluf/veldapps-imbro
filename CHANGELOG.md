@@ -1,6 +1,37 @@
 
 # `2026/07/31` BRO document facets and GLD full CSV uitleesrondes
 
+## BXV integration contract
+
+* Adds package-owned XML profiles for BHR, BHR-GT, CPT, GLD, GMW and SAD plus an explicit, idempotent `bxv.install()` entrypoint.
+* Refactors GLD full CSV registration to use the shared profile registry while preserving the compatibility entry module.
+* Adds positive BRO, generic XML fallback and duplicate-installation contract coverage against the shared parser harness.
+
+## CPT
+
+* Adds the `bro.cpt` document facet for CPT 1.0/1.1 intake and dispatch documents, decoding the fixed SWE `DataArray` measurement record and its declared text separators.
+* Shows depth-scaled cone resistance, local friction, friction ratio and pore-pressure profiles, together with predrilled depth, removed layers, dissipation tests and registration metadata.
+* Makes CPT series, document metadata, removed layers and dissipation tests clickable so their parsed XML source opens in the shared BRO Alphaview, and supplies compact measurement and parameter collections for the Data tab.
+
+## BHR
+
+* Adds the `bro.bhr` document facet for BHR 1.1/2.0 intake and dispatch documents, with a depth-scaled pedological bore profile, layer-component proportions, bore and research intervals, registration metadata, groundwater levels and root-penetrable depth.
+* Makes BHR layers, intervals and depth markers clickable so their parsed XML source opens in the shared BRO Alphaview.
+
+## GMW
+
+* Adds the `bro.gmw` document facet with a depth-scaled groundwater monitoring well profile on the Weergave tab, including monitoring tubes, screens, sumps, electrodes, registration metadata and well events.
+* Routes both `isgmw` intake documents and `dsgmw` dispatch documents to the same facet and derives missing intake screen positions from the supplied tube-part lengths.
+
+## BHR-GT
+
+* Adds the `bro.bhrgt` document facet with a traditional, depth-scaled bore-profile Weergave tab: patterned material fractions, layer thicknesses, registration metadata, investigated intervals and bored intervals.
+* Covers every BHR-GT 2.1 layer form: soil, rock and special-material layers, not-described intervals, post-sedimentary discontinuities, excavated layers and fluid-mud layers.
+* Also shows sampled, completed and contaminated intervals when present and corrects the BHR-GT Data view to collect all repeated logs and XSD-defined layer forms.
+* Makes BHR-GT layers and intervals and GMW tubes, tube parts, electrodes and events clickable, opening their parsed XML source in the same floating Alphaview used by the IMSIKB preview.
+* Gives each rendered BHR-GT and GMW SVG its own pattern IDs, so material and filter hatching remains visible when multiple documents are previewed successively.
+* Improves the GMW profile balance with a wider tube track and metadata column, compact deep-well scaling, non-overlapping labels and suppression of meaningless zero diameters.
+
 ## BRO-validatieresultaten
 
 * Moves JSON recognition and normalization of `validatie-*.json` BRO service responses from the generic Veldoffice JSON facet into `veldapps-imbro/BroValidationResult`.

@@ -1,5 +1,23 @@
 # veldapps-imbro
 
+## BRO CPT-documenten
+
+`veldapps-imbro/Tabs<Document.bro.cpt>` is het documentfacet voor
+`bro-cpt/1.0`- en `bro-cpt/1.1`-inname- en uitgiftedocumenten. De Weergave-tab
+decodeert de SWE-meetreeks en toont conusweerstand, plaatselijke wrijving,
+wrijvingsgetal en waterspanning als diepteprofielen. Verwijderde lagen,
+voorgeboorde diepte en dissipatietesten worden in hetzelfde profiel gemarkeerd.
+De Data-tab bevat een compact overzicht van de metingen en parameters.
+
+## BRO BHR-documenten
+
+`veldapps-imbro/Tabs<Document.bro.bhr>` is het documentfacet voor
+`bro-bhr/1.1`- en `bro-bhr/2.0`-inname- en uitgifteberichten. De Weergave-tab
+toont een dieptegeschaald bodemprofiel met componentverhoudingen,
+strooisel- en gesteentelagen, boor- en onderzoeksintervallen,
+grondwaterstanden, bewortelbare diepte en registratiemetadata. Klikken op een
+profielobject opent het bijbehorende geparseerde XML-object.
+
 ## BRO-validatieresultaten
 
 `veldapps-imbro/BroValidationResult` herkent JSON-responses van de

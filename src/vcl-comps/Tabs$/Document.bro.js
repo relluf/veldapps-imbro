@@ -1,4 +1,4 @@
-"use js, ol, proj4, veldapps-ol/proj/RD, bxv/Layers, bxv/Parser, bxv/Collectors, veldapps-xml/index";
+"use js, ol, proj4, veldapps-ol/proj/RD, bxv/Layers, bxv/Parser, bxv/Collectors, veldapps-xml/index, veldapps-imbro/BhrGt";
 
 const ol = require("ol");
 const proj4 = require("proj4");
@@ -6,6 +6,7 @@ const Layers = require("bxv/Layers");
 const Parser = require("bxv/Parser");
 const Collectors = require("bxv/Collectors");
 const Xml = require("veldapps-xml/index");
+const BhrGt = require("veldapps-imbro/BhrGt");
 require("veldapps-ol/proj/RD");
 const collectObjectsForKeys = Xml.collectObjectsForKeys;
 const collectValuesForKeys = Xml.collectValuesForKeys;
@@ -16,10 +17,16 @@ const textOf = Xml.textOf;
 const locale = window.locale.prefixed("Document");
 const TARGET_PROJECTION = "EPSG:28992";
 const BRO_FACETS = {
-	"bro-gld": "bro.gld"
+	"bro-bhr": "veldapps-imbro/Tabs<Document.bro.bhr>",
+	"bro-bhr-gt": "veldapps-imbro/Tabs<Document.bro.bhrgt>",
+	"bro-cpt": "veldapps-imbro/Tabs<Document.bro.cpt>",
+	"bro-gmw": "veldapps-imbro/Tabs<Document.bro.gmw>",
+	"bro-gld": "veldapps-imbro/Tabs<Document.bro.gld>"
 };
 const BRO_XML_NAMESPACES = Object.assign({}, Parser.XML_NAMESPACES, {
-	"isbhr": ["http://www.broservices.nl/xsd/isbhr/1.1"],
+	"isbhr": (Parser.XML_NAMESPACES.isbhr || []).concat([
+		"http://www.broservices.nl/xsd/isbhr/2.0"
+	]),
 	"isbhrgt": (Parser.XML_NAMESPACES.isbhrgt || []).concat([
 		"http://www.broservices.nl/xsd/isbhr-gt/1.0",
 		"http://www.broservices.nl/xsd/isbhr-gt/2.0",
@@ -29,11 +36,25 @@ const BRO_XML_NAMESPACES = Object.assign({}, Parser.XML_NAMESPACES, {
 		"http://www.broservices.nl/xsd/dsbhr-gt/2.0",
 		"http://www.broservices.nl/xsd/dsbhr-gt/2.1"
 	]),
-	"bhrcom": ["http://www.broservices.nl/xsd/bhrcommon/1.1"],
+	"bhrcom": (Parser.XML_NAMESPACES.bhrcom || []).concat([
+		"http://www.broservices.nl/xsd/bhrcommon/2.0"
+	]),
 	"bhrgtcom": (Parser.XML_NAMESPACES.bhrgtcom || []).concat([
 		"http://www.broservices.nl/xsd/bhrgtcommon/1.0",
 		"http://www.broservices.nl/xsd/bhrgtcommon/2.0",
 		"http://www.broservices.nl/xsd/bhrgtcommon/2.1"
+	]),
+	"iscpt": (Parser.XML_NAMESPACES.iscpt || []).concat([
+		"http://www.broservices.nl/xsd/iscpt/1.0",
+		"http://www.broservices.nl/xsd/iscpt/1.1"
+	]),
+	"dscpt": (Parser.XML_NAMESPACES.dscpt || []).concat([
+		"http://www.broservices.nl/xsd/dscpt/1.0",
+		"http://www.broservices.nl/xsd/dscpt/1.1"
+	]),
+	"cptcom": (Parser.XML_NAMESPACES.cptcom || []).concat([
+		"http://www.broservices.nl/xsd/cptcommon/1.0",
+		"http://www.broservices.nl/xsd/cptcommon/1.1"
 	]),
 	"issad": (Parser.XML_NAMESPACES.issad || []).concat([
 		"http://www.broservices.nl/xsd/issad/1.0",
@@ -51,10 +72,22 @@ const BRO_XML_NAMESPACES = Object.assign({}, Parser.XML_NAMESPACES, {
 });
 function broFacetUri(facet, root) {
 	const registered = root && root.vars && root.vars(["document.facetUris." + facet]);
-	return registered || (BRO_FACETS[facet] ? "Tabs<Document." + BRO_FACETS[facet] + ">" : null);
+	return registered || BRO_FACETS[facet] || null;
 }
 function getSpecificBroFacetUri(result, opts) {
 	const type = result && result.type || "";
+	if(type === "bro-bhr" || type.startsWith("bro-bhr/")) {
+		return broFacetUri("bro-bhr", opts && opts.root);
+	}
+	if(type === "bro-bhr-gt" || type.startsWith("bro-bhr-gt/")) {
+		return broFacetUri("bro-bhr-gt", opts && opts.root);
+	}
+	if(type === "bro-cpt" || type.startsWith("bro-cpt/")) {
+		return broFacetUri("bro-cpt", opts && opts.root);
+	}
+	if(type === "bro-gmw" || type.startsWith("bro-gmw/")) {
+		return broFacetUri("bro-gmw", opts && opts.root);
+	}
 	if(type === "bro-gld" || type.startsWith("bro-gld/")) {
 		return broFacetUri("bro-gld", opts && opts.root);
 	}
@@ -375,21 +408,34 @@ function firstPayloadObject(item) {
 function arrayOf(value) {
 	return value === undefined || value === null ? [] : Array.as(value);
 }
+function broXmlOf(result) {
+	if(!result || typeof result !== "object") return result;
+	const candidates = [result.xml, result.root, result];
+	for(let index = 0; index < candidates.length; ++index) {
+		const candidate = candidates[index];
+		if(!candidate || typeof candidate !== "object" || candidate instanceof Array) continue;
+		const keys = Object.keys(candidate).filter(key => {
+			const name = Xml.localNameOf(key);
+			return !Xml.isAttributeKey(key) && candidate[key] && typeof candidate[key] === "object" &&
+				(/(?:Request|Response)$/.test(name) || /^[A-Z][A-Z0-9]*(?:_[A-Z0-9]+)+$/.test(name));
+		});
+		if(keys.length && Object.keys(candidate).filter(key => !Xml.isAttributeKey(key)).length > 1) {
+			const wrapper = {};
+			wrapper[keys[0]] = candidate[keys[0]];
+			return wrapper;
+		}
+		return candidate;
+	}
+	return result;
+}
 function dispatchResponseView(xml) {
-	const key = [
+	const key = Object.keys(xml || {}).filter(key => [
 		"dispatchCharacteristicsResponse",
-		"dispatchDataResponse",
-		"dssad:dispatchDataResponse",
-		"dsbhrgt:dispatchDataResponse"
-	]
-		.filter(key => xml && xml[key])[0];
+		"dispatchDataResponse"
+	].indexOf(Xml.localNameOf(key)) !== -1)[0];
 	if(!key) return null;
 	const response = xml[key];
-	const docs = arrayOf(
-		response.dispatchDocument ||
-		response["dssad:dispatchDocument"] ||
-		response["dsbhrgt:dispatchDocument"]
-	);
+	const docs = arrayOf(BhrGt.directValues(response, "dispatchDocument"));
 	return {
 		Response: [response],
 		Documents: docs.map(firstPayloadObject)
@@ -407,37 +453,41 @@ function broGmwView(xml) {
 }
 function broBhrGtView(xml) {
 	let sourceDocument = Collectors["bro->sourceDocument"](xml, ["isbhrgt", "dsbhrgt"]);
-	const requestKey = Object.keys(xml).filter(k => k.endsWith("Request"))[0];
+	const requestKey = Object.keys(xml).filter(k => /Request$/.test(Xml.localNameOf(k)))[0];
 	const request = xml[requestKey];
-	const responseKey = Object.keys(xml).filter(k => k.endsWith("Response"))[0];
+	const responseKey = Object.keys(xml).filter(k => /Response$/.test(Xml.localNameOf(k)))[0];
 	const response = xml[responseKey];
-	const dispatchDocument = response && (js.get("dsbhrgt:dispatchDocument", response) || js.get("dispatchDocument", response));
+	const dispatchDocument = response && BhrGt.directValues(response, "dispatchDocument");
 	const firstDispatchDocument = arrayOf(dispatchDocument)[0];
 	const dispatchDoc = firstDispatchDocument && firstPayloadObject(firstDispatchDocument);
 
-	sourceDocument = js.get("isbhrgt:sourceDocument", request) || js.get("sourceDocument", request) || sourceDocument;
+	sourceDocument = BhrGt.directValues(request, "sourceDocument")[0] || sourceDocument;
 
 	const report = firstDispatchDocument ? Object.keys(firstDispatchDocument)[0] : Object.keys(sourceDocument || {})[0];
 	const doc = dispatchDoc || report && sourceDocument[report];
 	if(!report || !doc) {
 		return xml;
 	}
-	const boring = doc.boring || doc["isbhrgt:boring"];
-	const description = doc["isbhrgt:boreholeSampleDescription"] || doc.boreholeSampleDescription;
-	const analysis = doc["isbhrgt:boreholeSampleAnalysis"] || doc.boreholeSampleAnalysis;
+	const boring = BhrGt.directValues(doc, "boring")[0];
+	const description = BhrGt.directValues(doc, "boreholeSampleDescription")[0];
+	const analysis = BhrGt.directValues(doc, "boreholeSampleAnalysis")[0];
+	const collect = name => BhrGt.descendants(doc, name);
 	const result = {
 		[report.split(":").pop()]: [doc],
 		"Analysis": arrayOf(analysis),
-		"Investigated Intervals": arrayOf(js.get("bhrgtcom:investigatedInterval", analysis)),
+		"Investigated Intervals": collect("investigatedInterval"),
 		"Boring": arrayOf(boring),
 		"Description": arrayOf(description),
-		"Layers": arrayOf(js.get("bhrgtcom:descriptiveBoreholeLog.bhrgtcom:layer", description)),
-		"Bored Intervals": arrayOf(js.get("bhrgtcom:boredInterval", boring)),
-		"Completed Intervals": arrayOf(js.get("bhrgtcom:completedInterval", boring)),
-		"Sampled Intervals": arrayOf(js.get("bhrgtcom:sampledInterval", boring)),
-		"Excavated Layers": arrayOf(js.get("bhrgtcom:excavatedLayers", boring)),
-		"Boring Velocity": arrayOf(js.get("bhrgtcom:boringVelocity", boring)),
-		"Contaminated Intervals": arrayOf(js.get("bhrgtcom:contaminatedInterval", boring))
+		"Layers": collect("layer"),
+		"Not Described Intervals": collect("notDescribedInterval"),
+		"Post-sedimentary Discontinuities": collect("postSedimentaryDiscontinuity"),
+		"Excavated Layers": collect("excavatedLayer"),
+		"Fluid Mud Layer": collect("fluidMudLayer"),
+		"Bored Intervals": collect("boredInterval"),
+		"Completed Intervals": collect("completedInterval"),
+		"Sampled Intervals": collect("sampledInterval"),
+		"Boring Velocity": collect("boringVelocity"),
+		"Contaminated Intervals": collect("contaminatedInterval")
 	};
 
 	if(requestKey) result[requestKey] = arrayOf(request);
@@ -447,20 +497,20 @@ function broBhrGtView(xml) {
 }
 function broViewFor(result) {
 	const type = result && result.type || "";
-	const xml = result && (result.xml || result.root);
+	const xml = broXmlOf(result);
 	if(!xml || !type.startsWith("bro-")) {
 		return null;
 	}
 	Xml.applyParseOptions(xml, { namespaces: BRO_XML_NAMESPACES });
+	if(type.startsWith("bro-bhr-gt/")) {
+		return broBhrGtView(xml);
+	}
 	const dispatch = dispatchResponseView(xml);
 	if(dispatch) {
 		return dispatch;
 	}
 	if(type.startsWith("bro-gmw/")) {
 		return broGmwView(xml);
-	}
-	if(type.startsWith("bro-bhr-gt/")) {
-		return broBhrGtView(xml);
 	}
 	return null;
 }
