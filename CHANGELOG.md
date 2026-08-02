@@ -1,5 +1,5 @@
 
-# `2026/07/31` BRO document facets and GLD full CSV uitleesrondes
+# `2026/07/31` `1.0.9` BRO document facets and GLD full CSV uitleesrondes
 
 ## BXV integration contract
 
