@@ -1,6 +1,6 @@
 {
   "name": "veldapps-imbro",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "This package contains resources which can assist applications of the various registration objects defined by  [BRO (Basisregistratie Ondergrond)](https://basisregistratieondergrond.nl). ",
   "main": "index.js",
   "scripts": {
