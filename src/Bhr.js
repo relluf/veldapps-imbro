@@ -120,6 +120,34 @@ define(function() {
 		}
 		return {};
 	}
+	function firstNamedObject(obj, expression, seen) {
+		seen = seen || [];
+		if(Array.isArray(obj)) {
+			for(let index = 0; index < obj.length; ++index) {
+				const found = firstNamedObject(obj[index], expression, seen);
+				if(found) return found;
+			}
+			return null;
+		}
+		if(!obj || typeof obj !== "object" || seen.indexOf(obj) !== -1) return null;
+		seen.push(obj);
+		const keys = Object.keys(obj).filter(key => !isAttributeKey(key));
+		for(let index = 0; index < keys.length; ++index) {
+			const values = asArray(obj[keys[index]]);
+			if(expression.test(localName(keys[index]))) {
+				const value = values.filter(candidate => candidate && typeof candidate === "object")[0];
+				if(value) return value;
+			}
+		}
+		for(let index = 0; index < keys.length; ++index) {
+			const found = firstNamedObject(obj[keys[index]], expression, seen);
+			if(found) return found;
+		}
+		return null;
+	}
+	function inspectionDocumentOf(xml) {
+		return firstNamedObject(xml, /^(?:borehole|BHR(?:_|$))/i) || xml;
+	}
 	function join(values, separator) {
 		return values.filter(Boolean).join(separator || " · ");
 	}
@@ -231,7 +259,7 @@ define(function() {
 		const removed = track("removedLayer", "Verwijderde lagen", descendants(xml, "removedLayer")
 			.map(source => intervalItem(source, "removedLayer", "upperBoundary", "lowerBoundary",
 				childText(source, "removedMaterial") || "Verwijderde laag", "")));
-		const bored = track("boredInterval", "Boortrajecten", descendants(xml, "boringTool")
+		const bored = track("boredInterval", "Boortraject", descendants(xml, "boringTool")
 			.map(tool => {
 				const interval = directValues(tool, "boredInterval")[0];
 				return interval && intervalItem(interval, "boredInterval", "beginDepth", "endDepth",
@@ -262,6 +290,7 @@ define(function() {
 	}
 	function model(result) {
 		const xml = xmlOf(result);
+		const document = inspectionDocumentOf(xml);
 		const tracks = descriptionTracks(xml).concat(intervalTracks(xml));
 		const items = tracks.reduce((all, value) => all.concat(value.items), []);
 		const markers = markersOf(xml);
@@ -281,6 +310,7 @@ define(function() {
 		const offset = childText(verticalPosition, "offset");
 		return {
 			xml: xml,
+			document: document,
 			tracks: tracks,
 			items: items,
 			markers: markers,
@@ -314,6 +344,17 @@ define(function() {
 		return String(value === undefined || value === null ? "" : value)
 			.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
 			.replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+	}
+	function broLoketHref(broId) {
+		return "https://broloket.nl/ondergrondgegevens?bro-id=" +
+			encodeURIComponent(String(broId || "").trim()).replace(/'/g, "%27");
+	}
+	function isBroId(value) {
+		return /^[A-Z]{3}\d{9,12}$/i.test(String(value || "").trim());
+	}
+	function broLoketLinkAttrs(broId) {
+		return " href='" + broLoketHref(broId) +
+			"' target='_blank' rel='noopener noreferrer'";
 	}
 	function niceTickStep(maximumDepth) {
 		const rough = maximumDepth / 10;
@@ -378,9 +419,11 @@ define(function() {
 			") rotate(-90)'>Diepte t.o.v. maaiveld</text>";
 		layerTracks.forEach((track_, trackIndex) => {
 			const x = axisWidth + trackIndex * (layerWidth + gap);
-			content += "<text class='track-title' x='" + (x + 8) + "' y='25'>" + escapeHtml(track_.title) +
+			content += "<g class='track-heading'" + instanceAttrs(track_.items,
+				"Open " + track_.title, { type: track_.title, label: track_.items.length + " objecten", direct: true }) + ">" +
+				"<text class='track-title' x='" + (x + 8) + "' y='25'>" + escapeHtml(track_.title) +
 				"</text><text class='track-detail' x='" + (x + 8) + "' y='46'>" +
-				escapeHtml(track_.detail || track_.items.length + " lagen") + "</text>" +
+				escapeHtml(track_.detail || track_.items.length + " lagen") + "</text></g>" +
 				"<rect class='profile-background' x='" + x + "' y='" + top + "' width='" + profileWidth +
 				"' height='" + plotHeight + "'/>";
 			track_.items.forEach(item => {
@@ -413,9 +456,14 @@ define(function() {
 		});
 		intervalTracks.forEach((track_, trackIndex) => {
 			const x = axisWidth + layerTracks.length * (layerWidth + gap) + trackIndex * (intervalWidth + gap);
-			content += "<text class='track-title' x='" + (x + 7) + "' y='25'>" + escapeHtml(track_.title) +
-				"</text><text class='track-detail' x='" + (x + 7) + "' y='46'>" + track_.items.length +
-				" interval" + (track_.items.length === 1 ? "" : "len") + "</text><rect class='track-background' x='" +
+			const countNoun = track_.key === "boredInterval" ? " traject" : " interval";
+			const trackCount = track_.items.length + countNoun + (track_.items.length === 1 ? "" :
+				(track_.key === "boredInterval" ? "en" : "len"));
+			content += "<g class='track-heading'" + instanceAttrs(track_.items,
+				"Open " + track_.title, { type: track_.title, label: trackCount, direct: true }) + ">" +
+				"<text class='track-title' x='" + (x + 7) + "' y='25'>" + escapeHtml(track_.title) +
+				"</text><text class='track-detail' x='" + (x + 7) + "' y='46'>" + trackCount +
+				"</text></g><rect class='track-background' x='" +
 				x + "' y='" + top + "' width='" + intervalWidth + "' height='" + plotHeight + "'/>";
 			track_.items.forEach(item => {
 				const y = top + item.beginDepth * scale;
@@ -442,25 +490,39 @@ define(function() {
 				marker_.color + "'>" + escapeHtml(marker_.title + " " + formatNumber(marker_.depth) + " m") + "</text></g>";
 		});
 		if(metadataWidth) {
-			content += "<g class='profile-metadata'><text class='metadata-title'" + instanceAttrs(model_.xml,
-				"Open BHR XML-document", { type: "BHR document", label: model_.broId }) + " x='" + metadataX +
-				"' y='25'>Registratie en boring</text>";
+			content += "<g class='profile-metadata'><g class='metadata-heading'" +
+				instanceAttrs(model_.document, "Open Registratie en boring",
+					{ type: "BHR document", label: model_.broId, direct: true }) + ">" +
+				"<text class='metadata-title' x='" + metadataX +
+				"' y='25'>Registratie en boring</text></g>";
 			model_.metadata.forEach((item, index) => {
 				const y = top + index * 24;
-				content += "<text class='metadata-label' x='" + metadataX + "' y='" + y + "'>" +
+				const isId = item.label === "ID";
+				const linksToBroLoket = isId && isBroId(item.value);
+				content += (linksToBroLoket ? "<a class='metadata-row bro-id-link'" + broLoketLinkAttrs(item.value) :
+					"<g class='metadata-row'" + instanceAttrs(model_.document,
+					"Open " + item.label, { type: "BHR document", label: model_.broId, direct: true })) + ">" +
+					"<text class='metadata-label' x='" + metadataX + "' y='" + y + "'>" +
 					escapeHtml(item.label) + ":</text><text class='metadata-value' x='" + (metadataX + 145) +
-					"' y='" + y + "'>" + escapeHtml(item.value) + "</text>";
+					"' y='" + y + "'>" + escapeHtml(item.value) + "</text>" + (linksToBroLoket ? "</a>" : "</g>");
 			});
 			content += "</g>";
 		}
 		return content + "</svg>";
 	}
 	function render(model_, options) {
+		options = options || {};
+		const instanceAttrs = (instance, label, meta) => typeof options.instanceAttrs === "function" ?
+			options.instanceAttrs(instance, label, meta) : "";
 		if(!model_ || !model_.tracks.length) {
 			return "<div class='bhr-empty'>Geen bodemlagen of diepte-intervallen gevonden in dit BHR-document.</div>";
 		}
 		const summary = [
-			model_.broId ? "<strong>" + escapeHtml(model_.broId) + "</strong>" : "",
+			model_.broId ? (isBroId(model_.broId) ? "<a class='bhr-preview-id bro-id-link'" +
+				broLoketLinkAttrs(model_.broId) + "><strong>" + escapeHtml(model_.broId) + "</strong></a>" :
+				"<strong class='bhr-preview-id'" + instanceAttrs(model_.document, "Open ID",
+					{ type: "BHR document", label: model_.broId, direct: true }) + ">" +
+					escapeHtml(model_.broId) + "</strong>") : "",
 			model_.finalDepth ? "Einddiepte " + escapeHtml(formatNumber(model_.finalDepth)) + " m" : "",
 			model_.items.length + " diepteobjecten"
 		].filter(Boolean).join("<span class='bhr-separator'>·</span>");

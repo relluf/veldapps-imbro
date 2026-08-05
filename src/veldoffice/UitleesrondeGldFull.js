@@ -1,6 +1,6 @@
 define([
 	"veldapps-imbro/GldFullCsv",
-	"veldapps-mon-fmt/ElliTrack",
+	"veldapps-mon-fmt/logger/ElliTrack",
 	"veldapps-mon-fmt/index",
 	"veldapps-mon-fmt/veldoffice/UitleesrondeBase",
 	"veldapps-mon-fmt/veldoffice/LoggerPlaatsingChoice",
@@ -228,10 +228,19 @@ define([
 		}
 		return (hash >>> 0).toString(16);
 	}
-	function elliTrackImportFiles(rows, targetTimeZone) {
+	function elliTrackPeriod(date, grouping) {
+		const year = date.substring(0, 4);
+		const month = parseInt(date.substring(5, 7), 10);
+
+		if(grouping === "month") return year + "-" + String(month).padStart(2, "0");
+		if(grouping === "quarter") return year + "-Q" + (Math.floor((month - 1) / 3) + 1);
+		return year;
+	}
+	function elliTrackImportFiles(rows, targetTimeZone, grouping) {
 		const header = "Datum\tWaterstand\tTemperatuur water\tTemperatuur intern";
 		const groups = {};
 		const timeZone = ElliTrack.normalizeTimeZone(targetTimeZone || ElliTrack.DEFAULT_TIME_ZONE);
+		const grouping_ = ["year", "quarter", "month"].indexOf(grouping) !== -1 ? grouping : "year";
 
 		rows.forEach(row => {
 			const serials = loggerSerienummers(row.loggerPlaatsingen);
@@ -242,11 +251,11 @@ define([
 			}
 			row.gldFull.measurements.forEach(measurement => {
 				const date = ElliTrack.convertInstant(measurement.tijdstip, timeZone);
-				const year = date.substring(0, 4);
-				const key = serials[0] + "|" + year;
+				const period = elliTrackPeriod(date, grouping_);
+				const key = serials[0] + "|" + period;
 				const group = groups[key] || (groups[key] = {
 					loggerSerienummer: serials[0],
-					year: year,
+					period: period,
 					lines: {},
 					resources: {},
 					meetpuntFilters: {},
@@ -270,14 +279,15 @@ define([
 			const group = groups[key];
 			const lines = Object.keys(group.lines).sort();
 			const content = [header].concat(lines).join("\n");
-			const name = "ElliTrack-" + group.loggerSerienummer + "-" + group.year + ".txt";
+			const name = "ElliTrack-" + group.loggerSerienummer + "-" + group.period + ".txt";
 
 			return {
 				name: name,
 				text: content,
 				fingerprint: fingerprint(name + "\n" + content),
 				loggerSerienummer: group.loggerSerienummer,
-				periode: group.year,
+				periode: group.period,
+				periodeIndeling: grouping_,
 				metingen: lines.length,
 				eersteMeting: lines[0] && lines[0].split("\t")[0] || "",
 				laatsteMeting: lines.length && lines[lines.length - 1].split("\t")[0] || "",

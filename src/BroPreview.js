@@ -57,7 +57,9 @@ define(function() {
 
 		evt.preventDefault && evt.preventDefault();
 		evt.stopPropagation && evt.stopPropagation();
-		const result = H.i(inspectObjectFor(item.instance, item.meta));
+		const target = item.meta && item.meta.direct ? item.instance :
+			inspectObjectFor(item.instance, item.meta);
+		const result = H.i(target);
 		return result && result.then instanceof Function ?
 			result.then(helper => helper && helper.addClass && helper.addClass("no-shrinking")) : true;
 	}

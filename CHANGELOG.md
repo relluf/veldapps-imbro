@@ -1,3 +1,28 @@
+# `2026/08/05` Makes BRO previews safer and directly inspectable
+
+## Profile routing and facet lifecycle
+
+* Gives every package-owned BRO XML profile an explicit component URI in [src/profiles/xml.js](), so BHR, BHR-GT, CPT, GLD, GMW and SAD Documents select their specialized facet without application-side inference.
+* Adds document-type guards to [src/vcl-comps/Tabs$/Document.bro.bhr.js](), [src/vcl-comps/Tabs$/Document.bro.bhrgt.js](), [src/vcl-comps/Tabs$/Document.bro.cpt.js](), [src/vcl-comps/Tabs$/Document.bro.gld.js]() and [src/vcl-comps/Tabs$/Document.bro.gmw.js]() so delayed renderers cannot overwrite a subsequently opened document.
+* Exposes the shared BRO view applicator from [src/vcl-comps/Tabs$/Document.bro.js]() and reapplies it when BHR and BHR-GT specializations activate.
+
+## Interactive BRO previews
+
+* Extends [src/BroPreview.js]() with direct inspection targets, allowing document roots, arrays and complete metadata rows to open unchanged through `H.i`.
+* Makes BHR and BHR-GT track headings, registration headings, metadata rows and source objects inspectable in [src/Bhr.js]() and [src/BhrGt.js](); the previews now resolve the actual borehole/meetpunt document object instead of defaulting to the full envelope.
+* Makes CPT and GMW metadata rows inspect their underlying source value or document in [src/Cpt.js]() and [src/Gmw.js](). Valid BRO IDs in all four preview families link directly to Broloket, while non-BRO identifiers remain internal inspection links.
+* Refines BHR-GT material and interval labels, keeps composite material descriptions readable, and reduces the GMW vertical plot height to improve the preview balance.
+* Updates the BHR, BHR-GT, CPT and GMW facet styles so internal targets and external BRO-ID links have consistent hover and SVG behavior.
+
+## ElliTrack output
+
+* Moves [src/veldoffice/UitleesrondeGldFull.js]() to the logger-scoped ElliTrack module and supports import grouping per year, quarter or month, preserving the selected period classification in every generated file.
+
+## Regression coverage
+
+* Extends [test/BroPreview.test.js](), [test/Bhr.test.js](), [test/BhrGt.test.js](), [test/Cpt.test.js]() and [test/Gmw.test.js]() with direct-inspection, Broloket-link, clickable-heading, layout and material-label assertions.
+* Adds the BHR-GT 2.1 dispatch fixture [test/fixtures/bro-bhr-gt-2.1.xml]() and verifies its profile, version, facet and Document contract in [test/ParserContract.test.js]().
+* Extends [test/UitleesrondeGldFull.test.js]() with the logger-module migration, stale GLD facet protection and quarterly/monthly ElliTrack filenames.
 
 # `2026/07/31` `1.0.9` BRO document facets and GLD full CSV uitleesrondes
 

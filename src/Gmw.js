@@ -7,6 +7,7 @@ define(function() {
 		onbruikbaar: "#d94b45",
 		onbekend: "#929aa3"
 	};
+	const PLOT_HEIGHT_FACTOR = 0.8;
 	let svgSequence = 0;
 
 	function localName(key) {
@@ -102,6 +103,17 @@ define(function() {
 			.replace(/>/g, "&gt;")
 			.replace(/"/g, "&quot;")
 			.replace(/'/g, "&#39;");
+	}
+	function broLoketHref(broId) {
+		return "https://broloket.nl/ondergrondgegevens?bro-id=" +
+			encodeURIComponent(String(broId || "").trim()).replace(/'/g, "%27");
+	}
+	function isBroId(value) {
+		return /^[A-Z]{3}\d{9,12}$/i.test(String(value || "").trim());
+	}
+	function broLoketLinkAttrs(broId) {
+		return " href='" + broLoketHref(broId) +
+			"' target='_blank' rel='noopener noreferrer'";
 	}
 	function documentRootKey(obj) {
 		if(!obj || typeof obj !== "object" || Array.isArray(obj)) return null;
@@ -333,6 +345,10 @@ define(function() {
 		const fraction = rough / exponent;
 		return (fraction <= 1 ? 1 : fraction <= 2 ? 2 : fraction <= 5 ? 5 : 10) * exponent;
 	}
+	function metadataTarget(item, document) {
+		const value = item && (item.source !== undefined ? item.source : item.value);
+		return value && typeof value === "object" ? value : document;
+	}
 	function svg(model_, options) {
 		options = options || {};
 		const instanceAttrs = (instance, label, meta) => typeof options.instanceAttrs === "function" ?
@@ -349,7 +365,7 @@ define(function() {
 		const metadataGap = 38;
 		const top = 72;
 		const bottom = 38;
-		const plotHeight = Math.max(480, Math.min(1050, range * 62));
+		const plotHeight = Math.round(Math.max(480, Math.min(1050, range * 62)) * PLOT_HEIGHT_FACTOR);
 		const width = axisWidth + plotWidth + metadataWidth + metadataGap + 18;
 		const height = top + plotHeight + bottom;
 		const scale = plotHeight / range;
@@ -421,14 +437,18 @@ define(function() {
 		const metadataX = axisWidth + plotWidth + metadataGap;
 		content += "<line class='metadata-divider' x1='" + (metadataX - 20) + "' y1='18' x2='" +
 			(metadataX - 20) + "' y2='" + (height - 18) + "'/>";
-		content += "<g class='profile-metadata'><text class='metadata-title'" + instanceAttrs(model_.document,
-			"Open GMW brondocument", { type: "GMW brondocument", label: model_.info.report }) + " x='" + metadataX +
+		content += "<g class='profile-metadata'><text class='metadata-title' x='" + metadataX +
 			"' y='25'>Grondwatermonitoringput</text>";
 		model_.metadata.forEach((item, index) => {
 			const y = top + index * 24;
-			content += "<text class='metadata-label' x='" + metadataX + "' y='" + y + "'>" +
+			const isId = item.label === "ID";
+			const linksToBroLoket = isId && isBroId(item.value);
+			content += (linksToBroLoket ? "<a class='metadata-row bro-id-link'" + broLoketLinkAttrs(item.value) :
+				"<g class='metadata-row'" + instanceAttrs(metadataTarget(item, model_.document),
+				"Open " + item.label, { type: "GMW detail", label: item.label, direct: true })) +
+				"><text class='metadata-label' x='" + metadataX + "' y='" + y + "'>" +
 				escapeHtml(item.label) + ":</text><text class='metadata-value' x='" + (metadataX + 150) +
-				"' y='" + y + "'>" + escapeHtml(item.value) + "</text>";
+				"' y='" + y + "'>" + escapeHtml(item.value) + "</text>" + (linksToBroLoket ? "</a>" : "</g>");
 		});
 		const eventsY = top + model_.metadata.length * 24 + 26;
 		content += "<text class='metadata-title' x='" + metadataX + "' y='" + eventsY + "'>Gebeurtenissen</text>";
@@ -445,12 +465,19 @@ define(function() {
 		return content;
 	}
 	function render(model_, options) {
+		options = options || {};
+		const instanceAttrs = (instance, label, meta) => typeof options.instanceAttrs === "function" ?
+			options.instanceAttrs(instance, label, meta) : "";
 		if(!model_ || !model_.tubes.length) {
 			return "<div class='gmw-empty'>Geen buisprofiel gevonden in dit GMW-document.</div>";
 		}
 		const inferred = model_.tubes.some(tube => tube.inferredPositions);
 		const summary = [
-			model_.broId ? "<strong>" + escapeHtml(model_.broId) + "</strong>" : "",
+			model_.broId ? (isBroId(model_.broId) ? "<a class='gmw-preview-id bro-id-link'" +
+				broLoketLinkAttrs(model_.broId) + "><strong>" + escapeHtml(model_.broId) + "</strong></a>" :
+				"<strong class='gmw-preview-id'" + instanceAttrs(model_.document, "Open ID",
+					{ type: "GMW detail", label: model_.broId, direct: true }) + ">" +
+					escapeHtml(model_.broId) + "</strong>") : "",
 			escapeHtml(titleCase(model_.info.messageKind)),
 			model_.tubes.length + " peilbuis" + (model_.tubes.length === 1 ? "" : "zen")
 		].filter(Boolean).join("<span class='gmw-separator'>·</span>");

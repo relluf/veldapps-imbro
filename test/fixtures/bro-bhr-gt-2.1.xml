@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dispatchDataResponse
+	xmlns="http://www.broservices.nl/xsd/dsbhr-gt/2.1"
+	xmlns:brocom="http://www.broservices.nl/xsd/brocommon/3.0"
+	xmlns:gml="http://www.opengis.net/gml/3.2">
+	<brocom:responseType>dispatch</brocom:responseType>
+	<dispatchDocument>
+		<BHR_GT_O gml:id="BRO_0003">
+			<brocom:broId>BHR000000368937</brocom:broId>
+		</BHR_GT_O>
+	</dispatchDocument>
+</dispatchDataResponse>

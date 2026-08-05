@@ -685,7 +685,10 @@ function activateBroFacet(action) {
 			"activate-facet": activateBroFacet,
 			facet: "bro",
 			getSpecificFacet: getSpecificBroFacetUri,
-			applySpecificFacet: applySpecificBroFacet
+			applySpecificFacet: applySpecificBroFacet,
+			bro: {
+				applyView: applyBroView
+			}
 		}
 	}
 }, [

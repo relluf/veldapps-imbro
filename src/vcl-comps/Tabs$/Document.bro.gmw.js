@@ -6,6 +6,10 @@ const BroPreview = require("veldapps-imbro/BroPreview");
 function rootFor(component) {
 	return component.up("Tabs<Document>:root") || component.up(":root") || component;
 }
+function isGmwResult(result) {
+	const type = String(result && result.type || "");
+	return type === "bro-gmw" || type.startsWith("bro-gmw/");
+}
 function applyGmwView(root, model) {
 	const result = root.vars("parser-document-result") || {};
 	const alphaview = root.qs("#alphaview");
@@ -23,10 +27,12 @@ function applyGmwView(root, model) {
 }
 function renderGmwPreview(component) {
 	const root = rootFor(component);
+	const result = root.vars("parser-document-result") || {};
+	if(!isGmwResult(result)) return null;
 	const preview = root.qs("#preview");
 	const node = preview && preview.getNode && preview.getNode();
 	const model = root.vars("document.bro.gmw.model") ||
-		Gmw.model(root.vars("parser-document-result") || {});
+		Gmw.model(result);
 	const registry = BroPreview.createRegistry();
 
 	root.vars("document.bro.gmw.model", model);
@@ -38,6 +44,7 @@ function renderGmwPreview(component) {
 	return model;
 }
 function scheduleGmwPreview(component, delay) {
+	if(!isGmwResult(rootFor(component).vars("parser-document-result") || {})) return null;
 	const render = () => {
 		try {
 			renderGmwPreview(component);
@@ -53,7 +60,9 @@ function scheduleGmwPreview(component, delay) {
 }
 function activateGmwFacet(action) {
 	const root = rootFor(action);
-	const model = Gmw.model(root.vars("parser-document-result") || {});
+	const result = root.vars("parser-document-result") || {};
+	if(!isGmwResult(result)) return null;
+	const model = Gmw.model(result);
 
 	root.vars("document.facet", "bro.gmw");
 	root.vars("document.getSpecificFacet", null);
@@ -82,6 +91,13 @@ function activateGmwFacet(action) {
 		css: {
 			'': "overflow:hidden;background:#f7f8fa;color:#26323c;",
 			"& .gmw-preview-header": "box-sizing:border-box;height:44px;padding:12px 18px;background:white;border-bottom:1px solid #dfe3e7;font-size:14px;",
+			"& .bro-id-link": "color:#1d4ed8;text-decoration:none;cursor:pointer;",
+			"& .bro-id-link:hover": "text-decoration:underline;",
+			"& svg .bro-id-link text": "fill:#1d4ed8;text-decoration:none;",
+			"& svg .bro-id-link:hover text": "text-decoration:underline;",
+			"& .gmw-preview-header .bro-id-link": "color:inherit;",
+			"& .gmw-preview-header [data-bro-ref]": "cursor:pointer;",
+			"& .gmw-preview-header [data-bro-ref]:hover": "text-decoration:underline;",
 			"& .gmw-separator": "display:inline-block;margin:0 9px;color:#a0a7ad;",
 			"& .gmw-preview-scroll": "position:absolute;left:0;right:0;top:44px;bottom:39px;overflow:auto;padding:12px 16px;box-sizing:border-box;",
 			"& .gmw-profile": "display:block;background:white;border:1px solid #dfe3e7;border-radius:4px;box-shadow:0 1px 2px rgba(0,0,0,.05);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;",

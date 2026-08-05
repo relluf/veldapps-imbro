@@ -27,6 +27,8 @@ const broFacetSource = fs.readFileSync(path.join(root,
 	"src/vcl-comps/Tabs$/Document.bro.js"), "utf8");
 const cptFacetSource = fs.readFileSync(path.join(root,
 	"src/vcl-comps/Tabs$/Document.bro.cpt.js"), "utf8");
+assert.match(cptFacetSource, /function isCptResult[\s\S]*if\(!isCptResult\(result\)\) return null/,
+	"een achtergebleven CPT-renderer mag geen ander documenttype overschrijven");
 
 const records = [
 	"0.30,0.30,1,3.4,3.5,3.2,-999999,-999999,-999999,-999999,0.1,-999999,-999999,-999999,-999999,0.5,-999999,-999999,0.04,-999999,19.8,-999999,0.01,-999999,1.2",
@@ -137,6 +139,52 @@ assert.match(Cpt.svg(model, {
 	}
 }), /class='cpt-series cpt-series-coneResistance' data-bro-ref='test-cpt'/,
 	"de CPT-meetreeks moet aan zijn XML-bronobject gekoppeld kunnen worden");
+assert.match(Cpt.render(model), /<strong class='cpt-preview-id'>CPT-TEST-1<\/strong>/,
+	"een object-ID die geen BRO-ID is moet zonder Broloket-opmaak worden getoond");
+assert.doesNotMatch(Cpt.render(model), /bro-id-link/);
+assert.doesNotMatch(Cpt.svg(model), /bro-id-link/,
+	"een niet-BRO-ID mag ook in de metadata geen Broloket-link krijgen");
+const internalCpt = Cpt.render(model, {
+	instanceAttrs(instance) {
+		return instance === model.document ? " data-bro-ref='cpt-root'" : "";
+	}
+});
+assert.match(internalCpt,
+	/<strong class='cpt-preview-id' data-bro-ref='cpt-root'>CPT-TEST-1<\/strong>/,
+	"een niet-BRO-ID in de previewheader moet de CPT-root openen");
+assert.match(internalCpt,
+	/<g class='metadata-row' data-bro-ref='cpt-root'><text class='metadata-label'[^>]*>ID:<\/text>/,
+	"een niet-BRO-ID in de metadata moet de CPT-root openen");
+const cptIdMetadata = model.metadata.find(item => item.label === "ID");
+model.broId = "CPT00000000447";
+cptIdMetadata.value = model.broId;
+const cptBroLoketUrl = "https://broloket.nl/ondergrondgegevens\\?bro-id=CPT00000000447";
+const cptRendered = Cpt.render(model);
+assert.match(cptRendered, new RegExp("<a class='cpt-preview-id bro-id-link' href='" +
+	cptBroLoketUrl + "' target='_blank' rel='noopener noreferrer'>"),
+	"het CPT-id boven de grafiek moet Broloket in een nieuw tabblad openen");
+assert.match(Cpt.svg(model), new RegExp("<a class='metadata-row bro-id-link' href='" +
+	cptBroLoketUrl + "' target='_blank' rel='noopener noreferrer'><text class='metadata-label'[^>]*>ID:</text>"),
+	"de ID-rij van CPT moet naar hetzelfde Broloket-record verwijzen");
+assert.match(cptFacetSource, /& \.cpt-preview-header \.bro-id-link[^\n]*color:inherit;/,
+	"een BRO-id in de previewheader moet de gewone tekstkleur behouden");
+model.broId = "CPT-TEST-1";
+cptIdMetadata.value = model.broId;
+const cptArrayDetail = [{ waarde: 1 }, { waarde: 2 }];
+model.metadata.push({ label: "Arraydetail", value: cptArrayDetail });
+let cptArrayLink;
+const cptMetadataSvg = Cpt.svg(model, {
+	instanceAttrs(instance, label, meta) {
+		if(label === "Open Arraydetail") cptArrayLink = { instance: instance, meta: meta };
+		return instance ? " data-bro-ref='cpt-detail'" : "";
+	}
+});
+model.metadata.pop();
+assert.match(cptMetadataSvg, /class='metadata-row' data-bro-ref='cpt-detail'/,
+	"de volledige CPT-detailrij moet klikbaar zijn");
+assert.strictEqual(cptArrayLink.instance, cptArrayDetail,
+	"een array-detail moet de array zelf als inspectiedoel gebruiken");
+assert.strictEqual(cptArrayLink.meta.direct, true);
 
 const customRows = Cpt.parseResultRows({
 	"swe:encoding": { "swe:TextEncoding": {

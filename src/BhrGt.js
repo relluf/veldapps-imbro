@@ -56,6 +56,12 @@ define(function() {
 		completedInterval: "Afgewerkt interval",
 		contaminatedInterval: "Verontreinigd interval"
 	};
+	const MATERIAL_TRACK_LABELS = {
+		soil: "Grond",
+		rock: "Gesteente",
+		specialMaterial: "Bijzonder materiaal",
+		layer: "Lagen"
+	};
 	let svgSequence = 0;
 
 	function localName(key) {
@@ -119,6 +125,35 @@ define(function() {
 		}
 		return {};
 	}
+	function firstNamedObject(obj, expression, seen) {
+		seen = seen || [];
+		if(Array.isArray(obj)) {
+			for(let index = 0; index < obj.length; ++index) {
+				const found = firstNamedObject(obj[index], expression, seen);
+				if(found) return found;
+			}
+			return null;
+		}
+		if(!obj || typeof obj !== "object" || seen.indexOf(obj) !== -1) return null;
+		seen.push(obj);
+		const keys = Object.keys(obj).filter(key => !isAttributeKey(key));
+		for(let index = 0; index < keys.length; ++index) {
+			const values = asArray(obj[keys[index]]);
+			if(expression.test(localName(keys[index]))) {
+				const value = values.filter(candidate => candidate && typeof candidate === "object")[0];
+				if(value) return value;
+			}
+		}
+		for(let index = 0; index < keys.length; ++index) {
+			const found = firstNamedObject(obj[keys[index]], expression, seen);
+			if(found) return found;
+		}
+		return null;
+	}
+	function inspectionDocumentOf(xml) {
+		return firstNamedObject(xml, /^(?:meetpunt|borehole)$/i) ||
+			firstNamedObject(xml, /^BHR_GT(?:_|$)/) || xml;
+	}
 	function textOf(value, seen) {
 		if(value === undefined || value === null) return "";
 		if(Array.isArray(value)) {
@@ -167,6 +202,9 @@ define(function() {
 	function titleCase(value) {
 		value = String(value || "").replace(/([a-z])([A-Z])/g, "$1 $2");
 		return value ? value.charAt(0).toUpperCase() + value.slice(1) : "";
+	}
+	function descriptionLabel(value) {
+		return String(value || "").replace(/([a-z])([A-Z])/g, "$1 $2").toLowerCase();
 	}
 	function materialKind(value) {
 		value = String(value || "").toLowerCase();
@@ -256,7 +294,7 @@ define(function() {
 		if(kind === "layer") {
 			const material = layerMaterial(source);
 			const item = intervalItem(source, material.kind,
-				"upperBoundary", "lowerBoundary", titleCase(material.title), material.detail);
+				"upperBoundary", "lowerBoundary", descriptionLabel(material.title), material.detail);
 			if(item) {
 				item.schemaKind = kind;
 				item.materialBands = material.bands;
@@ -278,6 +316,13 @@ define(function() {
 			left.beginDepth - right.beginDepth || left.endDepth - right.endDepth);
 		return { key: key, title: title, detail: detail || "", items: items };
 	}
+	function descriptiveTrackTitle(items, index, count) {
+		const labels = Object.keys(MATERIAL_TRACK_LABELS)
+			.filter(kind => items.some(item => item.kind === kind))
+			.map(kind => MATERIAL_TRACK_LABELS[kind]);
+		const title = labels.length ? labels.join(" / ") : "Lagen";
+		return count > 1 ? title + " " + (index + 1) : title;
+	}
 	function descriptiveTracks(xml) {
 		let logs = descendants(xml, "descriptiveBoreholeLog");
 		if(!logs.length && descendants(xml, "layer").length) logs = [xml];
@@ -290,7 +335,7 @@ define(function() {
 				childText(log, "descriptionQuality"),
 				childText(log, "descriptionLocation")
 			]);
-			return track("layers-" + index, logs.length > 1 ? "Lagen " + (index + 1) : "Lagen", items, detail);
+			return track("layers-" + index, descriptiveTrackTitle(items, index, logs.length), items, detail);
 		}).filter(value => value.items.length);
 	}
 	function collectedIntervalTrack(xml, definition) {
@@ -306,7 +351,7 @@ define(function() {
 	}
 	const TRACK_DEFINITIONS = [{
 		kind: "investigatedInterval",
-		title: "Onderzochte intervallen",
+		title: "Onderzocht",
 		begin: "beginDepth",
 		end: "endDepth",
 		itemTitle: source => childText(source, "analysisType") || "Onderzocht interval",
@@ -314,7 +359,7 @@ define(function() {
 			childText(source, "described") ? "beschreven: " + childText(source, "described") : ""])
 	}, {
 		kind: "boredInterval",
-		title: "Geboorde intervallen",
+		title: "Geboord",
 		begin: "beginDepth",
 		end: "endDepth",
 		itemTitle: source => childText(source, "boringTechnique") || "Geboord interval",
@@ -322,28 +367,28 @@ define(function() {
 			"Ø " + childText(source, "boredDiameter") + " mm" : ""
 	}, {
 		kind: "sampledInterval",
-		title: "Bemonsterde intervallen",
+		title: "Bemonsterd",
 		begin: "beginDepth",
 		end: "endDepth",
 		itemTitle: source => childText(source, "samplingMethod") || "Bemonsterd interval",
 		detail: source => childText(source, "samplingQuality")
 	}, {
 		kind: "completedInterval",
-		title: "Afgewerkte intervallen",
+		title: "Afgewerkt",
 		begin: "beginDepth",
 		end: "endDepth",
 		itemTitle: source => childText(source, "backfillMaterial") || "Afgewerkt interval",
 		detail: source => childText(source, "materialPermanentCasing")
 	}, {
 		kind: "contaminatedInterval",
-		title: "Verontreinigde intervallen",
+		title: "Verontreinigd",
 		begin: "beginDepth",
 		end: "endDepth",
 		itemTitle: () => "Verontreinigd interval",
 		detail: () => ""
 	}];
 	function excavatedTrack(xml) {
-		return track("excavatedLayer", "Ontgraven lagen", descendants(xml, "excavatedLayer")
+		return track("excavatedLayer", "Ontgraven", descendants(xml, "excavatedLayer")
 			.map(source => intervalItem(source, "excavatedLayer",
 				"upperBoundary", "lowerBoundary",
 				childText(source, "excavatedMaterial") || "Ontgraven laag", "")));
@@ -365,6 +410,7 @@ define(function() {
 	}
 	function model(result) {
 		const xml = xmlOf(result);
+		const document = inspectionDocumentOf(xml);
 		let tracks = descriptiveTracks(xml)
 			.concat(TRACK_DEFINITIONS.map(definition => collectedIntervalTrack(xml, definition)))
 			.concat([excavatedTrack(xml), fluidMudTrack(xml)])
@@ -381,6 +427,7 @@ define(function() {
 		const offset = childText(verticalPosition, "offset");
 		return {
 			xml: xml,
+			document: document,
 			tracks: tracks,
 			items: items,
 			maximumDepth: maximumDepth,
@@ -411,6 +458,17 @@ define(function() {
 			.replace(/>/g, "&gt;")
 			.replace(/"/g, "&quot;")
 			.replace(/'/g, "&#39;");
+	}
+	function broLoketHref(broId) {
+		return "https://broloket.nl/ondergrondgegevens?bro-id=" +
+			encodeURIComponent(String(broId || "").trim()).replace(/'/g, "%27");
+	}
+	function isBroId(value) {
+		return /^[A-Z]{3}\d{9,12}$/i.test(String(value || "").trim());
+	}
+	function broLoketLinkAttrs(broId) {
+		return " href='" + broLoketHref(broId) +
+			"' target='_blank' rel='noopener noreferrer'";
 	}
 	function niceTickStep(maximumDepth) {
 		const rough = maximumDepth / 10;
@@ -496,9 +554,11 @@ define(function() {
 			") rotate(-90)'>Diepte t.o.v. maaiveld</text>";
 		layerTracks.forEach((track_, trackIndex) => {
 			const x = axisWidth + trackIndex * (layerTrackWidth + trackGap);
+			content += "<g class='track-heading'" + instanceAttrs(track_.items,
+				"Open " + track_.title, { type: track_.title, label: track_.items.length + " objecten", direct: true }) + ">";
 			content += "<text class='track-title' x='" + (x + 8) + "' y='25'>" + escapeHtml(track_.title) + "</text>";
 			content += "<text class='track-detail' x='" + (x + 8) + "' y='46'>" +
-				escapeHtml(track_.detail || track_.items.length + " object" + (track_.items.length === 1 ? "" : "en")) + "</text>";
+				escapeHtml(track_.detail || track_.items.length + " object" + (track_.items.length === 1 ? "" : "en")) + "</text></g>";
 			content += "<rect class='profile-background' x='" + x + "' y='" + top + "' width='" + profileWidth +
 				"' height='" + plotHeight + "'/>";
 			track_.items.forEach((item, itemIndex) => {
@@ -539,9 +599,11 @@ define(function() {
 		intervalTracks.forEach((track_, trackIndex) => {
 			const x = axisWidth + layerTracks.length * (layerTrackWidth + trackGap) +
 				trackIndex * (intervalTrackWidth + trackGap);
+			const trackCount = track_.items.length + " traject" + (track_.items.length === 1 ? "" : "en");
+			content += "<g class='track-heading'" + instanceAttrs(track_.items,
+				"Open " + track_.title, { type: track_.title, label: trackCount, direct: true }) + ">";
 			content += "<text class='track-title' x='" + (x + 7) + "' y='25'>" + escapeHtml(track_.title) + "</text>";
-			content += "<text class='track-detail' x='" + (x + 7) + "' y='46'>" + track_.items.length +
-				" interval" + (track_.items.length === 1 ? "" : "len") + "</text>";
+			content += "<text class='track-detail' x='" + (x + 7) + "' y='46'>" + trackCount + "</text></g>";
 			content += "<rect class='track-background' x='" + x + "' y='" + top + "' width='" + intervalTrackWidth +
 				"' height='" + plotHeight + "'/>";
 			track_.items.forEach(item => {
@@ -562,14 +624,21 @@ define(function() {
 			});
 		});
 		if(metadataWidth) {
-			content += "<g class='profile-metadata'><text class='metadata-title'" + instanceAttrs(model_.xml,
-				"Open BHR-GT XML-document", { type: "BHR-GT document", label: model_.broId }) + " x='" + metadataX +
-				"' y='25'>Registratie en boring</text>";
+			content += "<g class='profile-metadata'><g class='metadata-heading'" +
+				instanceAttrs(model_.document, "Open Registratie en boring",
+					{ type: "BHR-GT document", label: model_.broId, direct: true }) + ">" +
+				"<text class='metadata-title' x='" + metadataX +
+				"' y='25'>Registratie en boring</text></g>";
 			model_.metadata.forEach((item, index) => {
 				const y = top + index * 24;
-				content += "<text class='metadata-label' x='" + metadataX + "' y='" + y + "'>" +
+				const isId = item.label === "ID";
+				const linksToBroLoket = isId && isBroId(item.value);
+				content += (linksToBroLoket ? "<a class='metadata-row bro-id-link'" + broLoketLinkAttrs(item.value) :
+					"<g class='metadata-row'" + instanceAttrs(model_.document,
+					"Open " + item.label, { type: "BHR-GT document", label: model_.broId, direct: true })) + "><text class='metadata-label' x='" +
+					metadataX + "' y='" + y + "'>" +
 					escapeHtml(item.label) + ":</text><text class='metadata-value' x='" + (metadataX + 142) +
-					"' y='" + y + "'>" + escapeHtml(item.value) + "</text>";
+					"' y='" + y + "'>" + escapeHtml(item.value) + "</text>" + (linksToBroLoket ? "</a>" : "</g>");
 			});
 			content += "</g>";
 		}
@@ -577,11 +646,18 @@ define(function() {
 		return content;
 	}
 	function render(model_, options) {
+		options = options || {};
+		const instanceAttrs = (instance, label, meta) => typeof options.instanceAttrs === "function" ?
+			options.instanceAttrs(instance, label, meta) : "";
 		if(!model_ || !model_.tracks.length) {
 			return "<div class='bhrgt-empty'>Geen lagen of diepte-intervallen gevonden in dit BHR-GT-document.</div>";
 		}
 		const summary = [
-			model_.broId ? "<strong>" + escapeHtml(model_.broId) + "</strong>" : "",
+			model_.broId ? (isBroId(model_.broId) ? "<a class='bhrgt-preview-id bro-id-link'" +
+				broLoketLinkAttrs(model_.broId) + "><strong>" + escapeHtml(model_.broId) + "</strong></a>" :
+				"<strong class='bhrgt-preview-id'" + instanceAttrs(model_.document, "Open ID",
+					{ type: "BHR-GT document", label: model_.broId, direct: true }) + ">" +
+					escapeHtml(model_.broId) + "</strong>") : "",
 			model_.finalDepth ? "Einddiepte " + escapeHtml(formatNumber(model_.finalDepth)) + " m" : "",
 			model_.items.length + " diepteobjecten"
 		].filter(Boolean).join("<span class='bhrgt-separator'>·</span>");

@@ -26,6 +26,8 @@ const broFacetSource = fs.readFileSync(path.join(root,
 	"src/vcl-comps/Tabs$/Document.bro.js"), "utf8");
 const gmwFacetSource = fs.readFileSync(path.join(root,
 	"src/vcl-comps/Tabs$/Document.bro.gmw.js"), "utf8");
+assert.match(gmwFacetSource, /function isGmwResult[\s\S]*if\(!isGmwResult\(result\)\) return null/,
+	"een achtergebleven GMW-renderer mag geen ander documenttype overschrijven");
 
 const intakeResult = {
 	type: "bro-gmw/1.1",
@@ -124,6 +126,22 @@ assert.strictEqual(dispatch.tubes[0].screenBottomDepth, 1);
 assert.strictEqual(dispatch.events.length, 2);
 assert.match(Gmw.render(intake), /Blinde buis/);
 assert.match(Gmw.render(intake), /Filter/);
+assert.match(Gmw.render(intake), /<strong class='gmw-preview-id'>GMW-INTAKE-1<\/strong>/,
+	"een object-ID die geen BRO-ID is moet zonder Broloket-opmaak worden getoond");
+assert.doesNotMatch(Gmw.render(intake), /bro-id-link/);
+assert.doesNotMatch(Gmw.svg(intake), /bro-id-link/,
+	"een niet-BRO-ID mag ook in de metadata geen Broloket-link krijgen");
+const internalGmw = Gmw.render(intake, {
+	instanceAttrs(instance) {
+		return instance === intake.document ? " data-bro-ref='gmw-root'" : "";
+	}
+});
+assert.match(internalGmw,
+	/<strong class='gmw-preview-id' data-bro-ref='gmw-root'>GMW-INTAKE-1<\/strong>/,
+	"een niet-BRO-ID in de previewheader moet de GMW-root openen");
+assert.match(internalGmw,
+	/<g class='metadata-row' data-bro-ref='gmw-root'><text class='metadata-label'[^>]*>ID:<\/text>/,
+	"een niet-BRO-ID in de metadata moet de GMW-root openen");
 const intakeDiameter = intake.tubes[0].diameter;
 intake.tubes[0].diameter = "0";
 assert.doesNotMatch(Gmw.render(intake), /Ø\s*0\s*mm/,
@@ -143,12 +161,41 @@ assert.ok(secondSvg.indexOf("fill='url(#" + secondScreenPattern + ")'") !== -1,
 	"het tweede GMW-profiel moet naar zijn eigen pattern-def verwijzen");
 assert.match(firstSvg, /class='metadata-divider'/,
 	"profiel en metadata moeten visueel van elkaar zijn gescheiden");
+const expectedDispatchHeight = 72 + Math.round(Math.max(480,
+	Math.min(1050, (dispatch.maximumDepth - dispatch.minimumDepth) * 62)) * 0.8) + 38;
+assert.strictEqual(Number(firstSvg.match(/<svg[^>]+height='([^']+)'/)[1]), expectedDispatchHeight,
+	"de GMW-weergave moet tachtig procent van de oorspronkelijke verticale plotruimte claimen");
 assert.match(Gmw.svg(dispatch, {
 	instanceAttrs(instance) {
 		return instance ? " data-bro-ref='test-gmw'" : "";
 	}
 }), /class='monitoring-tube' data-bro-ref='test-gmw'/,
 	"een GMW-peilbuis moet aan zijn XML-bronobject gekoppeld kunnen worden");
+const gmwBroLoketUrl = "https://broloket.nl/ondergrondgegevens\\?bro-id=GMW000000068650";
+const gmwRendered = Gmw.render(dispatch);
+assert.match(gmwRendered, new RegExp("<a class='gmw-preview-id bro-id-link' href='" +
+	gmwBroLoketUrl + "' target='_blank' rel='noopener noreferrer'>"),
+	"het GMW-id boven het profiel moet Broloket in een nieuw tabblad openen");
+assert.match(Gmw.svg(dispatch), new RegExp("<a class='metadata-row bro-id-link' href='" +
+	gmwBroLoketUrl + "' target='_blank' rel='noopener noreferrer'><text class='metadata-label'[^>]*>ID:</text>"),
+	"de ID-rij van GMW moet naar hetzelfde Broloket-record verwijzen");
+assert.match(gmwFacetSource, /& \.gmw-preview-header \.bro-id-link[^\n]*color:inherit;/,
+	"een BRO-id in de previewheader moet de gewone tekstkleur behouden");
+const gmwArrayDetail = ["eerste", "tweede"];
+dispatch.metadata.push({ label: "Arraydetail", value: gmwArrayDetail });
+let gmwArrayLink;
+const gmwMetadataSvg = Gmw.svg(dispatch, {
+	instanceAttrs(instance, label, meta) {
+		if(label === "Open Arraydetail") gmwArrayLink = { instance: instance, meta: meta };
+		return instance ? " data-bro-ref='gmw-detail'" : "";
+	}
+});
+dispatch.metadata.pop();
+assert.match(gmwMetadataSvg, /class='metadata-row' data-bro-ref='gmw-detail'/,
+	"de volledige GMW-detailrij moet klikbaar zijn");
+assert.strictEqual(gmwArrayLink.instance, gmwArrayDetail,
+	"een array-detail moet de array zelf als inspectiedoel gebruiken");
+assert.strictEqual(gmwArrayLink.meta.direct, true);
 assert.doesNotMatch(Gmw.render(Gmw.model({ xml: {
 	"isgmw:GMW_Construction": {
 		"isgmw:objectIdAccountableParty": "<script>alert(1)</script>",

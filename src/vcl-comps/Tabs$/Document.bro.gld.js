@@ -8,6 +8,10 @@ const GLD_CHART_COLOR = "rgb(56, 121, 217)";
 function rootFor(component) {
 	return component.up("Tabs<Document>:root") || component.up(":root") || component;
 }
+function isGldResult(result) {
+	const type = String(result && result.type || "");
+	return type === "bro-gld" || type.startsWith("bro-gld/");
+}
 function displayValue(value) {
 	if(value === undefined || value === null) {
 		return "";
@@ -214,6 +218,7 @@ function chartRows(model) {
 	})).filter(row => row.date && isFinite(row.value));
 }
 function scheduleGldPreviewRender(component, delay) {
+	if(!isGldResult(rootFor(component).vars("parser-document-result") || {})) return null;
 	const render = () => {
 		try {
 			renderGldPreview(component);
@@ -229,11 +234,13 @@ function scheduleGldPreviewRender(component, delay) {
 }
 function renderGldPreview(component) {
 	const root = rootFor(component);
+	const result = root.vars("parser-document-result") || {};
+	if(!isGldResult(result)) return null;
 	const preview = root.qs("#preview");
 	const host = root.qs("#bro-gld-preview-chart") || preview;
 	const node = host && host.getNode && host.getNode();
 	const model = root.vars("document.bro.gld.model") ||
-		gldModel(root.vars("parser-document-result"));
+		gldModel(result);
 	const rows = chartRows(model);
 	const unit = model.header.Eenheid || "";
 	const current = preview && preview.vars("document.bro.gld.chart");
@@ -332,7 +339,8 @@ function renderGldPreview(component) {
 }
 function activateGldFacet(action) {
 	const root = rootFor(action);
-	const result = root.vars("parser-document-result");
+	const result = root.vars("parser-document-result") || {};
+	if(!isGldResult(result)) return null;
 	root.vars("document.facet", "bro.gld");
 	root.vars("document.getSpecificFacet", null);
 	root.vars("document.applySpecificFacet", null);

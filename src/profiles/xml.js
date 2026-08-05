@@ -13,24 +13,29 @@ define(["module", "veldapps-xml/index"], function(module, Xml) {
 			return match ? match[1] : fallback;
 		};
 	}
-	function profile(id, types, path) {
+	function profile(id, types, path, facet) {
 		return {
 			id: module.id + "/" + id,
 			types: types,
 			match: matchNamespace(path),
 			version: namespaceVersion(path, "1.0"),
 			interpret(ctx, root, done) {
-				done({ xml: root, root: root, capabilities: { bro: true } });
+				done({
+					xml: root,
+					root: root,
+					facetUri: "veldapps-imbro/Tabs<Document.bro." + facet + ">",
+					capabilities: { bro: true }
+				});
 			}
 		};
 	}
 
 	return [
-		profile("bro-bhr", ["bro-bhr"], "(?:is|ds)bhr"),
-		profile("bro-bhrgt", ["bro-bhr-gt"], "(?:is|ds)bhr-gt"),
-		profile("bro-cpt", ["bro-cpt"], "(?:is|ds)cpt"),
-		profile("bro-gld", ["bro-gld"], "(?:is|ds)gld"),
-		profile("bro-gmw", ["bro-gmw"], "(?:is|ds)gmw"),
-		profile("bro-sad", ["bro-sad"], "(?:is|ds)sad")
+		profile("bro-bhr", ["bro-bhr"], "(?:is|ds)bhr", "bhr"),
+		profile("bro-bhrgt", ["bro-bhr-gt"], "(?:is|ds)bhr-gt", "bhrgt"),
+		profile("bro-cpt", ["bro-cpt"], "(?:is|ds)cpt", "cpt"),
+		profile("bro-gld", ["bro-gld"], "(?:is|ds)gld", "gld"),
+		profile("bro-gmw", ["bro-gmw"], "(?:is|ds)gmw", "gmw"),
+		profile("bro-sad", ["bro-sad"], "(?:is|ds)sad", "sad")
 	];
 });

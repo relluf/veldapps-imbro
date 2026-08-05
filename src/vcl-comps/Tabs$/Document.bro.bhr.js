@@ -6,11 +6,16 @@ const BroPreview = require("veldapps-imbro/BroPreview");
 function rootFor(component) {
 	return component.up("Tabs<Document>:root") || component.up(":root") || component;
 }
+function isBhrResult(result) {
+	const type = String(result && result.type || "");
+	return type === "bro-bhr" || type.startsWith("bro-bhr/");
+}
 function renderBhrPreview(component) {
 	const root = rootFor(component);
+	const result = root.vars("parser-document-result") || {};
+	if(!isBhrResult(result)) return null;
 	const preview = root.qs("#preview");
 	const node = preview && preview.getNode && preview.getNode();
-	const result = root.vars("parser-document-result") || {};
 	const model = Bhr.model(result);
 	const registry = BroPreview.createRegistry();
 
@@ -23,6 +28,7 @@ function renderBhrPreview(component) {
 	return model;
 }
 function scheduleBhrPreview(component, delay) {
+	if(!isBhrResult(rootFor(component).vars("parser-document-result") || {})) return null;
 	const render = () => {
 		try {
 			renderBhrPreview(component);
@@ -38,11 +44,14 @@ function scheduleBhrPreview(component, delay) {
 }
 function activateBhrFacet(action) {
 	const root = rootFor(action);
+	if(!isBhrResult(root.vars("parser-document-result") || {})) return null;
+	const applyBroView = root.vars(["document.bro.applyView"]);
 
 	root.vars("document.facet", "bro.bhr");
 	root.vars("document.getSpecificFacet", null);
 	root.vars("document.applySpecificFacet", null);
 	root.vars("document.bro.bhr.renderPreview", renderBhrPreview);
+	if(typeof applyBroView === "function") applyBroView(action);
 	root.qs("#tab-preview").show();
 	scheduleBhrPreview(root, 50);
 }
@@ -65,6 +74,13 @@ function activateBhrFacet(action) {
 		css: {
 			'': "overflow:hidden;background:#f7f8fa;color:#26323c;",
 			"& .bhr-preview-header": "box-sizing:border-box;height:44px;padding:12px 18px;background:white;border-bottom:1px solid #dfe3e7;font-size:14px;",
+			"& .bro-id-link": "color:#1d4ed8;text-decoration:none;cursor:pointer;",
+			"& .bro-id-link:hover": "text-decoration:underline;",
+			"& svg .bro-id-link text": "fill:#1d4ed8;text-decoration:none;",
+			"& svg .bro-id-link:hover text": "text-decoration:underline;",
+			"& .bhr-preview-header .bro-id-link": "color:inherit;",
+			"& .bhr-preview-header [data-bro-ref]": "cursor:pointer;",
+			"& .bhr-preview-header [data-bro-ref]:hover": "text-decoration:underline;",
 			"& .bhr-separator": "display:inline-block;margin:0 9px;color:#a0a7ad;",
 			"& .bhr-preview-scroll": "position:absolute;left:0;right:0;top:44px;bottom:39px;overflow:auto;padding:12px 16px;box-sizing:border-box;",
 			"& .bhr-log": "display:block;background:white;border:1px solid #dfe3e7;border-radius:4px;box-shadow:0 1px 2px rgba(0,0,0,.05);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;",

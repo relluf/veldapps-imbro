@@ -25,6 +25,19 @@ runCases(harness.Parser, [{
 		profile: "veldapps-imbro/profiles/xml/bro-cpt",
 		type: "bro-cpt/1.1",
 		version: "1.1",
+		facetUri: "veldapps-imbro/Tabs<Document.bro.cpt>",
+		capabilities: ["bro", "xml", "view"],
+		rootKeys: ["dispatchDataResponse"]
+	}
+}, {
+	base: __dirname,
+	fixture: "fixtures/bro-bhr-gt-2.1.xml",
+	expect: {
+		format: "bxv/formats/xml",
+		profile: "veldapps-imbro/profiles/xml/bro-bhrgt",
+		type: "bro-bhr-gt/2.1",
+		version: "2.1",
+		facetUri: "veldapps-imbro/Tabs<Document.bro.bhrgt>",
 		capabilities: ["bro", "xml", "view"],
 		rootKeys: ["dispatchDataResponse"]
 	}

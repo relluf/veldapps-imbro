@@ -26,6 +26,8 @@ const broFacetSource = fs.readFileSync(path.join(root,
 	"src/vcl-comps/Tabs$/Document.bro.js"), "utf8");
 const bhrGtFacetSource = fs.readFileSync(path.join(root,
 	"src/vcl-comps/Tabs$/Document.bro.bhrgt.js"), "utf8");
+assert.match(bhrGtFacetSource, /function isBhrGtResult[\s\S]*if\(!isBhrGtResult\(result\)\) return null/,
+	"een achtergebleven BHR-GT-renderer mag geen ander documenttype overschrijven");
 const xml = {
 	"isbhrgt:registrationRequest": {
 		"isbhrgt:sourceDocument": {
@@ -43,7 +45,7 @@ const xml = {
 							"bhrgtcom:upperBoundary": "1.5",
 							"bhrgtcom:lowerBoundary": "3.25",
 							"bhrgtcom:soil": {
-								"bhrgtcom:geotechnicalSoilName": "zand",
+								"bhrgtcom:geotechnicalSoilName": "sterkGrindigZand",
 								"bhrgtcom:colour": "lichtgeel"
 							}
 						}, {
@@ -145,18 +147,31 @@ const dispatchResult = {
 	}
 };
 const dispatchModel = BhrGt.model(dispatchResult);
+const dispatchDocument = dispatchResult["dsbhrgt:dispatchDataResponse"]
+	["dsbhrgt:dispatchDocument"]["dsbhrgt:BHR_GT_O"];
+const borehole = { "@_gml:id": "borehole-1" };
+const meetpunt = { code: "meetpunt-1" };
 
 assert.match(broFacetSource,
 	/"bro-bhr-gt":\s*"veldapps-imbro\/Tabs<Document\.bro\.bhrgt>"/,
 	"de generieke BRO-facet moet BHR-GT naar het package-gekwalificeerde facet routeren");
 assert.match(bhrGtFacetSource, /defaultTab:\s*"tab-preview"/,
 	"BHR-GT moet standaard met de Weergave-tab openen");
+assert.match(broFacetSource, /bro:\s*{\s*applyView:\s*applyBroView/,
+	"de generieke BRO-facet moet zijn Data-viewfunctie aan specifieke facets beschikbaar stellen");
+assert.match(bhrGtFacetSource,
+	/root\.vars\(\["document\.bro\.applyView"\]\)[\s\S]*applyBroView\(action\)/,
+	"de directe BHR-GT-facet moet de Data-tab met de specifieke BRO-view vullen");
 assert.match(bhrGtFacetSource, /BroPreview\.open\(this, evt\)/,
 	"BHR-GT moet klikbare profielobjecten in een Alphaview openen");
 assert.strictEqual(dispatchModel.broId, "BHR000000368931",
 	"een uitgiftebericht met root/xml-naam-tokens moet zijn werkelijke dsbhrgt-root gebruiken");
+assert.strictEqual(dispatchModel.document, dispatchDocument,
+	"preview-links moeten het geselecteerde BHR-GT-document openen en niet de bericht-wrapper");
+assert.strictEqual(BhrGt.model({ xml: { "imsikb0101:Borehole": borehole } }).document, borehole);
+assert.strictEqual(BhrGt.model({ xml: { Meetpunt: meetpunt } }).document, meetpunt);
 assert.strictEqual(dispatchModel.finalDepth, 6);
-assert.strictEqual(dispatchModel.tracks.find(track => track.key === "layers-0").items[0].title, "Klei");
+assert.strictEqual(dispatchModel.tracks.find(track => track.key === "layers-0").items[0].title, "klei");
 assert.ok(dispatchModel.tracks.some(track => track.key === "boredInterval"));
 assert.deepStrictEqual(Array.from(BhrGt.materialBands("sterkGrindigZand").map(band =>
 	[band.kind, band.percentage])), [["sand", 60], ["gravel", 40]],
@@ -168,22 +183,59 @@ assert.deepStrictEqual(Array.from(BhrGt.materialBands("zwakZandigeKlei").map(ban
 assert.strictEqual(model.broId, "BHR-GT-TEST");
 assert.strictEqual(model.finalDepth, 5);
 assert.strictEqual(model.maximumDepth, 5);
+assert.strictEqual(layers.title, "Grond / Gesteente / Bijzonder materiaal",
+	"de laagkop moet de aanwezige materiaalsoorten benoemen");
 assert.strictEqual(layers.items.length, 5,
 	"gewone, niet-beschreven en post-sedimentaire lagen moeten samen zichtbaar zijn");
 assert.deepStrictEqual(Array.from(layers.items.map(item => item.kind)), [
 	"specialMaterial", "soil", "rock", "notDescribedInterval", "postSedimentaryDiscontinuity"
 ]);
+assert.strictEqual(layers.items.find(item => item.kind === "soil").title, "sterk grindig zand");
 BhrGt.INTERVAL_KINDS.forEach(kind => assert.ok(model.tracks.some(track => track.key === kind),
 	kind + " moet als dieptetrack worden gemodelleerd"));
 assert.ok(model.tracks.some(track => track.key === "excavatedLayer"));
 assert.ok(model.tracks.some(track => track.key === "fluidMudLayer"));
 
 const html = BhrGt.render(model);
+assert.match(html, /<strong class='bhrgt-preview-id'>BHR-GT-TEST<\/strong>/,
+	"een object-ID die geen BRO-ID is moet zonder Broloket-opmaak worden getoond");
+assert.doesNotMatch(html, /bro-id-link/);
+assert.doesNotMatch(BhrGt.svg(model), /bro-id-link/,
+	"een niet-BRO-ID mag ook in de metadata geen Broloket-link krijgen");
+const internalBhrGt = BhrGt.render(model, {
+	instanceAttrs(instance) {
+		return instance === model.document ? " data-bro-ref='bhr-gt-root'" : "";
+	}
+});
+assert.match(internalBhrGt,
+	/<strong class='bhrgt-preview-id' data-bro-ref='bhr-gt-root'>BHR-GT-TEST<\/strong>/,
+	"een niet-BRO-ID in de previewheader moet de BHR-GT-root openen");
+assert.match(internalBhrGt,
+	/<g class='metadata-row' data-bro-ref='bhr-gt-root'><text class='metadata-label'[^>]*>ID:<\/text>/,
+	"een niet-BRO-ID in de metadata moet de BHR-GT-root openen");
 const firstSvg = BhrGt.svg(model);
 const secondSvg = BhrGt.svg(model);
 const interactiveSvg = BhrGt.svg(model, {
 	instanceAttrs(instance) {
 		return instance ? " data-bro-ref='test-layer'" : "";
+	}
+});
+const trackLinks = [];
+const trackHeadingSvg = BhrGt.svg(model, {
+	instanceAttrs(instance, label, meta) {
+		if(Array.isArray(instance) && meta && meta.direct) trackLinks.push({
+			instance: instance,
+			label: label,
+			meta: meta
+		});
+		return Array.isArray(instance) ? " data-bro-ref='test-track'" : "";
+	}
+});
+let documentLinkCount = 0;
+const interactiveHtml = BhrGt.render(dispatchModel, {
+	instanceAttrs(instance, label, meta) {
+		if(instance === dispatchDocument && meta && meta.direct) ++documentLinkCount;
+		return instance === dispatchDocument ? " data-bro-ref='bhr-gt-document'" : "";
 	}
 });
 const firstSandPattern = firstSvg.match(/id='(bhrgt-sand-[^']+)'/)[1];
@@ -196,13 +248,43 @@ assert.ok(firstSvg.indexOf("url(#" + firstSandPattern + ")") !== -1,
 assert.ok(secondSvg.indexOf("url(#" + secondSandPattern + ")") !== -1);
 assert.match(interactiveSvg, /class='profile-layer[^']*' data-bro-ref='test-layer'/,
 	"BHR-GT-lagen moeten aan hun XML-bronobject gekoppeld kunnen worden");
-assert.match(html, /Onderzochte intervallen/);
-assert.match(html, /Geboorde intervallen/);
+assert.match(trackHeadingSvg,
+	/<g class='track-heading' data-bro-ref='test-track'><text class='track-title'[^>]*>Grond \/ Gesteente \/ Bijzonder materiaal<\/text><text class='track-detail'[^>]*>/,
+	"de laagkop en zijn detailtekst moeten samen klikbaar zijn");
+assert.match(trackHeadingSvg,
+	/<g class='track-heading' data-bro-ref='test-track'><text class='track-title'[^>]*>Geboord<\/text><text class='track-detail'[^>]*>1 traject<\/text><\/g>/,
+	"een intervalkop en zijn aantal moeten samen klikbaar zijn");
+assert.strictEqual(trackLinks.find(link => link.label === "Open Geboord").instance,
+	model.tracks.find(track => track.key === "boredInterval").items,
+	"de kop moet de bijbehorende items-array rechtstreeks aan H.i aanbieden");
+assert.ok(trackLinks.every(link => link.meta.direct === true));
+assert.match(interactiveSvg, /class='metadata-row' data-bro-ref='test-layer'/,
+	"metadata-label en -waarde moeten samen het geselecteerde document openen");
+assert.match(interactiveHtml,
+	/<g class='metadata-heading' data-bro-ref='bhr-gt-document'><text class='metadata-title' x='[^']+' y='25'>Registratie en boring<\/text><\/g>/,
+	"Registratie en boring moet de BHR-GT-root openen");
+const bhrGtBroLoketUrl = "https://broloket.nl/ondergrondgegevens\\?bro-id=BHR000000368931";
+assert.match(interactiveHtml, new RegExp("<a class='bhrgt-preview-id bro-id-link' href='" +
+	bhrGtBroLoketUrl + "' target='_blank' rel='noopener noreferrer'>"),
+	"het BRO-id linksboven moet Broloket in een nieuw tabblad openen");
+assert.match(interactiveHtml, new RegExp("<a class='metadata-row bro-id-link' href='" +
+	bhrGtBroLoketUrl + "' target='_blank' rel='noopener noreferrer'><text class='metadata-label'[^>]*>ID:</text>"),
+	"de ID-rij van BHR-GT moet naar hetzelfde Broloket-record verwijzen");
+assert.strictEqual(documentLinkCount, dispatchModel.metadata.length,
+	"de registratiekop plus alle metadata behalve het externe BRO-id moeten intern inspecteerbaar zijn");
+assert.match(bhrGtFacetSource, /& \.bhrgt-preview-header \.bro-id-link[^\n]*color:inherit;/,
+	"een BRO-id in de previewheader moet de gewone tekstkleur behouden");
+assert.match(html, />Onderzocht</);
+assert.match(html, />Geboord</);
+assert.match(html, />Bemonsterd</);
+assert.doesNotMatch(html, /Geboorde intervallen|Bemonsterde intervallen/);
+assert.match(html, /1 traject/);
 assert.match(html, /bhrgt-not-described/);
 assert.match(html, /profile-layer/);
 assert.match(html, /Diepte t\.o\.v\. maaiveld/);
 assert.match(BhrGt.render(dispatchModel), /Registratie en boring/);
-assert.match(html, /Kalksteen/);
+assert.match(html, /kalksteen/);
+assert.match(html, /sterk grindig zand/);
 assert.match(html, /Einddiepte 5 m/);
 assert.doesNotMatch(BhrGt.render(BhrGt.model({ xml: {
 	"bhrgtcom:layer": {

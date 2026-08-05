@@ -118,6 +118,17 @@ define(function() {
 			.replace(/\"/g, "&quot;")
 			.replace(/'/g, "&#39;");
 	}
+	function broLoketHref(broId) {
+		return "https://broloket.nl/ondergrondgegevens?bro-id=" +
+			encodeURIComponent(String(broId || "").trim()).replace(/'/g, "%27");
+	}
+	function isBroId(value) {
+		return /^[A-Z]{3}\d{9,12}$/i.test(String(value || "").trim());
+	}
+	function broLoketLinkAttrs(broId) {
+		return " href='" + broLoketHref(broId) +
+			"' target='_blank' rel='noopener noreferrer'";
+	}
 	function formatNumber(value, precision) {
 		if(!isFinite(value)) return "";
 		precision = precision === undefined ? 3 : precision;
@@ -366,6 +377,10 @@ define(function() {
 		});
 		return path;
 	}
+	function metadataTarget(item, document) {
+		const value = item && (item.source !== undefined ? item.source : item.value);
+		return value && typeof value === "object" ? value : document;
+	}
 	function svg(model_, options) {
 		options = options || {};
 		const instanceAttrs = (instance, label, meta) => typeof options.instanceAttrs === "function" ?
@@ -438,24 +453,34 @@ define(function() {
 		});
 		content += "<line class='metadata-divider' x1='" + (metadataX - 20) + "' y1='18' x2='" +
 			(metadataX - 20) + "' y2='" + (height - 18) + "'/><g class='profile-metadata'>";
-		content += "<text class='metadata-title'" + instanceAttrs(model_.document, "Open CPT brondocument", {
-			type: "CPT brondocument", label: model_.info.report
-		}) + " x='" + metadataX + "' y='25'>Geotechnisch sondeeronderzoek</text>";
+		content += "<text class='metadata-title' x='" + metadataX + "' y='25'>Geotechnisch sondeeronderzoek</text>";
 		model_.metadata.forEach((item, index) => {
 			const y = top + index * 24;
-			content += "<text class='metadata-label' x='" + metadataX + "' y='" + y + "'>" +
+			const isId = item.label === "ID";
+			const linksToBroLoket = isId && isBroId(item.value);
+			content += (linksToBroLoket ? "<a class='metadata-row bro-id-link'" + broLoketLinkAttrs(item.value) :
+				"<g class='metadata-row'" + instanceAttrs(metadataTarget(item, model_.document),
+				"Open " + item.label, { type: "CPT detail", label: item.label, direct: true })) +
+				"><text class='metadata-label' x='" + metadataX + "' y='" + y + "'>" +
 				escapeHtml(item.label) + ":</text><text class='metadata-value' x='" + (metadataX + 145) +
-				"' y='" + y + "'>" + escapeHtml(item.value) + "</text>";
+				"' y='" + y + "'>" + escapeHtml(item.value) + "</text>" + (linksToBroLoket ? "</a>" : "</g>");
 		});
 		content += "</g></svg>";
 		return content;
 	}
 	function render(model_, options) {
+		options = options || {};
+		const instanceAttrs = (instance, label, meta) => typeof options.instanceAttrs === "function" ?
+			options.instanceAttrs(instance, label, meta) : "";
 		if(!model_ || !model_.rows.length) {
 			return "<div class='cpt-empty'>Geen CPT-meetreeks gevonden in dit document.</div>";
 		}
 		const summary = [
-			model_.broId ? "<strong>" + escapeHtml(model_.broId) + "</strong>" : "",
+			model_.broId ? (isBroId(model_.broId) ? "<a class='cpt-preview-id bro-id-link'" +
+				broLoketLinkAttrs(model_.broId) + "><strong>" + escapeHtml(model_.broId) + "</strong></a>" :
+				"<strong class='cpt-preview-id'" + instanceAttrs(model_.document, "Open ID",
+					{ type: "CPT detail", label: model_.broId, direct: true }) + ">" +
+					escapeHtml(model_.broId) + "</strong>") : "",
 			escapeHtml(titleCase(model_.info.messageKind)),
 			model_.rows.length + " meetpunten",
 			formatNumber(model_.finalDepth) + " m"

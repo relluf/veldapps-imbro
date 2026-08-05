@@ -7,6 +7,10 @@ const vm = require("vm");
 
 const imbroSrc = path.resolve(__dirname, "../src");
 const monSrc = path.resolve(__dirname, "../../veldapps-mon-fmt/src");
+const gldFacetSource = fs.readFileSync(path.join(imbroSrc,
+	"vcl-comps/Tabs$/Document.bro.gld.js"), "utf8");
+assert.match(gldFacetSource, /function isGldResult[\s\S]*if\(!isGldResult\(result\)\) return null/,
+	"een achtergebleven GLD-renderer mag geen ander documenttype overschrijven");
 
 function loadAmd(file, dependencies) {
 	let exported;
@@ -41,7 +45,7 @@ function loadAmd(file, dependencies) {
 	return exported;
 }
 
-const ElliTrack = loadAmd(path.join(monSrc, "ElliTrack.js"), {});
+const ElliTrack = loadAmd(path.join(monSrc, "logger/ElliTrack.js"), {});
 const PackageBase = loadAmd(path.join(monSrc, "veldoffice/UitleesrondeBase.js"), {
 	"veldapps-mon-fmt/veldoffice/LoggerPlaatsingChoice": {},
 	"veldapps-mon-fmt/veldoffice/Verslag": {},
@@ -165,7 +169,7 @@ const Base = Object.assign({}, PackageBase, {
 });
 const Controller = loadAmd(path.join(imbroSrc, "veldoffice/UitleesrondeGldFull.js"), {
 	"veldapps-imbro/GldFullCsv": GldFullCsv,
-	"veldapps-mon-fmt/ElliTrack": ElliTrack,
+	"veldapps-mon-fmt/logger/ElliTrack": ElliTrack,
 	"veldapps-mon-fmt/index": {
 		veldoffice: {
 			plaatsingCoversPeriod(item, period) {
@@ -258,6 +262,10 @@ async function main() {
 	assert.strictEqual(files.length, 1);
 	assert.match(files[0].text, /2026-01-01 00:00:00\t123\.4\t0\t0/);
 	assert.deepStrictEqual(Array.from(files[0].registratieBroIds), ["GLD000000123"]);
+	assert.match(Controller.elliTrackImportFiles([row], "UTC", "quarter")[0].name,
+		/-2026-Q1\.txt$/);
+	assert.match(Controller.elliTrackImportFiles([row], "UTC", "month")[0].name,
+		/-2026-01\.txt$/);
 
 	const preview = GldFullCsv.previewModel({
 		rows: [{
