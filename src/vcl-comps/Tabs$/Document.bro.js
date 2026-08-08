@@ -1,4 +1,4 @@
-"use js, ol, proj4, veldapps-ol/proj/RD, bxv/Layers, bxv/Parser, bxv/Collectors, veldapps-xml/index, veldapps-imbro/BhrGt";
+"use js, ol, proj4, veldapps-ol/proj/RD, bxv/Layers, bxv/Parser, bxv/Collectors, veldapps-xml/index, veldapps-imbro/BhrGt, veldapps-imbro/Gmw";
 
 const ol = require("ol");
 const proj4 = require("proj4");
@@ -7,6 +7,7 @@ const Parser = require("bxv/Parser");
 const Collectors = require("bxv/Collectors");
 const Xml = require("veldapps-xml/index");
 const BhrGt = require("veldapps-imbro/BhrGt");
+const Gmw = require("veldapps-imbro/Gmw");
 require("veldapps-ol/proj/RD");
 const collectObjectsForKeys = Xml.collectObjectsForKeys;
 const collectValuesForKeys = Xml.collectValuesForKeys;
@@ -20,6 +21,7 @@ const BRO_FACETS = {
 	"bro-bhr": "veldapps-imbro/Tabs<Document.bro.bhr>",
 	"bro-bhr-gt": "veldapps-imbro/Tabs<Document.bro.bhrgt>",
 	"bro-cpt": "veldapps-imbro/Tabs<Document.bro.cpt>",
+	"bro-gmn": "veldapps-imbro/Tabs<Document.bro.gmn>",
 	"bro-gmw": "veldapps-imbro/Tabs<Document.bro.gmw>",
 	"bro-gld": "veldapps-imbro/Tabs<Document.bro.gld>"
 };
@@ -56,6 +58,15 @@ const BRO_XML_NAMESPACES = Object.assign({}, Parser.XML_NAMESPACES, {
 		"http://www.broservices.nl/xsd/cptcommon/1.0",
 		"http://www.broservices.nl/xsd/cptcommon/1.1"
 	]),
+	"isgmn": (Parser.XML_NAMESPACES.isgmn || []).concat([
+		"http://www.broservices.nl/xsd/isgmn/1.0"
+	]),
+	"dsgmn": (Parser.XML_NAMESPACES.dsgmn || []).concat([
+		"http://www.broservices.nl/xsd/dsgmn/1.0"
+	]),
+	"gmncom": (Parser.XML_NAMESPACES.gmncom || []).concat([
+		"http://www.broservices.nl/xsd/gmncommon/1.0"
+	]),
 	"issad": (Parser.XML_NAMESPACES.issad || []).concat([
 		"http://www.broservices.nl/xsd/issad/1.0",
 		"http://www.broservices.nl/xsd/issad/1.1"
@@ -84,6 +95,9 @@ function getSpecificBroFacetUri(result, opts) {
 	}
 	if(type === "bro-cpt" || type.startsWith("bro-cpt/")) {
 		return broFacetUri("bro-cpt", opts && opts.root);
+	}
+	if(type === "bro-gmn" || type.startsWith("bro-gmn/")) {
+		return broFacetUri("bro-gmn", opts && opts.root);
 	}
 	if(type === "bro-gmw" || type.startsWith("bro-gmw/")) {
 		return broFacetUri("bro-gmw", opts && opts.root);
@@ -442,14 +456,7 @@ function dispatchResponseView(xml) {
 	};
 }
 function broGmwView(xml) {
-	const sourceDocument = Collectors["bro->sourceDocument"](xml, ["isgmw", "dsgmw"]);
-	const report = Object.keys(sourceDocument)[0];
-	const doc = sourceDocument[report];
-
-	return {
-		[report.split(":").pop()]: [doc],
-		"Tubes": arrayOf(js.get("isgmw:monitoringTube", doc) || js.get("dsgmw:monitoringTube", doc) || js.get("monitoringTube", doc))
-	};
+	return Gmw.model({ type: "bro-gmw", xml: xml }).view;
 }
 function broBhrGtView(xml) {
 	let sourceDocument = Collectors["bro->sourceDocument"](xml, ["isbhrgt", "dsbhrgt"]);
@@ -505,12 +512,12 @@ function broViewFor(result) {
 	if(type.startsWith("bro-bhr-gt/")) {
 		return broBhrGtView(xml);
 	}
+	if(type.startsWith("bro-gmw/")) {
+		return broGmwView(xml);
+	}
 	const dispatch = dispatchResponseView(xml);
 	if(dispatch) {
 		return dispatch;
-	}
-	if(type.startsWith("bro-gmw/")) {
-		return broGmwView(xml);
 	}
 	return null;
 }

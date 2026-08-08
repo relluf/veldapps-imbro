@@ -35,6 +35,7 @@ define(["module", "veldapps-xml/index"], function(module, Xml) {
 		profile("bro-bhrgt", ["bro-bhr-gt"], "(?:is|ds)bhr-gt", "bhrgt"),
 		profile("bro-cpt", ["bro-cpt"], "(?:is|ds)cpt", "cpt"),
 		profile("bro-gld", ["bro-gld"], "(?:is|ds)gld", "gld"),
+		profile("bro-gmn", ["bro-gmn"], "(?:is|ds)gmn", "gmn"),
 		profile("bro-gmw", ["bro-gmw"], "(?:is|ds)gmw", "gmw"),
 		profile("bro-sad", ["bro-sad"], "(?:is|ds)sad", "sad")
 	];

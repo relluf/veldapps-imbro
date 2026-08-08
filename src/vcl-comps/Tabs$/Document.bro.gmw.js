@@ -1,7 +1,10 @@
-"use veldapps-imbro/Gmw, veldapps-imbro/BroPreview";
+"use veldapps-imbro/Gmw, veldapps-imbro/BroPreview, veldapps-xml/index";
 
 const Gmw = require("veldapps-imbro/Gmw");
 const BroPreview = require("veldapps-imbro/BroPreview");
+const Xml = require("veldapps-xml/index");
+
+const GMW_BRO_OBJECT_URL = "https://veldoffice.nl/broservices/gm/gmw/v1/objects/";
 
 function rootFor(component) {
 	return component.up("Tabs<Document>:root") || component.up(":root") || component;
@@ -9,6 +12,76 @@ function rootFor(component) {
 function isGmwResult(result) {
 	const type = String(result && result.type || "");
 	return type === "bro-gmw" || type.startsWith("bro-gmw/");
+}
+function selectedTreeNode(component) {
+	const portal = rootFor(component).up("Portal<>");
+	const tree = portal && portal.qs("#tree");
+
+	return tree && tree.getSelection()[0];
+}
+function openRegisteredGmw(component, evt) {
+	const target = evt && evt.target;
+	const link = target && target.closest &&
+		target.closest(".gmw-preview-header .bro-id-link");
+	const model = link && rootFor(component).vars("document.bro.gmw.model");
+	const broId = model && String(model.broId || "").trim();
+	const parent = selectedTreeNode(component);
+
+	if(!Gmw.isBroId(broId)) return false;
+	evt.preventDefault && evt.preventDefault();
+	evt.stopPropagation && evt.stopPropagation();
+	return fetch.text(GMW_BRO_OBJECT_URL + broId)
+		.then(text => O(`/${broId}.xml`, { text: text, parent: parent }));
+}
+function openComparisonReport(action, report) {
+	const name = "vergelijking-" + report.broId + "-BRO.md";
+	const id = "pouchdb://veldoffice/" + name;
+	const text = Gmw.markdownReport(report, {
+		broUrl: GMW_BRO_OBJECT_URL + report.broId
+	});
+	const parent = action.up("vcl/ui/Node-closeable") || selectedTreeNode(action);
+
+	action.bubble("openform", {
+		uri: "Tabs<Document>",
+		title: name,
+		parent: parent,
+		params: {
+			instance: {
+				id: id,
+				naam: name,
+				omschrijving: "Vergelijking lokaal GMW-document met de BRO"
+			},
+			resource: {
+				uri: id,
+				text: text,
+				generated: Date.now()
+			}
+		}
+	});
+	return report;
+}
+function compareWithBro(action) {
+	const root = rootFor(action);
+	const model = root.vars("document.bro.gmw.model") ||
+		Gmw.model(root.vars("parser-document-result") || {});
+	const broId = model.registeredBroId;
+
+	if(!Gmw.isBroId(broId)) return null;
+	const comparison = fetch.text(GMW_BRO_OBJECT_URL + broId)
+		.then(text => Xml.parse(text))
+		.then(xml => Gmw.compare(model, xml))
+		.then(report => openComparisonReport(action, report));
+	const console = action.ud("#console");
+	return console && console.print instanceof Function ?
+		console.print("Vergelijken met de BRO", comparison) : comparison;
+}
+function syncGmwActions(root, model) {
+	const compare = root.down("#compare-gmw-with-bro");
+	const actions = root.down("#gmw-actions");
+	const available = Gmw.isBroId(model && model.registeredBroId);
+
+	compare && compare.setEnabled(available);
+	actions && actions.setVisible(true);
 }
 function applyGmwView(root, model) {
 	const result = root.vars("parser-document-result") || {};
@@ -69,6 +142,7 @@ function activateGmwFacet(action) {
 	root.vars("document.applySpecificFacet", null);
 	root.vars("document.bro.gmw.renderPreview", renderGmwPreview);
 	applyGmwView(root, model);
+	syncGmwActions(root, model);
 	root.qs("#tab-preview").show();
 	scheduleGmwPreview(root, 50);
 }
@@ -87,6 +161,29 @@ function activateGmwFacet(action) {
 		}
 	}
 }, [
+	["vcl/Action", ("compare-gmw-with-bro"), {
+		content: "<i class='fa fa-exchange'></i> Vergelijken met de BRO...",
+		enabled: false,
+		vars: {
+			document: { action: { batch: false } }
+		},
+		on() {
+			return compareWithBro(this);
+		}
+	}],
+	["vcl/ui/Popup", ("popup-gmw-actions"), {}, [
+		["vcl/ui/Button", { action: "compare-gmw-with-bro" }]
+	]],
+	[("#document-actions"), [
+		["vcl/ui/PopupButton", ("gmw-actions"), {
+			content: "<i class='fa fa-th-large'></i> Acties <i class='fa fa-caret-down'></i>",
+			popup: "popup-gmw-actions",
+			origin: "bottom-right",
+			onNodeCreated() {
+				this.nextTick(() => this.setIndex(0));
+			}
+		}]
+	]],
 	["#preview", {
 		css: {
 			'': "overflow:hidden;background:#f7f8fa;color:#26323c;",
@@ -138,7 +235,7 @@ function activateGmwFacet(action) {
 			"& .gmw-empty": "margin:40px;padding:32px;text-align:center;color:#6f7981;background:white;border:1px solid #dfe3e7;border-radius:4px;font-size:15px;"
 		},
 		onClick(evt) {
-			return BroPreview.open(this, evt) || this.inherited(arguments);
+			return openRegisteredGmw(this, evt) || BroPreview.open(this, evt) || this.inherited(arguments);
 		},
 		onRender() {
 			if(this.isVisible && this.isVisible()) scheduleGmwPreview(this, 25);

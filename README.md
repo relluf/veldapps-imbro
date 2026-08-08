@@ -18,6 +18,15 @@ strooisel- en gesteentelagen, boor- en onderzoeksintervallen,
 grondwaterstanden, bewortelbare diepte en registratiemetadata. Klikken op een
 profielobject opent het bijbehorende geparseerde XML-object.
 
+## BRO GMN-documenten
+
+`veldapps-imbro/Tabs<Document.bro.gmn>` is het documentfacet voor
+`bro-gmn/1.0`-inname- en uitgifteberichten. De Weergave-tab toont de
+netwerkidentiteit en één regel per buisreferentie, zodat ook netten met
+honderden `measuringPoint`-elementen overzichtelijk blijven. Meetpunten zijn
+doorklikbaar naar het geparseerde XML-object; geldige GMN- en GMW-BRO-ID's
+linken naar Broloket. De Data-tab bevat daarnaast het originele GMN-document.
+
 ## BRO-validatieresultaten
 
 `veldapps-imbro/BroValidationResult` herkent JSON-responses van de

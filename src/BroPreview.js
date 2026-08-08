@@ -1,6 +1,11 @@
 define(function() {
 	"use strict";
 
+	const INSPECTION_TAB_LABELS = {
+		soil: "Grondsoort",
+		rock: "Gesteente",
+		sampler: "Apparaat"
+	};
 	let registrySequence = 0;
 
 	function escapeHtml(value) {
@@ -36,6 +41,14 @@ define(function() {
 		}
 		return null;
 	}
+	function isNestedXmlObject(value) {
+		return value && typeof value === "object" && !Array.isArray(value) &&
+			Object.keys(value).some(key => key !== "#text" && key.charAt(0) !== "@");
+	}
+	function inspectionTabLabel(key) {
+		const name = key.split(":").pop();
+		return INSPECTION_TAB_LABELS[name] || name;
+	}
 	function inspectObjectFor(instance, meta) {
 		meta = meta || {};
 		const title = [meta.type || "XML-element", meta.label || ""]
@@ -44,7 +57,12 @@ define(function() {
 		object[title] = [instance];
 		if(meta.parent && meta.parent !== instance) object.Parent = [meta.parent];
 		Object.keys(instance).forEach(key => {
-			if(Array.isArray(instance[key])) object[key.split(":").pop()] = instance[key];
+			const value = instance[key];
+			if(Array.isArray(value)) {
+				object[inspectionTabLabel(key)] = value;
+			} else if(isNestedXmlObject(value)) {
+				object[inspectionTabLabel(key)] = [value];
+			}
 		});
 		return object;
 	}

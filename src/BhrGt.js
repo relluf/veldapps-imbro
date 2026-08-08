@@ -560,7 +560,8 @@ define(function() {
 			content += "<text class='track-detail' x='" + (x + 8) + "' y='46'>" +
 				escapeHtml(track_.detail || track_.items.length + " object" + (track_.items.length === 1 ? "" : "en")) + "</text></g>";
 			content += "<rect class='profile-background' x='" + x + "' y='" + top + "' width='" + profileWidth +
-				"' height='" + plotHeight + "'/>";
+				"' height='" + plotHeight + "' fill='#fbfcfd' stroke='#aab2b9' stroke-width='1' " +
+				"shape-rendering='crispEdges'/>";
 			track_.items.forEach((item, itemIndex) => {
 				const y = top + item.beginDepth * scale;
 				const itemHeight = Math.max(2, (item.endDepth - item.beginDepth) * scale);
@@ -588,7 +589,8 @@ define(function() {
 						"' height='" + itemHeight + "' fill='" + fill + "'/>";
 				}
 				content += "<rect class='layer-outline' x='" + x + "' y='" + y + "' width='" + profileWidth +
-					"' height='" + itemHeight + "'/><text class='layer-thickness' x='" + (x + profileWidth + 9) +
+					"' height='" + itemHeight + "' fill='none' stroke='#27343e' stroke-width='1' " +
+					"shape-rendering='crispEdges'/><text class='layer-thickness' x='" + (x + profileWidth + 9) +
 					"' y='" + (y + Math.max(13, itemHeight / 2)) + "'>" +
 					escapeHtml(formatNumber(item.endDepth - item.beginDepth)) + " m</text>";
 				if(itemHeight >= 28) content += "<text class='layer-name' x='" + (x + profileWidth + 9) +
@@ -605,7 +607,8 @@ define(function() {
 			content += "<text class='track-title' x='" + (x + 7) + "' y='25'>" + escapeHtml(track_.title) + "</text>";
 			content += "<text class='track-detail' x='" + (x + 7) + "' y='46'>" + trackCount + "</text></g>";
 			content += "<rect class='track-background' x='" + x + "' y='" + top + "' width='" + intervalTrackWidth +
-				"' height='" + plotHeight + "'/>";
+				"' height='" + plotHeight + "' fill='#fbfcfd' stroke='#cfd5da' stroke-width='1' " +
+				"shape-rendering='crispEdges'/>";
 			track_.items.forEach(item => {
 				const y = top + item.beginDepth * scale;
 				const itemHeight = Math.max(2, (item.endDepth - item.beginDepth) * scale);

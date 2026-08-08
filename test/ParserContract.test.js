@@ -43,6 +43,18 @@ runCases(harness.Parser, [{
 	}
 }, {
 	base: __dirname,
+	fixture: "fixtures/bro-gmn-1.0.xml",
+	expect: {
+		format: "bxv/formats/xml",
+		profile: "veldapps-imbro/profiles/xml/bro-gmn",
+		type: "bro-gmn/1.0",
+		version: "1.0",
+		facetUri: "veldapps-imbro/Tabs<Document.bro.gmn>",
+		capabilities: ["bro", "xml", "view"],
+		rootKeys: ["dispatchDataResponse"]
+	}
+}, {
+	base: __dirname,
 	fixture: "fixtures/generic.xml",
 	expect: {
 		format: "bxv/formats/xml",

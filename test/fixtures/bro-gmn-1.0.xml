@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dsgmn:dispatchDataResponse
+	xmlns:dsgmn="http://www.broservices.nl/xsd/dsgmn/1.0"
+	xmlns:brocom="http://www.broservices.nl/xsd/brocommon/3.0"
+	xmlns:gml="http://www.opengis.net/gml/3.2">
+	<dsgmn:dispatchDocument>
+		<dsgmn:GMN_PPO gml:id="GMN_TEST">
+			<brocom:broId>GMN000000000569</brocom:broId>
+			<dsgmn:name>Primair meetnet Overijssel</dsgmn:name>
+			<dsgmn:measuringPoint>
+				<dsgmn:MeasuringPoint gml:id="MP_1">
+					<dsgmn:measuringPointCode>GMW07F000002</dsgmn:measuringPointCode>
+				</dsgmn:MeasuringPoint>
+			</dsgmn:measuringPoint>
+		</dsgmn:GMN_PPO>
+	</dsgmn:dispatchDocument>
+</dsgmn:dispatchDataResponse>

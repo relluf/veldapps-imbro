@@ -1,8 +1,35 @@
+# `2026/08/07` Adds GMN inspection and registered GMW comparison
+
+## GMN documents
+
+* Adds [src/Gmn.js]() to normalize intake and dispatch GMN payloads into a compact network summary, one row per groundwater-monitoring-tube reference and a Data view that retains the original document.
+* Adds the inspectable [src/vcl-comps/Tabs$/Document.bro.gmn.js]() preview with guarded delayed rendering and direct Broloket links for valid GMN and GMW identifiers.
+* Registers the `bro-gmn` XML profile and package facet in [src/profiles/xml.js]() and [src/vcl-comps/Tabs$/Document.bro.js](), documents it in [README.md](), and adds [test/Gmn.test.js](), [test/fixtures/bro-gmn-1.0.xml]() and [test/ParserContract.test.js]() coverage; [package.json]() includes the new suite.
+
+## GMW source inspection and BRO comparison
+
+* Extends [src/Gmw.js]() to distinguish explicitly registered GMW BRO IDs from local object IDs, prefer registration-envelope IDs, expose the original GMW document/tubes/events in the Data view and format event names as sentence case.
+* Adds namespace- and wrapper-independent comparison of put data, numbered tubes and events, normalizing numeric representations and deriving missing screen positions before reporting changed, local-only and BRO-only fields.
+* Adds a generated Markdown comparison report with a clear conclusion, summary tables, normalized JSON fragments and a link to the BRO source document.
+* Extends [src/vcl-comps/Tabs$/Document.bro.gmw.js]() with an Acties-menu comparison that fetches and parses the registered BRO object, plus header navigation that opens the current GMW XML below the selected tree node; the action remains disabled without an explicit GMW BRO ID.
+* Makes the shared BRO facet use the same source-object GMW view before generic dispatch handling and extends [test/Gmw.test.js]() with envelope-ID, Data-view, normalized comparison, report and facet-action regressions.
+
+## Portable previews and nested inspection
+
+* Gives BHR-GT profile, layer and interval-track rectangles explicit SVG fills, strokes and crisp-edge rendering in [src/BhrGt.js](), so exported or cloned SVGs remain legible without external facet CSS; [test/BhrGt.test.js]() covers the standalone markup.
+* Extends [src/BroPreview.js]() so nested XML objects become inspection tabs, with domain labels for soil, rock and sampler objects while scalar value wrappers stay inline; [test/BroPreview.test.js]() covers the new inspection shape.
+
 # `2026/08/05` Makes BRO previews safer and directly inspectable
+
+## GMN
+
+* Adds the package-owned `bro.gmn` document facet and routes both `isgmn` intake and `dsgmn` dispatch documents to it.
+* Replaces deeply nested `measuringPoint` arrays with a compact network summary and one overview row per groundwater-monitoring-tube reference, while keeping the original GMN document available in the Data view.
+* Adds an inspectable GMN preview table with direct Broloket links for valid GMN and GMW BRO IDs.
 
 ## Profile routing and facet lifecycle
 
-* Gives every package-owned BRO XML profile an explicit component URI in [src/profiles/xml.js](), so BHR, BHR-GT, CPT, GLD, GMW and SAD Documents select their specialized facet without application-side inference.
+* Gives every package-owned BRO XML profile an explicit component URI in [src/profiles/xml.js](), so BHR, BHR-GT, CPT, GLD, GMN, GMW and SAD Documents select their specialized facet without application-side inference.
 * Adds document-type guards to [src/vcl-comps/Tabs$/Document.bro.bhr.js](), [src/vcl-comps/Tabs$/Document.bro.bhrgt.js](), [src/vcl-comps/Tabs$/Document.bro.cpt.js](), [src/vcl-comps/Tabs$/Document.bro.gld.js]() and [src/vcl-comps/Tabs$/Document.bro.gmw.js]() so delayed renderers cannot overwrite a subsequently opened document.
 * Exposes the shared BRO view applicator from [src/vcl-comps/Tabs$/Document.bro.js]() and reapplies it when BHR and BHR-GT specializations activate.
 

@@ -24,7 +24,17 @@ vm.runInNewContext(fs.readFileSync(path.resolve(__dirname, "../src/BroPreview.js
 });
 
 const registry = BroPreview.createRegistry();
-const instance = { "bhrgtcom:beginDepth": "1", values: [1, 2] };
+const soil = { "bhrgtcom:geotechnicalSoilName": "zand" };
+const rock = { "bhrgtcom:rockType": "kalksteen" };
+const sampler = { "bhrgtcom:samplerType": "steekbus" };
+const instance = {
+	"bhrgtcom:beginDepth": "1",
+	"bhrgtcom:soil": soil,
+	"bhrgtcom:rock": rock,
+	"bhrgtcom:sampler": sampler,
+	"bhrgtcom:measurement": { "#text": "1.5", "@_uom": "m" },
+	values: [1, 2]
+};
 const attrs = BroPreview.instanceAttrs(registry, instance, "Open laag", {
 	type: "Laag",
 	label: "1–2 m"
@@ -37,6 +47,14 @@ assert.match(attrs, /role='button'/);
 assert.match(attrs, /tabindex='0'/);
 assert.strictEqual(inspected["Laag: 1–2 m"][0], instance);
 assert.deepStrictEqual(Array.from(inspected.values), [1, 2]);
+assert.strictEqual(inspected.Grondsoort[0], soil,
+	"soil moet als tab Grondsoort naar het oorspronkelijke XML-object verwijzen");
+assert.strictEqual(inspected.Gesteente[0], rock,
+	"rock moet als tab Gesteente naar het oorspronkelijke XML-object verwijzen");
+assert.strictEqual(inspected.Apparaat[0], sampler,
+	"sampler moet als tab Apparaat naar het oorspronkelijke XML-object verwijzen");
+assert.strictEqual(inspected.measurement, undefined,
+	"een simpele XML-waardewrapper hoort geen afzonderlijke tab te krijgen");
 
 const node = {
 	nodeType: 1,

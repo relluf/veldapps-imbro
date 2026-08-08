@@ -215,6 +215,15 @@ assert.match(internalBhrGt,
 	"een niet-BRO-ID in de metadata moet de BHR-GT-root openen");
 const firstSvg = BhrGt.svg(model);
 const secondSvg = BhrGt.svg(model);
+assert.match(firstSvg,
+	/<rect class='profile-background'[^>]*fill='#fbfcfd'[^>]*stroke='#aab2b9'[^>]*shape-rendering='crispEdges'\/>/,
+	"de profielachtergrond moet zonder externe facet-CSS correct blijven na klonen of exporteren");
+assert.match(firstSvg,
+	/<rect class='layer-outline'[^>]*fill='none'[^>]*stroke='#27343e'[^>]*shape-rendering='crispEdges'\/>/,
+	"de laag-outline mag zonder externe facet-CSS de materiaalvulling niet zwart afdekken");
+assert.match(firstSvg,
+	/<rect class='track-background'[^>]*fill='#fbfcfd'[^>]*stroke='#cfd5da'[^>]*shape-rendering='crispEdges'\/>/,
+	"lege delen van trajectkolommen moeten zonder externe facet-CSS licht blijven");
 const interactiveSvg = BhrGt.svg(model, {
 	instanceAttrs(instance) {
 		return instance ? " data-bro-ref='test-layer'" : "";

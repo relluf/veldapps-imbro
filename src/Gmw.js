@@ -8,6 +8,23 @@ define(function() {
 		onbekend: "#929aa3"
 	};
 	const PLOT_HEIGHT_FACTOR = 0.8;
+	const COMPARISON_WELL_FIELDS = [
+		"deliveryAccountableParty",
+		"qualityRegime",
+		"deliveryContext",
+		"constructionStandard",
+		"initialFunction",
+		"numberOfMonitoringTubes",
+		"groundLevelStable",
+		"wellStability",
+		"nitgCode",
+		"wellCode",
+		"owner",
+		"wellHeadProtector",
+		"wellConstructionDate",
+		"deliveredLocation",
+		"deliveredVerticalPosition"
+	];
 	let svgSequence = 0;
 
 	function localName(key) {
@@ -92,8 +109,9 @@ define(function() {
 		const number = parseFloat(String(value || "").replace(",", "."));
 		return isFinite(number) && number > 0 ? value : "";
 	}
-	function titleCase(value) {
-		value = String(value || "").replace(/([a-z])([A-Z])/g, "$1 $2");
+	function sentenceCase(value) {
+		value = String(value || "").replace(/([a-z])([A-Z])/g,
+			(match, first, second) => first + " " + second.toLowerCase());
 		return value ? value.charAt(0).toUpperCase() + value.slice(1) : "";
 	}
 	function escapeHtml(value) {
@@ -109,7 +127,7 @@ define(function() {
 			encodeURIComponent(String(broId || "").trim()).replace(/'/g, "%27");
 	}
 	function isBroId(value) {
-		return /^[A-Z]{3}\d{9,12}$/i.test(String(value || "").trim());
+		return /^GMW\d{9,12}$/i.test(String(value || "").trim());
 	}
 	function broLoketLinkAttrs(broId) {
 		return " href='" + broLoketHref(broId) +
@@ -173,6 +191,7 @@ define(function() {
 		return {
 			document: entry && entry.value || message,
 			report: entry && localName(entry.key) || "GMW",
+			registrationBroId: childText(message, "broId"),
 			message: rootKey && localName(rootKey) || "",
 			messageKind: dispatch || /Response$/.test(localName(rootKey)) ? "uitgifte" : "inname"
 		};
@@ -189,7 +208,7 @@ define(function() {
 		}
 		descendants(document, "intermediateEvent").forEach(event => {
 			events.push({
-				name: titleCase(childText(event, "eventName") || "Tussentijdse gebeurtenis"),
+				name: sentenceCase(childText(event, "eventName") || "Tussentijdse gebeurtenis"),
 				date: dateText(directValues(event, "eventDate")[0]),
 				kind: childText(event, "eventName") || "event",
 				source: event
@@ -197,7 +216,7 @@ define(function() {
 		});
 		if(!events.length && info.report && info.report !== "GMW_Construction") {
 			events.push({
-				name: titleCase(info.report.replace(/^GMW_/, "")),
+				name: sentenceCase(info.report.replace(/^GMW_/, "")),
 				date: dateText(directValues(document, "eventDate")[0]) ||
 					dateText(directValues(document, "wellRemovalDate")[0]),
 				kind: info.report,
@@ -284,12 +303,14 @@ define(function() {
 				.concat(tube.electrodes.map(electrode => electrode.depth))
 				.filter(value => value !== null).forEach(value => depths.push(value));
 		});
-		const broId = textOf(descendants(document, "broId")[0]) ||
+		const specifiedBroId = childText(document, "broId") || info.registrationBroId;
+		const broId = specifiedBroId ||
+			textOf(descendants(document, "broId")[0]) ||
 			textOf(descendants(document, "objectIdAccountableParty")[0]);
 		const events = eventRows(document, info);
 		const metadata = [
 			{ label: "ID", value: broId },
-			{ label: "Bericht", value: titleCase(info.messageKind) + (info.message ? " · " + info.message : "") },
+			{ label: "Bericht", value: sentenceCase(info.messageKind) + (info.message ? " · " + info.message : "") },
 			{ label: "Brondocument", value: info.report },
 			{ label: "Kwaliteitsregime", value: textOf(descendants(xml, "qualityRegime")[0]) },
 			{ label: "Putcode", value: childText(document, ["wellCode", "nitgCode", "mapSheetCode"]) },
@@ -301,8 +322,6 @@ define(function() {
 			{ label: "Locatie", value: textOf(descendants(document, "pos")[0]) },
 			{ label: "Aantal buizen", value: tubes.length ? String(tubes.length) : "" }
 		].filter(item => item.value);
-		const overview = {};
-		metadata.forEach(item => overview[item.label] = item.value);
 		const shallowestDepth = Math.min.apply(Math, depths);
 		const deepestDepth = Math.max.apply(Math, depths.concat([1]));
 		const depthPadding = Math.max((deepestDepth - shallowestDepth) * 0.05, 0.05);
@@ -311,6 +330,7 @@ define(function() {
 			document: document,
 			info: info,
 			broId: broId,
+			registeredBroId: isBroId(specifiedBroId) ? specifiedBroId : "",
 			groundLevel: groundLevel,
 			tubes: tubes,
 			events: events,
@@ -320,24 +340,278 @@ define(function() {
 			type: result && result.type || "bro-gmw",
 			version: result && result.version || "",
 			view: {
-				Overzicht: [overview],
-				Buizen: tubes.map(tube => ({
-					Buis: tube.number,
-					Status: tube.status,
-					Type: tube.type,
-					Diameter: positiveMeasure(tube.diameter) ? tube.diameter + " " + tube.diameterUnit : "",
-					Bovenkant: tube.tubeTop,
-					Filterbovenkant: tube.screenTop,
-					Filteronderkant: tube.screenBottom,
-					Materiaal: tube.material,
-					Lijm: tube.glue
-				})),
-				Gebeurtenissen: events.map(event => ({
-					Gebeurtenis: event.name,
-					Datum: event.date
-				}))
+				General: [document],
+				Tubes: tubes.map(tube => tube.source),
+				Events: events.map(event => event.source)
 			}
 		};
+	}
+	function normalizedNumber(value) {
+		const number = Number(value);
+		return Math.round(number * 1000000000) / 1000000000;
+	}
+	function normalizedScalar(value) {
+		if(typeof value === "number") return normalizedNumber(value);
+		if(typeof value === "boolean") return value;
+		const text = String(value === undefined || value === null ? "" : value)
+			.trim().replace(/\s+/g, " ");
+		if(/^-?(?:\d+\.?\d*|\.\d+)$/.test(text)) return normalizedNumber(text);
+		if(/^-?(?:\d+\.?\d*|\.\d+)(?:\s+-?(?:\d+\.?\d*|\.\d+))+$/.test(text)) {
+			return text.split(/\s+/).map(normalizedNumber);
+		}
+		return text;
+	}
+	function comparisonAttributeName(key) {
+		return localName(String(key || "").replace(/^@_?/, ""));
+	}
+	function ignoredComparisonAttribute(key) {
+		const source = String(key || "").replace(/^@_?/, "");
+		const name = comparisonAttributeName(key);
+		return /^xmlns(?::|$)/.test(source) || name === "schemaLocation" || name === "id";
+	}
+	function addNormalizedChild(target, name, value) {
+		if(target[name] === undefined) {
+			target[name] = value;
+		} else if(Array.isArray(target[name])) {
+			target[name].push(value);
+		} else {
+			target[name] = [target[name], value];
+		}
+	}
+	function normalizedNode(value, seen) {
+		if(value === undefined || value === null) return "";
+		if(Array.isArray(value)) {
+			return value.map(item => normalizedNode(item, seen))
+				.sort((left, right) => JSON.stringify(left).localeCompare(JSON.stringify(right)));
+		}
+		if(typeof value !== "object") return normalizedScalar(value);
+		seen = seen || [];
+		if(seen.indexOf(value) !== -1) return "";
+		seen.push(value);
+		const result = {};
+		const attributes = {};
+		let explicitText;
+		Object.keys(value).forEach(key => {
+			if(isAttributeKey(key)) {
+				if(!ignoredComparisonAttribute(key)) {
+					attributes[comparisonAttributeName(key)] = normalizedScalar(value[key]);
+				}
+			} else if(["#text", "_", "$text", "value"].indexOf(key) !== -1 &&
+					typeof value[key] !== "object") {
+				explicitText = normalizedScalar(value[key]);
+			} else {
+				addNormalizedChild(result, localName(key), normalizedNode(value[key], seen));
+			}
+		});
+		seen.pop();
+		const names = Object.keys(result);
+		const attributeNames = Object.keys(attributes);
+		if(!names.length && !attributeNames.length) return explicitText === undefined ? "" : explicitText;
+		if(explicitText !== undefined) result.value = explicitText;
+		if(attributeNames.length) result.attributes = attributes;
+		return result;
+	}
+	function comparisonModel(value) {
+		if(value && value.document && value.info && value.tubes) return value;
+		if(value && (value.type || value.xml || value.root)) return model(value);
+		return model({ type: "bro-gmw", xml: value || {} });
+	}
+	function normalizedMeasure(value, unit) {
+		return {
+			value: normalizedScalar(value),
+			attributes: { uom: unit }
+		};
+	}
+	function applyDerivedTubePositions(normalized, tube) {
+		if(tube.screenTop !== null || tube.screenBottom !== null) {
+			normalized.screen = normalized.screen && typeof normalized.screen === "object" ?
+				normalized.screen : {};
+		}
+		if(tube.screenTop !== null && normalized.screen.screenTopPosition === undefined) {
+			normalized.screen.screenTopPosition = normalizedMeasure(tube.screenTop, "m");
+		}
+		if(tube.screenBottom !== null && normalized.screen.screenBottomPosition === undefined) {
+			normalized.screen.screenBottomPosition = normalizedMeasure(tube.screenBottom, "m");
+		}
+		return normalized;
+	}
+	function normalizeForComparison(value) {
+		const source = comparisonModel(value);
+		const put = { broId: normalizedScalar(source.broId) };
+		COMPARISON_WELL_FIELDS.forEach(name => {
+			const candidate = descendants(source.xml, name)[0];
+			if(candidate !== undefined) put[name] = normalizedNode(candidate);
+		});
+		const tubes = {};
+		source.tubes.slice().sort((left, right) => String(left.number).localeCompare(String(right.number)))
+			.forEach(tube => {
+				tubes[String(tube.number)] = applyDerivedTubePositions(normalizedNode(tube.source), tube);
+			});
+		const events = source.events.map(event => ({
+			type: normalizedScalar(event.kind),
+			date: normalizedScalar(event.date)
+		})).sort((left, right) => (left.date + "|" + left.type).localeCompare(right.date + "|" + right.type));
+		return {
+			put: put,
+			buizen: tubes,
+			gebeurtenissen: events
+		};
+	}
+	function flattenedComparison(value, path, result) {
+		result = result || {};
+		path = path || "";
+		if(Array.isArray(value)) {
+			value.forEach((item, index) => flattenedComparison(item, path + "[" + index + "]", result));
+		} else if(value && typeof value === "object") {
+			const keys = Object.keys(value).sort();
+			if(!keys.length && path) result[path] = {};
+			keys.forEach(key => flattenedComparison(value[key], path ? path + "." + key : key, result));
+		} else if(path) {
+			result[path] = value;
+		}
+		return result;
+	}
+	function compare(localValue, broValue) {
+		const local = normalizeForComparison(localValue);
+		const bro = normalizeForComparison(broValue);
+		const localPaths = flattenedComparison(local);
+		const broPaths = flattenedComparison(bro);
+		const paths = Object.keys(Object.assign({}, localPaths, broPaths)).sort();
+		const differences = [];
+		const onlyLocal = [];
+		const onlyBro = [];
+		const equal = [];
+		paths.forEach(path => {
+			const inLocal = Object.prototype.hasOwnProperty.call(localPaths, path);
+			const inBro = Object.prototype.hasOwnProperty.call(broPaths, path);
+			if(!inBro) {
+				onlyLocal.push({ pad: path, waarde: localPaths[path] });
+			} else if(!inLocal) {
+				onlyBro.push({ pad: path, waarde: broPaths[path] });
+			} else if(JSON.stringify(localPaths[path]) !== JSON.stringify(broPaths[path])) {
+				differences.push({ pad: path, lokaal: localPaths[path], BRO: broPaths[path] });
+			} else {
+				equal.push({ pad: path, waarde: localPaths[path] });
+			}
+		});
+		const differenceCount = differences.length + onlyLocal.length + onlyBro.length;
+		return {
+			broId: local.put.broId || bro.put.broId,
+			status: differenceCount ? "VERSCHILLEN" : "GELIJK",
+			samenvatting: {
+				gelijk: equal.length,
+				verschillend: differences.length,
+				alleenLokaal: onlyLocal.length,
+				alleenBro: onlyBro.length
+			},
+			verschillen: differences,
+			alleenLokaal: onlyLocal,
+			alleenBro: onlyBro,
+			gelijk: equal,
+			lokaal: local,
+			bro: bro
+		};
+	}
+	function markdownCell(value) {
+		if(value === undefined || value === null) return "—";
+		const text = typeof value === "string" ? value : JSON.stringify(value);
+		return String(text || "_(leeg)_")
+			.replace(/\\/g, "\\\\")
+			.replace(/\|/g, "\\|")
+			.replace(/\r?\n/g, "<br>");
+	}
+	function markdownTable(rows, columns) {
+		if(!rows.length) return "_Geen._";
+		const header = "| " + columns.map(column => column.label).join(" | ") + " |";
+		const separator = "| " + columns.map(() => "---").join(" | ") + " |";
+		return [header, separator].concat(rows.map(row =>
+			"| " + columns.map(column => markdownCell(row[column.key])).join(" | ") + " |"
+		)).join("\n");
+	}
+	function markdownPathRows(rows) {
+		return rows.map(row => Object.assign({}, row, { pad: "`" + row.pad + "`" }));
+	}
+	function normalizedModelFragment(value) {
+		const tubeNumber = Object.keys(value.buizen)[0];
+		const tubes = {};
+		if(tubeNumber) tubes[tubeNumber] = value.buizen[tubeNumber];
+		return {
+			put: value.put,
+			buizen: tubes,
+			gebeurtenissen: value.gebeurtenissen
+		};
+	}
+	function markdownReport(report, options) {
+		options = options || {};
+		const summary = report.samenvatting;
+		const differenceCount = summary.verschillend + summary.alleenLokaal + summary.alleenBro;
+		const generatedAt = options.generatedAt || new Date().toISOString();
+		const source = options.broUrl ? "[BRO-brondocument](" + options.broUrl + ")" : "BRO-brondocument";
+		const conclusion = differenceCount ?
+			"⚠️ **Conclusie:** er " + (differenceCount === 1 ? "is **1 inhoudelijke afwijking**" :
+				"zijn **" + differenceCount + " inhoudelijke afwijkingen**") +
+			" gevonden. Bekijk vooral de gewijzigde waarden en gegevens die maar in één document voorkomen." :
+			"✅ **Conclusie:** de documenten zijn inhoudelijk gelijk binnen het genormaliseerde GMW-model.";
+		const changedColumns = [
+			{ key: "pad", label: "Gegeven" },
+			{ key: "lokaal", label: "Lokaal" },
+			{ key: "BRO", label: "BRO" }
+		];
+		const singleColumns = [
+			{ key: "pad", label: "Gegeven" },
+			{ key: "waarde", label: "Waarde" }
+		];
+		return [
+			"# Vergelijking met de BRO — " + report.broId,
+			"",
+			conclusion,
+			"",
+			"Dit rapport vergelijkt het lokale GMW-document met het " + source +
+			". XML-wrappers en namespace-prefixes zijn genegeerd; tag- en attribuutnamen, numerieke waarden, buisnummers en gebeurtenissen zijn naar één model genormaliseerd. Ontbrekende filterposities zijn waar mogelijk uit de buislengtes afgeleid.",
+			"",
+			"_Gegenereerd: " + generatedAt + "_",
+			"",
+			"## Samenvatting",
+			"",
+			"| Uitkomst | Aantal |",
+			"| --- | ---: |",
+			"| Gelijk | " + summary.gelijk + " |",
+			"| Gewijzigd | " + summary.verschillend + " |",
+			"| Alleen lokaal | " + summary.alleenLokaal + " |",
+			"| Alleen in de BRO | " + summary.alleenBro + " |",
+			"| **Totaal afwijkend** | **" + differenceCount + "** |",
+			"",
+			"## Gewijzigde waarden",
+			"",
+			markdownTable(markdownPathRows(report.verschillen), changedColumns),
+			"",
+			"## Alleen lokaal aanwezig",
+			"",
+			markdownTable(markdownPathRows(report.alleenLokaal), singleColumns),
+			"",
+			"## Alleen in de BRO aanwezig",
+			"",
+			markdownTable(markdownPathRows(report.alleenBro), singleColumns),
+			"",
+			"---",
+			"",
+			"## JSON-fragmenten van de genormaliseerde modellen",
+			"",
+			"De fragmenten hieronder tonen de putgegevens, gebeurtenissen en de eerste buis. Ze illustreren het model waarop de volledige vergelijking is uitgevoerd; alle gevonden afwijkingen staan hierboven in de tabellen.",
+			"",
+			"### Lokaal document",
+			"",
+			"```json",
+			JSON.stringify(normalizedModelFragment(report.lokaal), null, 2),
+			"```",
+			"",
+			"### BRO-document",
+			"",
+			"```json",
+			JSON.stringify(normalizedModelFragment(report.bro), null, 2),
+			"```",
+			""
+		].join("\n");
 	}
 	function niceTickStep(range) {
 		const rough = range / 9;
@@ -478,7 +752,7 @@ define(function() {
 				"<strong class='gmw-preview-id'" + instanceAttrs(model_.document, "Open ID",
 					{ type: "GMW detail", label: model_.broId, direct: true }) + ">" +
 					escapeHtml(model_.broId) + "</strong>") : "",
-			escapeHtml(titleCase(model_.info.messageKind)),
+			escapeHtml(sentenceCase(model_.info.messageKind)),
 			model_.tubes.length + " peilbuis" + (model_.tubes.length === 1 ? "" : "zen")
 		].filter(Boolean).join("<span class='gmw-separator'>·</span>");
 		return "<div class='gmw-preview-header'>" + summary + "</div>" +
@@ -493,7 +767,11 @@ define(function() {
 		descendants: descendants,
 		directValues: directValues,
 		documentInfo: documentInfo,
+		compare: compare,
+		isBroId: isBroId,
+		markdownReport: markdownReport,
 		model: model,
+		normalizeForComparison: normalizeForComparison,
 		render: render,
 		svg: svg,
 		textOf: textOf,
